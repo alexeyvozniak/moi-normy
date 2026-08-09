@@ -1,28 +1,5 @@
-{
-  "name": "Правило",
-  "short_name": "Правило",
-  "description": "Личный трекер ритма: молитва, чтение, труд, отдых.",
-  "start_url": "./",
-  "scope": "./",
-  "display": "standalone",
-  "background_color": "#f3ede3",
-  "theme_color": "#f3ede3",
-  "lang": "ru",
-  "icons": [
-    {
-      "src": "icon-180.png",
-      "sizes": "180x180",
-      "type": "image/png"
-    },
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
-}
+const CACHE='pravilo-clean-live-v1';
+const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-180.png','./icon-192.png','./icon-512.png','./images/hero.webp','./images/prayer_person_beads.webp','./images/reading_person_book.webp','./images/contemplation_looking_up.webp','./images/samurai_training.webp','./images/selfcare_onsen.webp','./images/calligraphy_ink.webp','./images/walking_path.webp','./images/books_notes.webp','./images/open_book.webp','./images/enso.webp','./images/stat_active.webp','./images/stat_debt.webp','./images/stat_done.webp'];
+self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)));self.skipWaiting();});
+self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
+self.addEventListener('fetch',e=>{if(e.request.mode==='navigate'){e.respondWith(fetch(e.request).then(r=>{const copy=r.clone();caches.open(CACHE).then(c=>c.put('./index.html',copy));return r;}).catch(()=>caches.match('./index.html')));return;}e.respondWith(caches.match(e.request).then(c=>c||fetch(e.request)));});
