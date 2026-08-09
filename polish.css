@@ -28,7 +28,7 @@
 .subRow{grid-column:1 / -1;grid-row:5;gap:8px;margin-top:9px;}
 
 /* Слово дня: никаких браузерных синих оттенков. */
-.quoteCard{color:var(--ink);}
+.quoteCard{color:var(--ink);text-align:left;}
 .quoteLabel{color:var(--red)!important;}
 .quoteText{color:var(--ink);}
 .quoteAuthor,.quoteTap{color:var(--muted);}
@@ -42,6 +42,23 @@
 }
 .statNum{font-size:25px;}
 
+/* «Закрыто сегодня»: японская печать 済 в круге энсо. */
+.stats .stat:nth-child(3){position:relative;}
+.stats .stat:nth-child(3)>img{opacity:0;}
+.stats .stat:nth-child(3)::before{
+  content:"";
+  position:absolute;
+  left:10px;
+  top:50%;
+  width:42px;
+  height:42px;
+  transform:translateY(-50%);
+  border-radius:50%;
+  background:url("images/stat_done_japanese.svg") center/cover no-repeat;
+  box-shadow:0 2px 9px rgba(52,38,20,.075);
+  pointer-events:none;
+}
+
 /* На большом экране изображение становится почти журнальной иллюстрацией. */
 @media(min-width:600px){
   .app{max-width:760px;}
@@ -49,6 +66,7 @@
   .task{grid-template-columns:minmax(0,1fr) 235px;column-gap:18px;}
   .taskImage{width:235px;height:166px;border-radius:18px;}
   .stat img{width:46px;height:46px;}
+  .stats .stat:nth-child(3)::before{width:46px;height:46px;}
 }
 
 /* На узком iPhone сохраняем воздух и удобные кнопки. */
@@ -59,4 +77,5 @@
   .stat{gap:6px;padding:9px 8px;}
   .stat img{width:38px;height:38px;}
   .statNum{font-size:23px;}
+  .stats .stat:nth-child(3)::before{left:8px;width:38px;height:38px;}
 }
