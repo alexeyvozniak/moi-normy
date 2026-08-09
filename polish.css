@@ -27,6 +27,12 @@
 .controlRow{grid-column:1 / -1;grid-row:4;gap:8px;margin-top:14px;}
 .subRow{grid-column:1 / -1;grid-row:5;gap:8px;margin-top:9px;}
 
+/* Слово дня: никаких браузерных синих оттенков. */
+.quoteCard{color:var(--ink);}
+.quoteLabel{color:var(--red)!important;}
+.quoteText{color:var(--ink);}
+.quoteAuthor,.quoteTap{color:var(--muted);}
+
 /* Сводные круглые образы чуть заметнее, но не перетягивают внимание. */
 .stat{gap:9px;padding:10px;}
 .stat img{
