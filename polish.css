@@ -1,0 +1,56 @@
+/* Финальный визуальный полиш «Правило»: крупнее образы, плотнее композиция карточек. */
+
+/* Карточка становится двухколоночной сеткой: образ справа, смысловая часть слева. */
+.task{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 150px;
+  column-gap:14px;
+  padding:16px;
+  border-radius:23px;
+}
+.taskTop{display:contents;}
+.taskTop>div:first-child{grid-column:1;grid-row:1;min-width:0;}
+.taskImage{
+  grid-column:2;
+  grid-row:1 / span 3;
+  width:150px;
+  height:112px;
+  align-self:start;
+  border-radius:17px;
+  object-fit:cover;
+  object-position:center;
+  box-shadow:0 5px 16px rgba(54,38,20,.075);
+}
+.taskName{font-size:30px;}
+.debtLine{grid-column:1;grid-row:2;margin-top:16px;}
+.debtNote{grid-column:1;grid-row:3;}
+.controlRow{grid-column:1 / -1;grid-row:4;gap:8px;margin-top:14px;}
+.subRow{grid-column:1 / -1;grid-row:5;gap:8px;margin-top:9px;}
+
+/* Сводные круглые образы чуть заметнее, но не перетягивают внимание. */
+.stat{gap:9px;padding:10px;}
+.stat img{
+  width:42px;
+  height:42px;
+  box-shadow:0 2px 9px rgba(52,38,20,.075);
+}
+.statNum{font-size:25px;}
+
+/* На большом экране изображение становится почти журнальной иллюстрацией. */
+@media(min-width:600px){
+  .app{max-width:760px;}
+  .hero{min-height:218px;}
+  .task{grid-template-columns:minmax(0,1fr) 235px;column-gap:18px;}
+  .taskImage{width:235px;height:166px;border-radius:18px;}
+  .stat img{width:46px;height:46px;}
+}
+
+/* На узком iPhone сохраняем воздух и удобные кнопки. */
+@media(max-width:390px){
+  .task{grid-template-columns:minmax(0,1fr) 136px;column-gap:11px;padding:15px;}
+  .taskImage{width:136px;height:102px;border-radius:16px;}
+  .taskName{font-size:28px;}
+  .stat{gap:6px;padding:9px 8px;}
+  .stat img{width:38px;height:38px;}
+  .statNum{font-size:23px;}
+}
