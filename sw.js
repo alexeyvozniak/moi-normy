@@ -1,5 +1,5 @@
-const CACHE='pravilo-polish-v2';
-const ASSETS=['./','./index.html','./polish.css','./manifest.webmanifest','./icon-180.png','./icon-192.png','./icon-512.png','./images/hero.webp','./images/prayer_person_beads.webp','./images/reading_person_book.webp','./images/contemplation_looking_up.webp','./images/samurai_training.webp','./images/selfcare_onsen.webp','./images/calligraphy_ink.webp','./images/walking_path.webp','./images/books_notes.webp','./images/open_book.webp','./images/enso.webp','./images/stat_active.webp','./images/stat_debt.webp','./images/stat_done.webp'];
+const CACHE='pravilo-polish-v3';
+const ASSETS=['./','./index.html','./polish.css','./manifest.webmanifest','./icon-180.png','./icon-192.png','./icon-512.png','./images/hero.webp','./images/prayer_person_beads.webp','./images/reading_person_book.webp','./images/contemplation_looking_up.webp','./images/samurai_training.webp','./images/selfcare_onsen.webp','./images/calligraphy_ink.webp','./images/walking_path.webp','./images/books_notes.webp','./images/open_book.webp','./images/enso.webp','./images/stat_active.webp','./images/stat_debt.webp','./images/stat_done.webp','./images/stat_done_japanese.svg'];
 
 self.addEventListener('install',e=>{
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)));
@@ -12,7 +12,7 @@ self.addEventListener('activate',e=>{
 
 function polishedHtml(text){
   if(text.includes('polish.css')) return text;
-  return text.replace('</head>','<link rel="stylesheet" href="polish.css?v=2">\n</head>');
+  return text.replace('</head>','<link rel="stylesheet" href="polish.css?v=3">\n</head>');
 }
 
 self.addEventListener('fetch',e=>{
