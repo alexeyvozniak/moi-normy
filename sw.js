@@ -1,29 +1,12 @@
-ПРАВИЛО — FINAL
-
-МОИ НОРМЫ — FINAL
-
-Что исправлено и отполировано:
-— корректное накопление за любое число пропущенных дней/недель/месяцев;
-— расчёт использует локальную дату iPhone, а не UTC;
-— «Списать» теперь вводит произвольное количество, быстрый шаг остаётся отдельной кнопкой;
-— верхняя статистика больше не складывает молитвы, страницы и медитации в бессмысленную сумму;
-— показываются: активные нормы, нормы с долгом, полностью закрытые сегодня;
-— пауза для отдельной нормы;
-— текущий долг редактируется;
-— история и недельная сводка считаются отдельно по каждой норме;
-— тематические цитаты и «Слово к этому делу»;
-— каталог выбранных японских иллюстраций;
-— экспорт/импорт резервной копии;
-— миграция из прошлых версий;
-— оптимизированные WebP-изображения;
-— service worker обновляет HTML по сети, поэтому новые версии меньше застревают в кэше;
-— интерфейс адаптирован под безопасные зоны iPhone и работу как standalone PWA.
-
-— сохранён режим «каждые N дней» для пользовательских норм;
-— «закрыто сегодня» учитывает любое действие, которое довело долг до нуля.
-
-Итоговый бренд: «Правило».
-Добавлена лаконичная иконка приложения по мотивам человека, смотрящего на храм.
-
-Каталог изображений перепроверен вручную: названия теперь соответствуют содержимому файлов.
-Для GitHub Pages рекомендуется публикация из main / (root). В корне есть .nojekyll.
+const VERSION="pravilo-v3";
+const ASSETS=["./", "./index.html", "./manifest.webmanifest", "./icon-180.png", "./icon-192.png", "./icon-512.png", "./images/book.webp", "./images/calligraphy.webp", "./images/contemplation.webp", "./images/desk.webp", "./images/enso.webp", "./images/hero.webp", "./images/onsen.webp", "./images/prayer.webp", "./images/reading.webp", "./images/sport.webp", "./images/stat_active.webp", "./images/stat_debt.webp", "./images/stat_done.webp", "./images/wanderer.webp"];
+self.addEventListener("install",e=>{e.waitUntil(caches.open(VERSION).then(c=>c.addAll(ASSETS)));self.skipWaiting();});
+self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==VERSION).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
+self.addEventListener("fetch",e=>{
+  const req=e.request;
+  if(req.mode==="navigate"){
+    e.respondWith(fetch(req).then(r=>{const c=r.clone();caches.open(VERSION).then(k=>k.put("./index.html",c));return r;}).catch(()=>caches.match("./index.html")));
+    return;
+  }
+  e.respondWith(caches.match(req).then(cached=>cached||fetch(req).then(r=>{const c=r.clone();caches.open(VERSION).then(k=>k.put(req,c));return r;})));
+});
