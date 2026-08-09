@@ -1,0 +1,15 @@
+.readingPlanBox{margin:12px 0;padding:13px;border:1px solid var(--hair);border-radius:17px;background:linear-gradient(145deg,#fbf7f0,#f3ece2)}
+.readingPlanHead{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.readingPlanTitle{font:500 20px/1 var(--serif);letter-spacing:-.02em}
+.readingPlanSub{margin-top:4px;color:var(--muted);font-size:9px}
+.readingPlanToggle{position:relative;width:48px;height:29px;flex:none}
+.readingPlanToggle input{position:absolute;opacity:0;pointer-events:none}
+.readingPlanToggle span{position:absolute;inset:0;border-radius:999px;background:#cbc2b7;transition:.16s}
+.readingPlanToggle span:after{content:"";position:absolute;width:23px;height:23px;left:3px;top:3px;border-radius:50%;background:white;box-shadow:0 2px 6px rgba(0,0,0,.12);transition:.16s}
+.readingPlanToggle input:checked+span{background:var(--green)}
+.readingPlanToggle input:checked+span:after{transform:translateX(19px)}
+.readingPlanFields{margin-top:11px;padding-top:2px;border-top:1px solid rgba(216,205,191,.72)}
+.readingPlanCalc{margin-top:5px;padding:10px 11px;border-radius:12px;background:rgba(104,116,95,.09);color:#56604f;font-size:11px;line-height:1.35}
+.readingPlanMark{display:inline-block;margin-bottom:7px;padding:4px 8px;border-radius:999px;background:rgba(189,88,66,.10);color:var(--red);font-size:8px;line-height:1;text-transform:uppercase;letter-spacing:.12em;font-weight:750}
+.task .readingPlanMark+.taskName{margin-top:1px}
+@media(max-width:390px){.readingPlanBox{padding:12px}.readingPlanTitle{font-size:19px}}
