@@ -1,0 +1,11 @@
+/* Более тихий интерфейс: одно духовное слово наверху, вторичные действия визуально отступают. */
+.wordButton{display:none!important}
+.quoteTap{display:none!important}
+.quoteCard{cursor:pointer}
+.quoteText{font-size:19px;line-height:1.32;max-width:34ch}
+.quoteAuthor{margin-top:8px;font-size:9.5px;line-height:1.35}
+.subRow{min-height:30px}
+.editButton{margin-left:auto;border:0!important;background:transparent!important;color:#8a8177!important;padding:6px 4px!important;min-height:30px!important}
+.editButton:before{content:'⋯ ';letter-spacing:.08em}
+.task:not(:has(.practiceButton)) .subRow{justify-content:flex-end}
+@media(max-width:390px){.quoteText{font-size:18px;line-height:1.3}}
