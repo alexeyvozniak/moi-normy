@@ -1,1 +1,30 @@
-.settingsHub{display:grid;gap:8px;padding:2px 0 4px}.settingsHubRow{width:100%;display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:11px;padding:12px;border:1px solid var(--hair);border-radius:17px;background:var(--paper2);color:var(--ink);text-align:left;min-height:68px}.settingsHubRow:active{transform:scale(.99)}.settingsHubIcon{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:rgba(104,116,95,.09);font:500 18px/1 var(--serif);color:var(--green)}.settingsHubTitle{font:500 19px/1.05 var(--serif);letter-spacing:-.015em}.settingsHubSub{margin-top:4px;font-size:9.5px;line-height:1.35;color:var(--muted)}.settingsHubArrow{font-size:18px;color:#aaa094}.settingsSectionLead{margin:-2px 1px 13px;color:var(--muted);font-size:10.5px;line-height:1.45}.settingsBack{border:0;background:var(--soft);min-width:64px;height:34px;border-radius:999px;padding:0 11px;font-size:10px;color:var(--muted)}#remindersPanel.settingsHubSource{display:none!important}.settingsDataBody,.settingsAppBody{display:grid;gap:10px}.settingsDataBody>.panel,.settingsDataBody>.notesExportPanel,.settingsDataBody>.notesExportPanel,.settingsDataBody>#offlineStoragePanel{margin:0}.settingsDataBody>.sheetActions{margin-top:0}.settingsDanger{border:1px solid var(--hair);border-radius:15px;background:rgba(189,88,66,.025);overflow:hidden}.settingsDanger summary{list-style:none;padding:12px 13px;font-size:10px;color:#8c766f;cursor:pointer}.settingsDanger summary::-webkit-details-marker{display:none}.settingsDanger summary:after{content:'⌄';float:right;color:#aa9c92}.settingsDanger[open] summary:after{content:'⌃'}.settingsDanger .sheetActions{padding:0 10px 10px;margin:0}.settingsAppBody #featureSettingsRow{display:grid!important;grid-template-columns:1fr;gap:7px;margin:0}.settingsAppBody #showWelcomeBtn,.settingsAppBody #openWelcomePageBtn{display:none!important}.settingsAppBody .installSettingsButton{width:100%}.settingsSectionSheet{max-height:88dvh}@media(max-width:390px){.settingsHubRow{padding:11px;min-height:64px}.settingsHubIcon{width:38px;height:38px}.settingsHubTitle{font-size:18px}}
+.settingsHub{display:grid;gap:9px;padding:2px 0 4px}
+.settingsHubRow{width:100%;display:grid;grid-template-columns:42px minmax(0,1fr) 16px;align-items:center;gap:12px;padding:13px 14px;border:1px solid var(--hair);border-radius:18px;background:var(--paper2);color:var(--ink);text-align:left;min-height:72px}
+.settingsHubRow:active{transform:scale(.99)}
+.settingsHubRow>span:nth-child(2){display:block;min-width:0}
+.settingsHubIcon{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:rgba(104,116,95,.08);font:500 17px/1 var(--serif);color:var(--green)}
+.settingsHubTitle{display:block;font:500 18px/1.08 var(--serif);letter-spacing:-.01em;white-space:normal}
+.settingsHubSub{display:block;margin-top:5px;font-size:10px;line-height:1.25;color:var(--muted);white-space:normal;overflow-wrap:anywhere}
+.settingsHubArrow{display:block;font-size:20px;line-height:1;color:#aaa094;text-align:right}
+.settingsSectionLead{margin:-2px 1px 13px;color:var(--muted);font-size:10.5px;line-height:1.45}
+.settingsBack{border:0;background:var(--soft);min-width:64px;height:34px;border-radius:999px;padding:0 11px;font-size:10px;color:var(--muted)}
+#remindersPanel.settingsHubSource{display:none!important}
+.settingsDataBody,.settingsAppBody{display:grid;gap:10px}
+.settingsDataBody>.panel,.settingsDataBody>.notesExportPanel,.settingsDataBody>#offlineStoragePanel{margin:0}
+.settingsDataBody>.sheetActions{margin-top:0}
+.settingsDanger{border:1px solid var(--hair);border-radius:15px;background:rgba(189,88,66,.025);overflow:hidden}
+.settingsDanger summary{list-style:none;padding:12px 13px;font-size:10px;color:#8c766f;cursor:pointer}
+.settingsDanger summary::-webkit-details-marker{display:none}
+.settingsDanger summary:after{content:'⌄';float:right;color:#aa9c92}
+.settingsDanger[open] summary:after{content:'⌃'}
+.settingsDanger .sheetActions{padding:0 10px 10px;margin:0}
+.settingsAppBody #featureSettingsRow{display:grid!important;grid-template-columns:1fr;gap:7px;margin:0}
+.settingsAppBody #showWelcomeBtn,.settingsAppBody #openWelcomePageBtn{display:none!important}
+.settingsAppBody .installSettingsButton{width:100%}
+.settingsSectionSheet{max-height:88dvh}
+@media(max-width:390px){
+  .settingsHubRow{grid-template-columns:40px minmax(0,1fr) 14px;padding:12px;min-height:68px;gap:10px}
+  .settingsHubIcon{width:38px;height:38px}
+  .settingsHubTitle{font-size:17px}
+  .settingsHubSub{font-size:9.5px;margin-top:4px}
+}
