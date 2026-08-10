@@ -1,0 +1,68 @@
+/* Режим практики и «Путь» — тихий полноэкранный слой без геймификации. */
+.practiceButton{min-height:35px;border-radius:11px;border:1px solid rgba(104,116,95,.24);background:rgba(104,116,95,.07);color:var(--green);padding:7px 10px;font-size:10px;font-weight:700}
+.subRow{flex-wrap:wrap}
+
+.practiceScreen{position:fixed;inset:0;z-index:1005;display:none;overflow:hidden;background:#e9dfd1;color:#211c17;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.practiceScreen.show{display:block}
+.practiceBackdrop{position:absolute;inset:0;background-position:center;background-size:cover;filter:saturate(.72) contrast(.96);transform:scale(1.02)}
+.practiceVeil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(242,234,221,.32),rgba(242,234,221,.72) 52%,rgba(242,234,221,.96))}
+.practiceTop{position:absolute;z-index:3;left:0;right:0;top:0;padding:calc(env(safe-area-inset-top) + 13px) 15px 0;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.practiceTopLabel{font-size:9px;text-transform:uppercase;letter-spacing:.16em;color:#6d655c;font-weight:800}
+.practiceExit{border:1px solid rgba(92,77,61,.20);background:rgba(250,246,239,.74);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#544c44;border-radius:999px;padding:9px 12px;font-size:10px;font-weight:700}
+.practiceCenter{position:absolute;z-index:2;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:96px 24px calc(env(safe-area-inset-bottom) + 96px);text-align:center}
+.practiceKicker{font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:#b95743;font-weight:800}
+.practiceName{margin-top:8px;font:500 27px/1.05 var(--serif);letter-spacing:-.035em}
+.practiceCount{margin-top:26px;font:500 clamp(88px,28vw,142px)/.78 var(--serif);letter-spacing:-.07em}
+.practiceCountLabel{margin-top:12px;color:#6f665d;font-size:11px}
+.practiceDone{margin-top:7px;font-size:10px;color:#68745f;font-weight:700}
+.practiceHint{max-width:300px;margin-top:28px;color:#746b61;font-size:10px;line-height:1.5}
+.practicePulse{position:absolute;z-index:1;width:60px;height:60px;border:1px solid rgba(185,87,67,.32);border-radius:50%;opacity:0;pointer-events:none;transform:scale(.7)}
+.practicePulse.go{animation:practicePulse .42s ease-out}
+@keyframes practicePulse{0%{opacity:.55;transform:scale(.6)}100%{opacity:0;transform:scale(2.3)}}
+.practiceFinished .practiceCount{font-size:46px;line-height:1;color:#68745f;letter-spacing:-.04em}
+.practiceFinished .practiceCountLabel{font:500 21px/1.2 var(--serif);color:#3f483a}
+
+.meditationScreen{background:#e8dfd2}
+.meditationSetup,.meditationRun,.meditationDone{position:absolute;z-index:2;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(env(safe-area-inset-top) + 76px) 24px calc(env(safe-area-inset-bottom) + 74px);text-align:center}
+.meditationRun,.meditationDone{display:none}
+.meditationScreen.running .meditationSetup{display:none}.meditationScreen.running .meditationRun{display:flex}
+.meditationScreen.completed .meditationSetup,.meditationScreen.completed .meditationRun{display:none}.meditationScreen.completed .meditationDone{display:flex}
+.meditationCard{width:min(430px,100%);padding:21px 19px;border:1px solid rgba(108,91,70,.18);border-radius:24px;background:rgba(250,246,239,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 14px 42px rgba(67,48,29,.08)}
+.meditationTitle{font:500 31px/1 var(--serif);letter-spacing:-.04em}
+.meditationLead{max-width:330px;margin:11px auto 0;color:#71685e;font-size:11px;line-height:1.5}
+.meditationFlow{display:flex;align-items:center;justify-content:center;gap:8px;margin:16px 0 5px;color:#68745f;font-size:10px;font-weight:750}
+.meditationFlow span{padding:7px 9px;border-radius:999px;background:rgba(104,116,95,.08)}
+.meditationTopic{margin-top:17px;text-align:left}
+.meditationTopic label{display:block;color:#71685e;font-size:9px;margin:0 0 6px}
+.meditationTopic input{width:100%;border:1px solid #d8cdbf;background:#fffaf4;color:#211c17;border-radius:13px;padding:12px 13px;font-size:14px}
+.meditationStart{width:100%;min-height:49px;margin-top:12px;border:0;border-radius:14px;background:#68745f;color:#fff;font-weight:750;font-size:13px}
+.meditationPhase{font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:#b95743;font-weight:800}
+.meditationTimer{margin-top:19px;font:500 clamp(82px,26vw,132px)/.8 var(--serif);letter-spacing:-.065em;font-variant-numeric:tabular-nums}
+.meditationPhaseTitle{margin-top:17px;font:500 29px/1 var(--serif);letter-spacing:-.035em}
+.meditationPhaseTopic{max-width:330px;margin-top:11px;color:#625a51;font-size:12px;line-height:1.45}
+.meditationControls{display:flex;gap:8px;margin-top:27px}
+.meditationControl{min-height:42px;border-radius:13px;border:1px solid rgba(92,77,61,.20);background:rgba(250,246,239,.78);color:#4d463f;padding:9px 14px;font-size:10px;font-weight:700}
+.meditationControl.primary{background:#68745f;color:#fff;border-color:#68745f}
+.meditationDoneMark{width:76px;height:76px;border-radius:50%;border:2px solid rgba(185,87,67,.52);display:grid;place-items:center;color:#b95743;font:500 31px var(--serif)}
+.meditationDoneTitle{margin-top:18px;font:500 31px/1 var(--serif);letter-spacing:-.04em}
+.meditationDoneText{max-width:320px;margin-top:10px;color:#6d655c;font-size:11px;line-height:1.5}
+
+.pathHero{position:relative;overflow:hidden;min-height:178px;margin-bottom:12px;border:1px solid var(--hair);border-radius:22px;background:url('images/walking_path.webp') center/cover no-repeat;box-shadow:var(--shadow)}
+.pathHero:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(247,241,232,.93),rgba(247,241,232,.52) 60%,rgba(247,241,232,.12))}
+.pathHeroCopy{position:absolute;z-index:1;left:16px;top:16px;max-width:270px}
+.pathKicker{font-size:8px;text-transform:uppercase;letter-spacing:.16em;color:var(--red);font-weight:800}
+.pathTitle{margin-top:5px;font:500 34px/.95 var(--serif);letter-spacing:-.04em}
+.pathLead{margin-top:8px;color:#625a51;font-size:10px;line-height:1.45}
+.pathTimeline{position:relative;padding:3px 0 4px 22px}
+.pathTimeline:before{content:'';position:absolute;left:7px;top:8px;bottom:8px;width:1px;background:#d5c9bb}
+.pathEntry{position:relative;margin:0 0 10px;padding:12px 13px;border:1px solid var(--hair);border-radius:16px;background:var(--paper);box-shadow:0 5px 18px rgba(69,48,26,.045)}
+.pathEntry:before{content:'';position:absolute;left:-20px;top:17px;width:8px;height:8px;border-radius:50%;background:#f5eee5;border:2px solid var(--green)}
+.pathEntry.note:before{border-color:var(--red)}
+.pathDate{font-size:8px;color:var(--muted);letter-spacing:.04em}
+.pathEntryTitle{margin-top:5px;font:500 17px/1.1 var(--serif);letter-spacing:-.015em}
+.pathEntryText{margin-top:6px;color:#625b53;font-size:10px;line-height:1.46;white-space:pre-wrap}
+.pathTag{display:inline-block;margin-top:8px;padding:4px 7px;border-radius:999px;background:rgba(104,116,95,.08);color:var(--green);font-size:7px;text-transform:uppercase;letter-spacing:.12em;font-weight:800}
+.pathEmpty{padding:28px 18px;text-align:center;color:var(--muted);font-size:11px;line-height:1.5}
+
+@media(min-width:600px){.pathHero{min-height:210px}.practiceName{font-size:32px}.meditationCard{padding:25px 23px}}
+@media(max-width:390px){.practiceCenter{padding-left:18px;padding-right:18px}.meditationSetup,.meditationRun,.meditationDone{padding-left:18px;padding-right:18px}.pathHero{min-height:160px}}
