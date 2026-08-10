@@ -1,5 +1,5 @@
-const CACHE='pravilo-polish-v16';
-const ASSETS=['./','./index.html','./polish.css','./onboarding.css','./onboarding.js','./features.css','./features.js','./enhancements.css','./enhancements.js','./practice.css','./practice.js','./prayer-haptics.css','./prayer-haptics.js','./meditation-audio.js','./offline-storage.js','./quiet-ui.css','./quiet-ui.js','./install-helper.css','./install-helper.js','./welcome-preview.html','./manifest.webmanifest','./icon-180.png','./icon-192.png','./icon-512.png','./images/hero.webp','./images/prayer_person_beads.webp','./images/reading_person_book.webp','./images/contemplation_looking_up.webp','./images/samurai_training.webp','./images/selfcare_onsen.webp','./images/calligraphy_ink.webp','./images/walking_path.webp','./images/books_notes.webp','./images/open_book.webp','./images/enso.webp','./images/stat_active.webp','./images/stat_debt.webp','./images/stat_done.webp','./images/onboarding_hero.webp','./images/onboarding_prayer.webp','./images/onboarding_reading.webp','./images/onboarding_meditation.webp','./images/prayer_icons.webp','./images/prayer_prostration.webp','./images/prayer_bow.webp'];
+const CACHE='pravilo-polish-v17';
+const ASSETS=['./','./index.html','./polish.css','./onboarding.css','./onboarding.js','./features.css','./features.js','./enhancements.css','./enhancements.js','./practice.css','./practice.js','./prayer-haptics.css','./prayer-haptics.js','./meditation-audio.js','./offline-storage.js','./reminders.css','./reminders.js','./quiet-ui.css','./quiet-ui.js','./install-helper.css','./install-helper.js','./welcome-preview.html','./manifest.webmanifest','./icon-180.png','./icon-192.png','./icon-512.png','./images/hero.webp','./images/prayer_person_beads.webp','./images/reading_person_book.webp','./images/contemplation_looking_up.webp','./images/samurai_training.webp','./images/selfcare_onsen.webp','./images/calligraphy_ink.webp','./images/walking_path.webp','./images/books_notes.webp','./images/open_book.webp','./images/enso.webp','./images/stat_active.webp','./images/stat_debt.webp','./images/stat_done.webp','./images/onboarding_hero.webp','./images/onboarding_prayer.webp','./images/onboarding_reading.webp','./images/onboarding_meditation.webp','./images/prayer_icons.webp','./images/prayer_prostration.webp','./images/prayer_bow.webp'];
 
 self.addEventListener('install',e=>{
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)));
@@ -14,14 +14,24 @@ self.addEventListener('message',e=>{
   if(e.data&&e.data.type==='SKIP_WAITING')self.skipWaiting();
 });
 
+self.addEventListener('notificationclick',e=>{
+  e.notification.close();
+  e.waitUntil(clients.matchAll({type:'window',includeUncontrolled:true}).then(list=>{
+    const open=list.find(c=>'focus'in c);
+    if(open)return open.focus();
+    if(clients.openWindow)return clients.openWindow('./');
+  }));
+});
+
 function enhancedHtml(text){
   let out=text;
-  if(!out.includes('polish.css')) out=out.replace('</head>','<link rel="stylesheet" href="polish.css?v=16">\n</head>');
+  if(!out.includes('polish.css')) out=out.replace('</head>','<link rel="stylesheet" href="polish.css?v=17">\n</head>');
   if(!out.includes('onboarding.css')) out=out.replace('</head>','<link rel="stylesheet" href="onboarding.css?v=4">\n</head>');
   if(!out.includes('features.css')) out=out.replace('</head>','<link rel="stylesheet" href="features.css?v=1">\n</head>');
   if(!out.includes('enhancements.css')) out=out.replace('</head>','<link rel="stylesheet" href="enhancements.css?v=1">\n</head>');
   if(!out.includes('practice.css')) out=out.replace('</head>','<link rel="stylesheet" href="practice.css?v=1">\n</head>');
   if(!out.includes('prayer-haptics.css')) out=out.replace('</head>','<link rel="stylesheet" href="prayer-haptics.css?v=1">\n</head>');
+  if(!out.includes('reminders.css')) out=out.replace('</head>','<link rel="stylesheet" href="reminders.css?v=1">\n</head>');
   if(!out.includes('quiet-ui.css')) out=out.replace('</head>','<link rel="stylesheet" href="quiet-ui.css?v=2">\n</head>');
   if(!out.includes('install-helper.css')) out=out.replace('</head>','<link rel="stylesheet" href="install-helper.css?v=1">\n</head>');
   if(!out.includes('onboarding.js')) out=out.replace('</body>','<script src="onboarding.js?v=4" defer></script>\n</body>');
@@ -31,6 +41,7 @@ function enhancedHtml(text){
   if(!out.includes('prayer-haptics.js')) out=out.replace('</body>','<script src="prayer-haptics.js?v=3" defer></script>\n</body>');
   if(!out.includes('meditation-audio.js')) out=out.replace('</body>','<script src="meditation-audio.js?v=2" defer></script>\n</body>');
   if(!out.includes('offline-storage.js')) out=out.replace('</body>','<script src="offline-storage.js?v=1" defer></script>\n</body>');
+  if(!out.includes('reminders.js')) out=out.replace('</body>','<script src="reminders.js?v=1" defer></script>\n</body>');
   if(!out.includes('quiet-ui.js')) out=out.replace('</body>','<script src="quiet-ui.js?v=1" defer></script>\n</body>');
   if(!out.includes('install-helper.js')) out=out.replace('</body>','<script src="install-helper.js?v=1" defer></script>\n</body>');
   return out;
