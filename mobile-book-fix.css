@@ -1,0 +1,30 @@
+/* Адаптация карточек для узких телефонов и более чистый режим книги. */
+.bookPlanDaily{display:inline-flex;align-items:center;gap:5px;margin-top:8px;padding:5px 8px;border-radius:999px;background:rgba(104,116,95,.10);color:var(--green);font-size:9px;font-weight:750;letter-spacing:.01em}
+.task.bookPlanCard .debtNote{color:#615a52}
+.task.bookPlanCard .bookProgress{grid-column:1/-1;grid-row:auto;margin-top:10px}
+
+@media(max-width:430px){
+  .app{padding-left:10px;padding-right:10px}
+  .task{grid-template-columns:minmax(0,1fr) 112px;column-gap:10px;padding:14px;border-radius:21px}
+  .taskTop>div:first-child{grid-column:1;grid-row:1;min-width:0}
+  .taskImage{grid-column:2;grid-row:1;width:112px;height:88px;border-radius:15px}
+  .taskName{font-size:27px;line-height:.98}
+  .taskRule{font-size:11px;line-height:1.25}
+  .debtLine{grid-column:1/-1;grid-row:2;margin-top:15px;align-items:flex-end;min-width:0}
+  .debtNumber{font-size:48px;line-height:.82;min-width:0;white-space:nowrap}
+  .debtUnit{font-size:11px;line-height:1.12;max-width:112px;padding-bottom:1px}
+  .debtNote{grid-column:1/-1;grid-row:3;margin-top:8px;font-size:10px;line-height:1.35}
+  .controlRow{grid-column:1/-1;grid-row:4;grid-template-columns:1.08fr .86fr .82fr;gap:6px;margin-top:13px}
+  .controlRow .button{min-height:45px;padding:8px 6px;font-size:14px}
+  .subRow{grid-column:1/-1;grid-row:5;margin-top:7px}
+  .bookProgress{grid-column:1/-1!important}
+}
+
+@media(max-width:360px){
+  .task{grid-template-columns:minmax(0,1fr) 98px;padding:13px}
+  .taskImage{width:98px;height:78px}
+  .taskName{font-size:25px}
+  .debtNumber{font-size:44px}
+  .controlRow{grid-template-columns:1fr .82fr .78fr}
+  .controlRow .button{font-size:13px}
+}
