@@ -1,0 +1,7 @@
+/* Тактильные рубежи молитвенного счётчика: 10 — поясной поклон, 100 — земной. */
+#prayerPractice .practiceVeil::after{content:'';position:absolute;inset:0;pointer-events:none;background:rgba(167,70,51,0);opacity:0}
+#prayerPractice.centuryBowCue .practiceVeil::after{animation:centuryBowWash 1.35s ease-out}
+#prayerPractice.centuryBowCue .practiceCount{animation:centuryCountCue 1.05s ease-out}
+#prayerPractice.centuryBowCue .practiceTopLabel::after{content:' · земной поклон';color:#a34f3d}
+@keyframes centuryBowWash{0%{opacity:0;background:rgba(167,70,51,0)}18%{opacity:1;background:rgba(167,70,51,.34)}52%{opacity:.52;background:rgba(167,70,51,.18)}100%{opacity:0;background:rgba(167,70,51,0)}}
+@keyframes centuryCountCue{0%,100%{color:inherit;transform:scale(1)}20%{color:#9e4838;transform:scale(1.035)}55%{color:#9e4838;transform:scale(1.015)}}
