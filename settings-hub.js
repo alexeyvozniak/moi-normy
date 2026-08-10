@@ -74,14 +74,13 @@
 
     const hub=document.createElement('div');hub.id='settingsHub';hub.className='settingsHub';
     hub.innerHTML=`
-      <button class="settingsHubRow" id="settingsHubReminders"><span class="settingsHubIcon">◷</span><span><span class="settingsHubTitle">Напоминания</span><span class="settingsHubSub" id="settingsHubReminderSub"></span></span><span class="settingsHubArrow">›</span></button>
-      <button class="settingsHubRow" id="settingsHubData"><span class="settingsHubIcon">文</span><span><span class="settingsHubTitle">Данные</span><span class="settingsHubSub" id="settingsHubDataSub"></span></span><span class="settingsHubArrow">›</span></button>
-      <button class="settingsHubRow" id="settingsHubApp"><span class="settingsHubIcon">◌</span><span><span class="settingsHubTitle">Приложение</span><span class="settingsHubSub" id="settingsHubAppSub"></span></span><span class="settingsHubArrow">›</span></button>`;
+      <button class="settingsHubRow" id="settingsHubReminders"><span class="settingsHubIcon"><img src="images/settings-reminders.webp" alt=""></span><span><span class="settingsHubTitle">Напоминания</span><span class="settingsHubSub" id="settingsHubReminderSub"></span></span><span class="settingsHubArrow">›</span></button>
+      <button class="settingsHubRow" id="settingsHubData"><span class="settingsHubIcon"><img src="images/settings-data.webp" alt=""></span><span><span class="settingsHubTitle">Данные</span><span class="settingsHubSub" id="settingsHubDataSub"></span></span><span class="settingsHubArrow">›</span></button>
+      <button class="settingsHubRow" id="settingsHubApp"><span class="settingsHubIcon"><img src="images/settings-app.webp" alt=""></span><span><span class="settingsHubTitle">Приложение</span><span class="settingsHubSub" id="settingsHubAppSub"></span></span><span class="settingsHubArrow">›</span></button>`;
 
     const header=sheet.querySelector('.sheetHeader');
     header?.insertAdjacentElement('afterend',hub);
 
-    // Everything still left below the hub is implementation scaffolding; keep it hidden rather than deleting it.
     [...sheet.children].forEach(n=>{
       if(n===hub||n.classList.contains('grabber')||n.classList.contains('sheetHeader'))return;
       n.classList.add('settingsHubSource');
@@ -105,7 +104,6 @@
   }
 
   function init(){
-    // Other feature scripts add their settings controls at startup; one delayed reconciliation keeps their handlers intact.
     reconcile();setTimeout(reconcile,180);setTimeout(reconcile,900);
     document.addEventListener('click',e=>{
       if(e.target.closest?.('#settingsBtn'))setTimeout(()=>{reconcile();statusText()},0);
