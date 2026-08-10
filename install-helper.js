@@ -1,0 +1,103 @@
+(()=>{
+  'use strict';
+  const DISMISS_KEY='pravilo_install_hint_dismissed_v1';
+  let deferredPrompt=null;
+  const $=id=>document.getElementById(id);
+  const standalone=()=>window.matchMedia?.('(display-mode: standalone)').matches||window.navigator.standalone===true;
+  const ua=navigator.userAgent||'';
+  const ios=()=>/iPhone|iPad|iPod/i.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  const android=()=>/Android/i.test(ua);
+
+  function ensureOverlay(){
+    if($('installHelpOverlay'))return;
+    const o=document.createElement('div');o.id='installHelpOverlay';o.className='installOverlay';
+    o.innerHTML=`<div class="installSheet"><div class="installGrabber"></div><div class="installHead"><img class="installAppIcon" src="icon-180.png" alt=""><div class="installHeadCopy"><div class="installKicker">Установка</div><div class="installTitle" id="installHelpTitle">Правило на телефоне</div><div class="installLead" id="installHelpLead"></div></div><button class="installClose" id="installHelpClose">✕</button></div><div class="installSteps" id="installHelpSteps"></div><div class="installNote" id="installHelpNote"></div><button class="installSheetButton" id="installPrimaryButton">Понятно</button></div>`;
+    document.body.appendChild(o);
+    $('installHelpClose').addEventListener('click',closeHelp);
+    o.addEventListener('click',e=>{if(e.target===o)closeHelp();});
+    $('installPrimaryButton').addEventListener('click',primaryAction);
+  }
+
+  function iosSteps(){return `
+    <div class="installStep"><div class="installStepIcon"><span class="installIOSShare"></span></div><div><div class="installStepTitle">1. Нажми «Поделиться»</div><div class="installStepText">В Safari это квадрат со стрелкой вверх в панели браузера.</div></div></div>
+    <div class="installStep"><div class="installStepIcon">⌂</div><div><div class="installStepTitle">2. «На экран “Домой”»</div><div class="installStepText">Прокрути меню действий и выбери добавление сайта на домашний экран.</div></div></div>
+    <div class="installStep"><div class="installStepIcon">＋</div><div><div class="installStepTitle">3. Нажми «Добавить»</div><div class="installStepText">После этого «Правило» появится среди приложений и будет открываться без обычной панели Safari.</div></div></div>`;}
+  function androidSteps(){return `
+    <div class="installStep"><div class="installStepIcon">⋮</div><div><div class="installStepTitle">1. Открой меню браузера</div><div class="installStepText">Если системное окно установки не появилось автоматически, открой меню Chrome.</div></div></div>
+    <div class="installStep"><div class="installStepIcon">↓</div><div><div class="installStepTitle">2. Выбери установку</div><div class="installStepText">Пункт может называться «Установить приложение» или «Добавить на главный экран».</div></div></div>
+    <div class="installStep"><div class="installStepIcon">✓</div><div><div class="installStepTitle">3. Подтверди</div><div class="installStepText">«Правило» появится как отдельное приложение и продолжит хранить данные локально на этом устройстве.</div></div></div>`;}
+
+  function openHelp(forcePlatform=null){
+    ensureOverlay();
+    const platform=forcePlatform||(ios()?'ios':android()?'android':'other');
+    if(platform==='ios'){
+      $('installHelpTitle').textContent='Добавить «Правило» на iPhone';
+      $('installHelpLead').textContent='Safari не даёт сайту нажать эту системную кнопку за тебя, но установка занимает три коротких шага.';
+      $('installHelpSteps').innerHTML=iosSteps();
+      $('installHelpNote').innerHTML='<strong>Важно:</strong> открывай ссылку именно в Safari. Если она открылась во встроенном браузере мессенджера, сначала выбери «Открыть в Safari».';
+      $('installPrimaryButton').textContent='Понятно';
+    }else if(platform==='android'){
+      $('installHelpTitle').textContent='Установить «Правило» на Android';
+      $('installHelpLead').textContent=deferredPrompt?'Chrome уже готов показать системное окно установки.':'В Chrome «Правило» можно установить как отдельное приложение.';
+      $('installHelpSteps').innerHTML=androidSteps();
+      $('installHelpNote').innerHTML='<strong>После установки</strong> приложение будет запускаться с домашнего экрана и сможет работать с уже загруженными данными даже без обычной вкладки браузера.';
+      $('installPrimaryButton').textContent=deferredPrompt?'Установить сейчас':'Понятно';
+    }else{
+      $('installHelpTitle').textContent='Установить «Правило»';
+      $('installHelpLead').textContent='Если браузер поддерживает установку веб-приложений, используй его меню «Установить приложение» или «Добавить на главный экран».';
+      $('installHelpSteps').innerHTML=androidSteps();
+      $('installHelpNote').textContent='После установки «Правило» будет открываться как отдельное приложение.';
+      $('installPrimaryButton').textContent='Понятно';
+    }
+    $('installHelpOverlay').classList.add('show');
+  }
+  function closeHelp(){$('installHelpOverlay')?.classList.remove('show');}
+  async function primaryAction(){
+    if(android()&&deferredPrompt){
+      try{deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;closeHelp();removeBanner();return;}catch(e){}
+    }
+    closeHelp();
+  }
+
+  function ensureBanner(){
+    if($('installBanner')||standalone())return;
+    const main=document.querySelector('main.app');const tabs=document.querySelector('.tabs');if(!main||!tabs)return;
+    const b=document.createElement('div');b.id='installBanner';b.className='installBanner';
+    b.innerHTML=`<img class="installBannerIcon" src="icon-180.png" alt=""><div class="installBannerCopy"><div class="installBannerKicker">Установить</div><div class="installBannerTitle">Сделать «Правило» приложением</div><div class="installBannerText">Будет открываться с домашнего экрана как отдельное приложение.</div></div><button class="installBannerInstall" id="installBannerInstall">Как?</button><button class="installBannerClose" id="installBannerClose" aria-label="Закрыть">×</button>`;
+    tabs.insertAdjacentElement('beforebegin',b);
+    $('installBannerInstall').addEventListener('click',()=>openHelp());
+    $('installBannerClose').addEventListener('click',()=>{localStorage.setItem(DISMISS_KEY,String(Date.now()));removeBanner();});
+    requestAnimationFrame(()=>b.classList.add('show'));
+  }
+  function removeBanner(){$('installBanner')?.remove();}
+  function maybeShowBanner(){
+    if(standalone())return;
+    const dismissed=Number(localStorage.getItem(DISMISS_KEY)||0);
+    if(dismissed&&Date.now()-dismissed<1000*60*60*24*30)return;
+    if($('praviloWelcome')?.classList.contains('show')){setTimeout(maybeShowBanner,1200);return;}
+    ensureBanner();
+  }
+
+  function injectSettingsButton(){
+    const row=$('featureSettingsRow');if(!row||$('installSettingsBtn'))return;
+    const b=document.createElement('button');b.className='button installSettingsButton';b.id='installSettingsBtn';b.textContent=standalone()?'Как установить на другом телефоне':'Установка на телефон';b.addEventListener('click',()=>openHelp());row.appendChild(b);
+  }
+  function augmentGuide(){
+    const cards=$('guideFeatureOverlay')?.querySelector('.guideCards');if(!cards||cards.querySelector('[data-install-guide]'))return;
+    const c=document.createElement('div');c.className='guideCard';c.dataset.installGuide='1';c.innerHTML='<div class="guideNum">九</div><div class="guideTitle">Установка на телефон</div><div class="guideText">На Android Chrome может показать системную установку. На iPhone открой сайт в Safari → «Поделиться» → «На экран “Домой”» → «Добавить». После установки данные каждого человека остаются на его устройстве.</div>';
+    cards.appendChild(c);
+  }
+
+  window.addEventListener('beforeinstallprompt',e=>{
+    e.preventDefault();deferredPrompt=e;
+    if($('installBannerInstall'))$('installBannerInstall').textContent='Установить';
+  });
+  window.addEventListener('appinstalled',()=>{deferredPrompt=null;removeBanner();localStorage.setItem(DISMISS_KEY,String(Date.now()));});
+
+  function init(){
+    ensureOverlay();injectSettingsButton();
+    document.addEventListener('click',e=>{if(e.target.closest?.('#openGuideBtn'))setTimeout(augmentGuide,60);},true);
+    setTimeout(maybeShowBanner,1800);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
