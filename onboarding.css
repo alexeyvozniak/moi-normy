@@ -1,37 +1,24 @@
-/* Финальный визуальный полиш «Правило»: крупнее образы, плотнее композиция карточек. */
-.task{display:grid;grid-template-columns:minmax(0,1fr) 150px;column-gap:14px;padding:16px;border-radius:23px}
-.taskTop{display:contents}
-.taskTop>div:first-child{grid-column:1;grid-row:1;min-width:0}
-.taskImage{grid-column:2;grid-row:1 / span 3;width:150px;height:112px;align-self:start;border-radius:17px;object-fit:cover;object-position:center;box-shadow:0 5px 16px rgba(54,38,20,.075)}
-.taskName{font-size:30px}
-.debtLine{grid-column:1;grid-row:2;margin-top:16px}
-.debtNote{grid-column:1;grid-row:3}
-.controlRow{grid-column:1 / -1;grid-row:4;gap:8px;margin-top:14px}
-.subRow{grid-column:1 / -1;grid-row:5;gap:8px;margin-top:9px}
-
-/* Слово дня: никаких браузерных синих оттенков. */
-.quoteCard{color:var(--ink);text-align:left}
-.quoteLabel{color:var(--red)!important}
-.quoteText{color:var(--ink)}
-.quoteAuthor,.quoteTap{color:var(--muted)}
-
-.stat{gap:9px;padding:10px}
-.stat img{width:42px;height:42px;box-shadow:0 2px 9px rgba(52,38,20,.075)}
-.statNum{font-size:25px}
-
-@media(min-width:600px){
-  .app{max-width:760px}
-  .hero{min-height:218px}
-  .task{grid-template-columns:minmax(0,1fr) 235px;column-gap:18px}
-  .taskImage{width:235px;height:166px;border-radius:18px}
-  .stat img{width:46px;height:46px}
-}
-
-@media(max-width:390px){
-  .task{grid-template-columns:minmax(0,1fr) 136px;column-gap:11px;padding:15px}
-  .taskImage{width:136px;height:102px;border-radius:16px}
-  .taskName{font-size:28px}
-  .stat{gap:6px;padding:9px 8px}
-  .stat img{width:38px;height:38px}
-  .statNum{font-size:23px}
-}
+#praviloWelcome{position:fixed;inset:0;z-index:1000;background:#eee6d9;display:none;overflow:auto;-webkit-overflow-scrolling:touch;color:#1b1814}
+#praviloWelcome.show{display:block}
+.praviloWelcomeShell{min-height:100dvh;display:grid;grid-template-rows:minmax(300px,47vh) auto;background:linear-gradient(180deg,#efe7da 0%,#f8f2e9 48%,#f8f3eb 100%)}
+.praviloWelcomeHero{position:relative;overflow:hidden;background:#d9d0c3 url('images/onboarding_hero.webp') center/cover no-repeat}
+.praviloWelcomeHero:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(28,22,17,.04) 0%,rgba(28,22,17,0) 48%,rgba(248,243,235,.98) 100%)}
+.praviloWelcomeSeal{position:absolute;top:calc(env(safe-area-inset-top) + 18px);left:20px;z-index:2;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:#b95743;box-shadow:0 6px 18px rgba(75,43,25,.14)}
+.praviloWelcomeSeal:before{content:'';width:22px;height:22px;border:2px solid rgba(255,255,255,.88);border-radius:50%}
+.praviloWelcomeBody{position:relative;z-index:2;width:min(680px,100%);margin:-44px auto 0;padding:0 18px calc(env(safe-area-inset-bottom) + 26px)}
+.praviloWelcomeIntro{padding:0 4px 18px}
+.praviloWelcomeKicker{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#b95743;font-weight:800}
+.praviloWelcomeTitle{margin-top:7px;font:500 46px/.95 ui-serif,'Iowan Old Style','Baskerville','Times New Roman',serif;letter-spacing:-.05em}
+.praviloWelcomeLead{max-width:520px;margin-top:12px;font:500 18px/1.38 ui-serif,'Iowan Old Style','Baskerville','Times New Roman',serif;color:#453e36}
+.praviloWelcomeCards{display:grid;gap:10px}
+.praviloWelcomeCard{display:grid;grid-template-columns:92px 1fr;gap:14px;align-items:center;padding:12px;background:rgba(251,247,240,.92);border:1px solid #d9cdbf;border-radius:21px;box-shadow:0 8px 24px rgba(70,48,25,.055)}
+.praviloWelcomeIcon{width:92px;height:92px;border-radius:18px;object-fit:cover;background:#e7ddd1;box-shadow:inset 0 0 0 1px rgba(80,60,40,.05)}
+.praviloWelcomeNum{font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:#7b8670;font-weight:800}
+.praviloWelcomeCardTitle{margin-top:4px;font:500 21px/1.05 ui-serif,'Iowan Old Style','Baskerville','Times New Roman',serif;letter-spacing:-.025em}
+.praviloWelcomeCardText{margin-top:6px;color:#6e655b;font-size:11px;line-height:1.45}
+.praviloWelcomeNote{margin:14px 3px 0;padding:12px 13px;border-left:3px solid #68745f;border-radius:0 13px 13px 0;background:rgba(104,116,95,.075);font-size:10px;line-height:1.48;color:#56604f}
+.praviloWelcomeButton{width:100%;min-height:52px;margin-top:16px;border:0;border-radius:16px;background:#68745f;color:#fff;font-weight:750;font-size:15px;box-shadow:0 7px 20px rgba(65,77,56,.16)}
+.praviloWelcomeButton:active{transform:scale(.99)}
+#showWelcomeBtn,#openWelcomePageBtn{display:none!important}
+@media(min-width:700px){.praviloWelcomeShell{grid-template-rows:minmax(360px,52vh) auto}.praviloWelcomeBody{margin-top:-62px}.praviloWelcomeCards{grid-template-columns:repeat(3,1fr)}.praviloWelcomeCard{display:block;padding:13px}.praviloWelcomeIcon{width:100%;height:auto;aspect-ratio:1;border-radius:18px}.praviloWelcomeCardTitle{margin-top:10px}.praviloWelcomeLead{font-size:20px}}
+@media(max-width:390px){.praviloWelcomeShell{grid-template-rows:minmax(270px,42vh) auto}.praviloWelcomeBody{margin-top:-34px;padding-left:14px;padding-right:14px}.praviloWelcomeTitle{font-size:42px}.praviloWelcomeLead{font-size:17px}.praviloWelcomeCard{grid-template-columns:82px 1fr;gap:12px}.praviloWelcomeIcon{width:82px;height:82px}}

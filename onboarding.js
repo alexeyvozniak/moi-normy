@@ -17,27 +17,43 @@
   function show(preview=false){
     document.getElementById('praviloWelcome')?.remove();
     const root=document.createElement('div');
-    root.id='praviloWelcome';root.setAttribute('role','dialog');root.setAttribute('aria-modal','true');root.setAttribute('aria-label','Добро пожаловать в Правило');
+    root.id='praviloWelcome';
+    root.setAttribute('role','dialog');
+    root.setAttribute('aria-modal','true');
+    root.setAttribute('aria-label','Добро пожаловать в Правило');
     root.innerHTML=`
-      <div class="praviloWelcomeCard">
-        <div class="praviloWelcomeArt"></div>
+      <div class="praviloWelcomeShell">
+        <div class="praviloWelcomeHero"><div class="praviloWelcomeSeal" aria-hidden="true"></div></div>
         <div class="praviloWelcomeBody">
-          <div class="praviloWelcomeKicker">Личный ритм</div>
-          <div class="praviloWelcomeTitle">Правило</div>
-          <div class="praviloWelcomeLead">Молитва, чтение и труд — без ощущения, что пропущенный день просто исчез.</div>
-          <div class="praviloWelcomeSteps">
-            <div class="praviloWelcomeStep"><span class="praviloWelcomeNum">一</span><span><b>Задай ритм.</b> Норма начисляется каждый день, неделю, месяц или через выбранный интервал.</span></div>
-            <div class="praviloWelcomeStep"><span class="praviloWelcomeNum">二</span><span><b>Списывай сделанное.</b> Остаток спокойно переносится дальше — ничего не теряется.</span></div>
-            <div class="praviloWelcomeStep"><span class="praviloWelcomeNum">三</span><span><b>Сохраняй путь.</b> У чтения есть режим книги, а после чтения и медитации можно оставлять заметки в истории.</span></div>
+          <div class="praviloWelcomeIntro">
+            <div class="praviloWelcomeKicker">Личный ритм</div>
+            <div class="praviloWelcomeTitle">Правило</div>
+            <div class="praviloWelcomeLead">Молитва, чтение и труд — в одном спокойном ритме.</div>
           </div>
-          <div class="praviloWelcomePrivacy">Данные остаются на этом устройстве. Резервная копия делается через экспорт в настройках.</div>
-          <button class="praviloWelcomeButton" type="button">${preview?'Закрыть':'Начать'}</button>
+          <div class="praviloWelcomeCards">
+            <div class="praviloWelcomeCard">
+              <img class="praviloWelcomeIcon" src="images/onboarding_prayer.webp" alt="">
+              <div><div class="praviloWelcomeNum">первое</div><div class="praviloWelcomeCardTitle">Задай ритм</div><div class="praviloWelcomeCardText">Норма начисляется сама. Сделанное списывается, а остаток не исчезает.</div></div>
+            </div>
+            <div class="praviloWelcomeCard">
+              <img class="praviloWelcomeIcon" src="images/onboarding_reading.webp" alt="">
+              <div><div class="praviloWelcomeNum">второе</div><div class="praviloWelcomeCardTitle">Читай с ориентиром</div><div class="praviloWelcomeCardText">Оставь обычную норму страниц — или включи книгу, срок и автоматический дневной темп.</div></div>
+            </div>
+            <div class="praviloWelcomeCard">
+              <img class="praviloWelcomeIcon" src="images/onboarding_meditation.webp" alt="">
+              <div><div class="praviloWelcomeNum">третье</div><div class="praviloWelcomeCardTitle">Сохраняй путь</div><div class="praviloWelcomeCardText">После чтения и медитации можно оставить заметку. Она останется рядом с событием в истории.</div></div>
+            </div>
+          </div>
+          <div class="praviloWelcomeNote">Данные и заметки остаются на этом устройстве. Резервную копию можно сделать в настройках.</div>
+          <button class="praviloWelcomeButton" type="button">${preview?'Вернуться':'Начать'}</button>
         </div>
       </div>`;
-    document.body.appendChild(root);requestAnimationFrame(()=>root.classList.add('show'));
+    document.body.appendChild(root);
+    requestAnimationFrame(()=>root.classList.add('show'));
     root.querySelector('.praviloWelcomeButton').addEventListener('click',()=>{
       if(!preview)localStorage.setItem(KEY,'1');
-      root.classList.remove('show');setTimeout(()=>root.remove(),180);
+      root.classList.remove('show');
+      setTimeout(()=>root.remove(),180);
     });
   }
 
