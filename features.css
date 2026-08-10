@@ -1,0 +1,62 @@
+/* Дополнительные возможности «Правила»: книги, заметки, справка и обновления. */
+.bookModeBox{margin:13px 0;padding:13px;border:1px solid var(--hair);border-radius:17px;background:linear-gradient(145deg,#fbf7f0,#f3ece2)}
+.bookModeBox.featureHidden{display:none}
+.bookModeHead{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.bookModeCopy{min-width:0}
+.bookModeTitle{font:500 19px/1.05 var(--serif);letter-spacing:-.02em}
+.bookModeSub{margin-top:4px;color:var(--muted);font-size:9px;line-height:1.35}
+.bookCheck{display:flex;align-items:center;gap:9px;color:var(--green);font-size:11px;font-weight:700;white-space:nowrap}
+.bookCheck input{width:19px;height:19px;accent-color:var(--green)}
+.bookFields{margin-top:12px;padding-top:4px;border-top:1px solid rgba(216,205,191,.72)}
+.bookCalc{margin-top:7px;padding:10px 11px;border-radius:12px;background:rgba(104,116,95,.09);color:#56604f;font-size:11px;line-height:1.4}
+.bookModeHint{margin-top:8px;color:var(--muted);font-size:9px;line-height:1.4}
+.bookModeDisabled{opacity:.48;pointer-events:none}
+.bookMark{display:inline-block;margin-bottom:7px;padding:4px 8px;border-radius:999px;background:rgba(189,88,66,.10);color:var(--red);font-size:8px;line-height:1;text-transform:uppercase;letter-spacing:.12em;font-weight:750}
+.bookProgress{grid-column:1/-1;margin-top:10px}
+.bookProgressHead{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:9px;margin-bottom:5px}
+.bookProgressTrack{height:5px;border-radius:999px;background:#e9dfd3;overflow:hidden}
+.bookProgressFill{height:100%;border-radius:inherit;background:var(--green)}
+
+.featureOverlay{display:none;position:fixed;inset:0;z-index:90;background:rgba(28,20,12,.28);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);align-items:flex-end;justify-content:center}
+.featureOverlay.show{display:flex}
+.featureSheet{width:min(720px,100%);max-height:92vh;overflow:auto;background:var(--paper);border-radius:26px 26px 0 0;padding:12px 15px calc(env(safe-area-inset-bottom) + 18px);box-shadow:0 -16px 50px rgba(0,0,0,.14)}
+.featureGrabber{width:37px;height:4px;border-radius:999px;background:#c9beb1;margin:0 auto 14px}
+.featureSheetHead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:13px}
+.featureKicker{font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:var(--red);font-weight:750}
+.featureTitle{font:500 27px/1.04 var(--serif);letter-spacing:-.025em;margin-top:4px}
+.featureLead{font-size:11px;line-height:1.42;color:var(--muted);margin-top:6px}
+.featureClose{border:0;background:var(--soft);width:36px;height:36px;border-radius:50%;font-size:17px;flex:none}
+.featureField{margin:12px 0}
+.featureField label{display:block;font-size:10px;color:var(--muted);margin-bottom:6px}
+.featureField input,.featureField textarea{width:100%;border:1px solid var(--hair);background:#fffaf4;color:var(--ink);border-radius:13px;padding:12px;font:inherit;font-size:14px}
+.featureField textarea{min-height:118px;resize:vertical;line-height:1.45}
+.featureActions{display:flex;gap:8px;margin-top:15px}
+.featureActions .button{flex:1}
+
+.historyNote{grid-column:1/-1;margin-top:3px;padding:10px 11px;border-radius:13px;background:rgba(104,116,95,.075);border:1px solid rgba(104,116,95,.13)}
+.historyNoteTag{font-size:8px;text-transform:uppercase;letter-spacing:.13em;color:var(--green);font-weight:750}
+.historyNoteTitle{font:500 16px/1.15 var(--serif);margin-top:5px}
+.historyNoteBody{font-size:11px;line-height:1.45;color:#4b453e;margin-top:5px;white-space:pre-wrap}
+.historyNoteButton{grid-column:1/-1;justify-self:start;border:0;background:transparent;color:var(--green);font-size:9px;font-weight:700;padding:4px 0;margin-top:1px}
+
+.guideCards{display:grid;gap:9px}
+.guideCard{padding:13px;border:1px solid var(--hair);border-radius:16px;background:var(--paper2)}
+.guideNum{font:500 17px var(--serif);color:var(--red)}
+.guideTitle{font-weight:700;font-size:12px;margin-top:3px}
+.guideText{font-size:10px;line-height:1.5;color:var(--muted);margin-top:4px}
+.guideMini{margin-top:12px;padding:11px 12px;border-left:3px solid var(--green);background:rgba(104,116,95,.07);border-radius:0 12px 12px 0;color:#4d5747;font-size:10px;line-height:1.45}
+
+.updateBanner{display:none;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px;padding:11px 12px;border:1px solid rgba(189,88,66,.24);border-radius:16px;background:linear-gradient(135deg,#fbf7f0,#f5e8df);box-shadow:var(--shadow)}
+.updateBanner.show{display:flex}
+.updateKicker{font-size:8px;text-transform:uppercase;letter-spacing:.13em;color:var(--red);font-weight:750}
+.updateTitle{font-size:11px;font-weight:700;margin-top:2px}
+.updateButton{border:0;border-radius:11px;background:var(--red);color:white;padding:9px 11px;font-size:10px;font-weight:750;white-space:nowrap}
+.updateButton:disabled{opacity:.6}
+.featureSettingsRow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.featureSettingsRow .button{font-size:11px}
+
+.toast{position:fixed;z-index:120;left:50%;bottom:calc(env(safe-area-inset-bottom) + 24px);transform:translate(-50%,14px);opacity:0;pointer-events:none;background:#2d2924;color:white;padding:10px 13px;border-radius:999px;font-size:10px;box-shadow:0 8px 28px rgba(0,0,0,.18);transition:.18s}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media(min-width:600px){.featureOverlay{align-items:center;padding:20px}.featureSheet{border-radius:26px;max-width:620px}.guideCards{grid-template-columns:1fr 1fr}}
+@media(max-width:390px){.bookModeBox{padding:12px}.bookModeHead{align-items:flex-start}.bookCheck{font-size:10px}.featureSettingsRow{grid-template-columns:1fr}.updateBanner{align-items:flex-start}.updateButton{margin-top:1px}}
