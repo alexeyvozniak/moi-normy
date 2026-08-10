@@ -23,29 +23,38 @@
     root.setAttribute('aria-label','Добро пожаловать в Правило');
     root.innerHTML=`
       <div class="praviloWelcomeShell">
-        <div class="praviloWelcomeHero"><div class="praviloWelcomeSeal" aria-hidden="true"></div></div>
+        <div class="praviloWelcomeHero" aria-hidden="true"></div>
         <div class="praviloWelcomeBody">
           <div class="praviloWelcomeIntro">
             <div class="praviloWelcomeKicker">Личный ритм</div>
             <div class="praviloWelcomeTitle">Правило</div>
-            <div class="praviloWelcomeLead">Молитва, чтение и труд — в одном спокойном ритме.</div>
+            <div class="praviloWelcomeLead">Молитва, чтение, тишина и труд — в одном спокойном ритме.</div>
           </div>
+
           <div class="praviloWelcomeCards">
             <div class="praviloWelcomeCard">
               <img class="praviloWelcomeIcon" src="images/onboarding_prayer.webp" alt="">
-              <div><div class="praviloWelcomeNum">первое</div><div class="praviloWelcomeCardTitle">Задай ритм</div><div class="praviloWelcomeCardText">Норма начисляется сама. Сделанное списывается, а остаток не исчезает.</div></div>
+              <div class="praviloWelcomeCardCopy"><div class="praviloWelcomeNum">一</div><div class="praviloWelcomeCardTitle">Задай ритм</div><div class="praviloWelcomeCardText">Норма приходит сама. Сделанное списывается, остаток сохраняется.</div></div>
             </div>
             <div class="praviloWelcomeCard">
               <img class="praviloWelcomeIcon" src="images/onboarding_reading.webp" alt="">
-              <div><div class="praviloWelcomeNum">второе</div><div class="praviloWelcomeCardTitle">Читай с ориентиром</div><div class="praviloWelcomeCardText">Оставь обычную норму страниц — или включи книгу, срок и автоматический дневной темп.</div></div>
+              <div class="praviloWelcomeCardCopy"><div class="praviloWelcomeNum">二</div><div class="praviloWelcomeCardTitle">Читай с ориентиром</div><div class="praviloWelcomeCardText">Оставь обычную норму страниц или задай книгу и срок — темп посчитается сам.</div></div>
             </div>
             <div class="praviloWelcomeCard">
               <img class="praviloWelcomeIcon" src="images/onboarding_meditation.webp" alt="">
-              <div><div class="praviloWelcomeNum">третье</div><div class="praviloWelcomeCardTitle">Сохраняй путь</div><div class="praviloWelcomeCardText">После чтения и медитации можно оставить заметку. Она останется рядом с событием в истории.</div></div>
+              <div class="praviloWelcomeCardCopy"><div class="praviloWelcomeNum">三</div><div class="praviloWelcomeCardTitle">Сохраняй путь</div><div class="praviloWelcomeCardText">Книги, практики и необязательные заметки постепенно складываются в личную рукопись.</div></div>
             </div>
           </div>
-          <div class="praviloWelcomeNote">Данные и заметки остаются на этом устройстве. Резервную копию можно сделать в настройках.</div>
-          <button class="praviloWelcomeButton" type="button">${preview?'Вернуться':'Начать'}</button>
+
+          <div class="praviloWelcomePractice">
+            <img src="images/prayer_person_beads.webp" alt="">
+            <div><div class="praviloWelcomePracticeKicker">Режим практики</div><div class="praviloWelcomePracticeTitle">Молитва без взгляда на экран</div><div class="praviloWelcomePracticeText">Одно касание — одна молитва. Сигналы отмечают десятки и сотни.</div></div>
+          </div>
+
+          <div class="praviloWelcomeFoot">
+            <div class="praviloWelcomeNote">Данные и заметки остаются на этом устройстве. Резервная копия — в настройках.</div>
+            <button class="praviloWelcomeButton" type="button">${preview?'Вернуться':'Начать'}</button>
+          </div>
         </div>
       </div>`;
     document.body.appendChild(root);
