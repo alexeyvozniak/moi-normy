@@ -1,31 +1,15 @@
-const CACHE='pravilo-polish-v20';
-const ASSETS=['./','./index.html','./polish.css','./onboarding.css','./onboarding.js','./features.css','./features.js','./enhancements.css','./enhancements.js','./practice.css','./practice.js','./prayer-haptics.css','./prayer-haptics.js','./meditation-audio.js','./offline-storage.js','./reminders.css','./reminders.js','./settings-hub.css','./settings-hub.js','./quiet-ui.css','./quiet-ui.js','./install-helper.css','./install-helper.js','./welcome-preview.html','./manifest.webmanifest','./icon-180.png','./icon-192.png','./icon-512.png','./images/hero.webp','./images/prayer_person_beads.webp','./images/reading_person_book.webp','./images/contemplation_looking_up.webp','./images/samurai_training.webp','./images/selfcare_onsen.webp','./images/calligraphy_ink.webp','./images/walking_path.webp','./images/books_notes.webp','./images/open_book.webp','./images/enso.webp','./images/stat_active.webp','./images/stat_debt.webp','./images/stat_done.webp','./images/onboarding_hero.webp','./images/onboarding_prayer.webp','./images/onboarding_reading.webp','./images/onboarding_meditation.webp','./images/prayer_icons.webp','./images/prayer_prostration.webp','./images/prayer_bow.webp','./images/settings-reminders.webp','./images/settings-data.webp','./images/settings-app.webp'];
+const CACHE='pravilo-polish-v21';
+const ASSETS=['./','./index.html','./polish.css','./mobile-book-fix.css','./onboarding.css','./onboarding.js','./features.css','./features.js','./enhancements.css','./enhancements.js','./practice.css','./practice.js','./prayer-haptics.css','./prayer-haptics.js','./meditation-audio.js','./offline-storage.js','./reminders.css','./reminders.js','./settings-hub.css','./settings-hub.js','./quiet-ui.css','./quiet-ui.js','./install-helper.css','./install-helper.js','./welcome-preview.html','./manifest.webmanifest','./icon-180.png','./icon-192.png','./icon-512.png','./images/hero.webp','./images/prayer_person_beads.webp','./images/reading_person_book.webp','./images/contemplation_looking_up.webp','./images/samurai_training.webp','./images/selfcare_onsen.webp','./images/calligraphy_ink.webp','./images/walking_path.webp','./images/books_notes.webp','./images/open_book.webp','./images/enso.webp','./images/stat_active.webp','./images/stat_debt.webp','./images/stat_done.webp','./images/onboarding_hero.webp','./images/onboarding_prayer.webp','./images/onboarding_reading.webp','./images/onboarding_meditation.webp','./images/prayer_icons.webp','./images/prayer_prostration.webp','./images/prayer_bow.webp','./images/settings-reminders.webp','./images/settings-data.webp','./images/settings-app.webp'];
 
-self.addEventListener('install',e=>{
-  e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)));
-  self.skipWaiting();
-});
-
-self.addEventListener('activate',e=>{
-  e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));
-});
-
-self.addEventListener('message',e=>{
-  if(e.data&&e.data.type==='SKIP_WAITING')self.skipWaiting();
-});
-
-self.addEventListener('notificationclick',e=>{
-  e.notification.close();
-  e.waitUntil(clients.matchAll({type:'window',includeUncontrolled:true}).then(list=>{
-    const open=list.find(c=>'focus'in c);
-    if(open)return open.focus();
-    if(clients.openWindow)return clients.openWindow('./');
-  }));
-});
+self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)));self.skipWaiting();});
+self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
+self.addEventListener('message',e=>{if(e.data&&e.data.type==='SKIP_WAITING')self.skipWaiting();});
+self.addEventListener('notificationclick',e=>{e.notification.close();e.waitUntil(clients.matchAll({type:'window',includeUncontrolled:true}).then(list=>{const open=list.find(c=>'focus'in c);if(open)return open.focus();if(clients.openWindow)return clients.openWindow('./');}));});
 
 function enhancedHtml(text){
   let out=text;
   if(!out.includes('polish.css')) out=out.replace('</head>','<link rel="stylesheet" href="polish.css?v=20">\n</head>');
+  if(!out.includes('mobile-book-fix.css')) out=out.replace('</head>','<link rel="stylesheet" href="mobile-book-fix.css?v=1">\n</head>');
   if(!out.includes('onboarding.css')) out=out.replace('</head>','<link rel="stylesheet" href="onboarding.css?v=4">\n</head>');
   if(!out.includes('features.css')) out=out.replace('</head>','<link rel="stylesheet" href="features.css?v=1">\n</head>');
   if(!out.includes('enhancements.css')) out=out.replace('</head>','<link rel="stylesheet" href="enhancements.css?v=1">\n</head>');
@@ -48,16 +32,4 @@ function enhancedHtml(text){
   if(!out.includes('settings-hub.js')) out=out.replace('</body>','<script src="settings-hub.js?v=2" defer></script>\n</body>');
   return out;
 }
-
-self.addEventListener('fetch',e=>{
-  if(e.request.mode==='navigate'){
-    e.respondWith(
-      fetch(e.request)
-        .then(r=>r.text())
-        .then(text=>new Response(enhancedHtml(text),{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache'}}))
-        .catch(()=>caches.match('./index.html').then(r=>r.text()).then(text=>new Response(enhancedHtml(text),{headers:{'Content-Type':'text/html; charset=utf-8'}})))
-    );
-    return;
-  }
-  e.respondWith(caches.match(e.request).then(cached=>cached||fetch(e.request)));
-});
+self.addEventListener('fetch',e=>{if(e.request.mode==='navigate'){e.respondWith(fetch(e.request).then(r=>r.text()).then(text=>new Response(enhancedHtml(text),{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache'}})).catch(()=>caches.match('./index.html').then(r=>r.text()).then(text=>new Response(enhancedHtml(text),{headers:{'Content-Type':'text/html; charset=utf-8'}}))));return;}e.respondWith(caches.match(e.request).then(cached=>cached||fetch(e.request)));});
