@@ -1,15 +1,15 @@
 /* Визуальный полиш «Правило»: выразительные образы и спокойная типографика. */
-:root{--display-serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;--number-serif:"Iowan Old Style",Georgia,"Times New Roman",serif}
+:root{--display-serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;--number-sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Arial,sans-serif}
 .title,.taskName,.sheetTitle,.sectionTitle,.quoteText,.quoteBig,.settingsHubTitle{font-family:var(--display-serif)!important}
-.debtNumber,.statNum,.weekValue,.historyAmount{font-family:var(--number-serif)!important;font-variant-numeric:lining-nums tabular-nums;font-feature-settings:"lnum" 1,"tnum" 1;font-weight:400!important}
-.debtNumber{letter-spacing:-.045em!important}
-.statNum{letter-spacing:-.025em}
-.task{display:grid;grid-template-columns:minmax(0,1fr) clamp(150px,34vw,205px);column-gap:14px;padding:16px;border-radius:23px}
+.debtNumber,.statNum,.weekValue,.historyAmount,.practiceCount,.meditationTime{font-family:var(--number-sans)!important;font-variant-numeric:lining-nums tabular-nums;font-feature-settings:"lnum" 1,"tnum" 1;font-weight:400!important;letter-spacing:-.04em!important}
+.task{display:grid;grid-template-columns:minmax(0,1fr) clamp(132px,35vw,205px);column-gap:14px;padding:16px;border-radius:23px}
 .taskTop{display:contents}.taskTop>div:first-child{grid-column:1;grid-row:1;min-width:0}
 .taskImage{grid-column:2;grid-row:1 / span 3;width:100%;height:auto;aspect-ratio:4/3;align-self:start;border-radius:17px;object-fit:cover;object-position:center;box-shadow:0 5px 16px rgba(54,38,20,.075)}
 .taskName{font-size:30px}.debtLine{grid-column:1;grid-row:2;margin-top:16px}.debtNote{grid-column:1;grid-row:3}.controlRow{grid-column:1/-1;grid-row:4;gap:8px;margin-top:14px}.subRow{grid-column:1/-1;grid-row:5;gap:8px;margin-top:9px}
 .quoteCard{color:var(--ink);text-align:left;-webkit-appearance:none;appearance:none}.quoteLabel{color:var(--red)!important}.quoteText{color:var(--ink)}.quoteAuthor,.quoteTap{color:var(--muted)}
-.stat{gap:9px;padding:10px}.stat img{width:42px;height:42px;box-shadow:0 2px 9px rgba(52,38,20,.075)}.statNum{font-size:25px}
+.stat{gap:9px;padding:10px}.stat img{width:42px;height:42px;box-shadow:0 2px 9px rgba(52,38,20,.075)}.statNum{font-size:23px}
+/* 11 Pro Max и другие телефоны шириной около 400–430 CSS px получают заметно более крупный образ. */
+@media(min-width:400px) and (max-width:599px){.task{grid-template-columns:minmax(0,1fr) 154px;column-gap:14px}.taskImage{width:154px;aspect-ratio:4/3;border-radius:18px}.taskName{font-size:30px}}
 @media(min-width:430px) and (max-width:599px){.task{grid-template-columns:minmax(0,1fr) clamp(170px,39vw,215px);column-gap:16px}.taskImage{width:100%;aspect-ratio:4/3}.taskName{font-size:31px}}
 @media(min-width:600px){.app{max-width:760px}.hero{min-height:218px}.task{grid-template-columns:minmax(0,1fr) clamp(225px,35vw,265px);column-gap:18px}.taskImage{width:100%;aspect-ratio:4/3;border-radius:18px}.stat img{width:46px;height:46px}}
-@media(max-width:390px){.taskName{font-size:27px}.stat{gap:6px;padding:9px 8px}.stat img{width:38px;height:38px}.statNum{font-size:22px}.debtNumber{font-size:43px!important}}
+@media(max-width:390px){.taskName{font-size:27px}.stat{gap:6px;padding:9px 8px}.stat img{width:36px;height:36px}.statNum{font-size:20px}.debtNumber{font-size:43px!important}}
