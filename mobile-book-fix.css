@@ -1,30 +1,68 @@
-/* Адаптация карточек для узких телефонов и более чистый режим книги. */
+/* Адаптация для небольших iPhone и режим книги. */
 .bookPlanDaily{display:inline-flex;align-items:center;gap:5px;margin-top:8px;padding:5px 8px;border-radius:999px;background:rgba(104,116,95,.10);color:var(--green);font-size:9px;font-weight:750;letter-spacing:.01em}
 .task.bookPlanCard .debtNote{color:#615a52}
-.task.bookPlanCard .bookProgress{grid-column:1/-1;grid-row:auto;margin-top:10px}
+.task.bookPlanCard .bookProgress{margin-top:10px}
 
 @media(max-width:430px){
-  .app{padding-left:10px;padding-right:10px}
-  .task{grid-template-columns:minmax(0,1fr) 112px;column-gap:10px;padding:14px;border-radius:21px}
-  .taskTop>div:first-child{grid-column:1;grid-row:1;min-width:0}
-  .taskImage{grid-column:2;grid-row:1;width:112px;height:88px;border-radius:15px}
-  .taskName{font-size:27px;line-height:.98}
-  .taskRule{font-size:11px;line-height:1.25}
-  .debtLine{grid-column:1/-1;grid-row:2;margin-top:15px;align-items:flex-end;min-width:0}
-  .debtNumber{font-size:48px;line-height:.82;min-width:0;white-space:nowrap}
-  .debtUnit{font-size:11px;line-height:1.12;max-width:112px;padding-bottom:1px}
-  .debtNote{grid-column:1/-1;grid-row:3;margin-top:8px;font-size:10px;line-height:1.35}
-  .controlRow{grid-column:1/-1;grid-row:4;grid-template-columns:1.08fr .86fr .82fr;gap:6px;margin-top:13px}
-  .controlRow .button{min-height:45px;padding:8px 6px;font-size:14px}
-  .subRow{grid-column:1/-1;grid-row:5;margin-top:7px}
-  .bookProgress{grid-column:1/-1!important}
+  .app{padding-left:9px;padding-right:9px}
+  .header{gap:7px;padding-left:2px;padding-right:2px}
+  .title{font-size:34px}
+  .roundButton{width:40px;height:40px}
+  .hero{min-height:188px;border-radius:21px}
+  .quoteCard{left:11px;right:11px;bottom:11px;max-width:none;padding:12px 13px}
+  .quoteText{font-size:16px;line-height:1.22}
+  .tabs{gap:6px;padding-top:11px}
+  .tab{padding:9px 13px;font-size:12px}
+  .stats{gap:5px}
+  .stat{padding:8px 6px;gap:5px;border-radius:15px;min-width:0;overflow:hidden}
+  .stat img{width:32px;height:32px}
+  .statNum{font-size:20px;white-space:nowrap}
+  .statLabel{font-size:8px;overflow-wrap:anywhere}
+
+  .task{padding:13px;border-radius:20px;overflow:hidden}
+  .taskTop{grid-template-columns:minmax(0,1fr) 96px;gap:9px;align-items:start}
+  .taskTop>div:first-child{min-width:0}
+  .taskImage{width:96px;height:78px;border-radius:14px}
+  .taskName{font-size:25px;line-height:1;overflow-wrap:anywhere;hyphens:auto}
+  .taskRule{font-size:10px;line-height:1.28;overflow-wrap:anywhere}
+  .debtLine{display:grid;grid-template-columns:minmax(0,auto) minmax(70px,1fr);align-items:end;gap:7px;margin-top:14px;min-width:0}
+  .debtNumber{font-size:45px;line-height:.84;min-width:0;white-space:nowrap;letter-spacing:-.05em}
+  .debtUnit{font-size:10px;line-height:1.15;min-width:0;max-width:none;padding-bottom:1px;overflow-wrap:anywhere}
+  .debtNote{margin-top:7px;font-size:9px;line-height:1.35;overflow-wrap:anywhere}
+  .controlRow{grid-template-columns:minmax(0,1.08fr) minmax(0,.86fr) minmax(0,.82fr);gap:5px;margin-top:12px}
+  .controlRow .button{min-width:0;min-height:43px;padding:7px 4px;font-size:12px;white-space:normal;line-height:1.05;overflow-wrap:anywhere}
+  .subRow{gap:5px;flex-wrap:wrap;margin-top:7px}
+  .wordButton,.editButton,.practiceButton{min-width:0;max-width:100%;white-space:normal}
+  .bookProgress{width:100%!important;min-width:0}
+  .bookProgressHead{font-size:9px}
 }
 
-@media(max-width:360px){
-  .task{grid-template-columns:minmax(0,1fr) 98px;padding:13px}
-  .taskImage{width:98px;height:78px}
-  .taskName{font-size:25px}
-  .debtNumber{font-size:44px}
-  .controlRow{grid-template-columns:1fr .82fr .78fr}
-  .controlRow .button{font-size:13px}
+@media(max-width:380px){
+  .app{padding-left:7px;padding-right:7px}
+  .title{font-size:31px}
+  .headActions{gap:5px}
+  .roundButton{width:38px;height:38px;font-size:18px}
+  .task{padding:12px}
+  .taskTop{grid-template-columns:minmax(0,1fr) 82px;gap:7px}
+  .taskImage{width:82px;height:70px}
+  .taskName{font-size:23px}
+  .taskRule{font-size:9px}
+  .debtLine{grid-template-columns:1fr;margin-top:12px;gap:3px;align-items:start}
+  .debtNumber{font-size:42px;line-height:.88}
+  .debtUnit{font-size:10px;padding:0}
+  .controlRow{grid-template-columns:1fr 1fr;gap:5px}
+  .controlRow .button{font-size:12px;min-height:42px}
+  .controlRow .button:first-child{grid-column:1/-1}
+  .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .stat{display:block;text-align:center;padding:7px 3px}
+  .stat img{width:29px;height:29px;margin:auto}
+  .statNum{font-size:18px;margin-top:4px}
+}
+
+@media(max-width:340px){
+  .taskTop{grid-template-columns:1fr}
+  .taskImage{width:100%;height:104px;margin-top:3px}
+  .controlRow{grid-template-columns:1fr}
+  .controlRow .button:first-child{grid-column:auto}
+  .quoteText{font-size:15px}
 }
