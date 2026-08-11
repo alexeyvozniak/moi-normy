@@ -15,18 +15,20 @@
     if(typeof navigator.vibrate!=='function')return false;
     try{return navigator.vibrate(pattern)!==false;}catch(e){return false;}
   }
-  function visualCenturyCue(){
+  function visualCue(kind){
     const root=$('prayerPractice');if(!root)return;
-    root.classList.remove('centuryBowCue');void root.offsetWidth;root.classList.add('centuryBowCue');
-    clearTimeout(root._centuryCueTimer);root._centuryCueTimer=setTimeout(()=>root.classList.remove('centuryBowCue'),1450);
+    root.classList.remove('decadeBowCue','centuryBowCue');void root.offsetWidth;
+    root.classList.add(kind==='century'?'centuryBowCue':'decadeBowCue');
+    clearTimeout(root._beadCueTimer);
+    root._beadCueTimer=setTimeout(()=>root.classList.remove('decadeBowCue','centuryBowCue'),kind==='century'?1450:850);
   }
   function milestone(item){
     item.prayerBeadCount=Math.max(0,Number(item.prayerBeadCount)||0)+1;
     const n=item.prayerBeadCount;
     if(n%100===0){
-      vibrate(320);visualCenturyCue();
+      vibrate(320);visualCue('century');
     }else if(n%10===0){
-      vibrate(45);
+      vibrate(45);visualCue('decade');
     }
     if(Number(item.debt)<=0)item.prayerBeadCount=0;
     save();
@@ -60,7 +62,7 @@
       const cards=$('guideFeatureOverlay')?.querySelector('.guideCards');
       if(!cards||cards.querySelector('[data-haptics-guide]'))return;
       const c=document.createElement('div');c.className='guideCard';c.dataset.hapticsGuide='1';
-      c.innerHTML='<div class="guideNum">十</div><div class="guideTitle">Сигналы на 10 и 100</div><div class="guideText">Каждая десятая молитва отмечается короткой вибрацией — поясной поклон. Каждая сотая даёт более длинную вибрацию и краткое изменение цвета экрана — земной поклон. Звук временно отключён до выбора подходящих записей.</div>';
+      c.innerHTML='<div class="guideNum">十</div><div class="guideTitle">Сигналы на 10 и 100</div><div class="guideText">Каждая десятая молитва отмечается короткой вибрацией и краткой сменой оттенка экрана — поясной поклон. Каждая сотая даёт более длинную вибрацию и более заметную тёплую смену цвета — земной поклон.</div>';
       cards.appendChild(c);
     },80);
   },true);
