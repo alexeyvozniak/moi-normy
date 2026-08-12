@@ -1,40 +1,59 @@
 (()=>{
   'use strict';
-  const VERSION='1.0.1';
 
-  const styles=[
-    'designer-fonts.css','ui-controls.css','ui-dialog.css','responsive.css','dashboard.css','editor-layout.css','onboarding.css','feature-ui.css','share-text.css','mode-tools.css','practice.css','prayer-card.css','prayer-haptics.css','reminders.css','settings-hub.css','quiet-ui.css','install-helper.css','header-polish.css','visual-polish.css','section-heroes.css','insights.css'
-  ];
-
-  const scripts=[
-    'ui-dialog.js','ui-notice.js','domain.js','quotes.js','day-clock.js','audio.js','history-ledger.js','share-text.js','accrual.js','onboarding.js','book-mode.js','stats-polish.js','practice-types.js','prayer-card.js','counter-mode.js','catalog-extras.js','path.js','prayer-practice.js','prayer-haptics.js','meditation-practice.js','notes.js','notes-export.js','history-delete.js','today-polish.js','week-history-tools.js','offline-storage.js','reminders.js','interaction-dialogs.js','app-help.js','install-helper.js','settings-hub.js','editor-layout.js','app-self-test.js'
-  ];
-
+  const manifest=globalThis.PraviloManifest;
+  const VERSION=manifest?.version||'unknown';
   const diagnostics={version:VERSION,loaded:[],failed:[],startedAt:new Date().toISOString()};
   window.PraviloBootstrap=diagnostics;
 
+  function pathOf(url){
+    try{return new URL(url,location.href).pathname;}catch(_){return '';}
+  }
+
   function ensureStyle(href){
-    if([...document.styleSheets].some(sheet=>sheet.href&&new URL(sheet.href).pathname.endsWith('/'+href))||document.querySelector(`link[data-pravilo-style="${href}"]`))return;
-    const link=document.createElement('link');link.rel='stylesheet';link.href=`${href}?v=${VERSION}`;link.dataset.praviloStyle=href;document.head.appendChild(link);
+    const target='/'+href;
+    if([...document.styleSheets].some(sheet=>sheet.href&&pathOf(sheet.href).endsWith(target))||document.querySelector(`link[data-pravilo-style="${href}"]`))return;
+    const link=document.createElement('link');
+    link.rel='stylesheet';
+    link.href=`${href}?v=${encodeURIComponent(VERSION)}`;
+    link.dataset.praviloStyle=href;
+    link.addEventListener('error',()=>{if(!diagnostics.failed.includes(href))diagnostics.failed.push(href);console.error('[Правило] Не загрузился стиль:',href);},{once:true});
+    document.head.appendChild(link);
   }
 
   function loadScript(src){
     return new Promise(resolve=>{
-      if(document.querySelector(`script[data-pravilo-module="${src}"]`)||[...document.scripts].some(script=>script.src&&new URL(script.src).pathname.endsWith('/'+src))){diagnostics.loaded.push(src);resolve();return;}
-      const script=document.createElement('script');script.src=`${src}?v=${VERSION}`;script.async=false;script.dataset.praviloModule=src;
-      script.onload=()=>{diagnostics.loaded.push(src);resolve();};
-      script.onerror=()=>{diagnostics.failed.push(src);console.error('[Правило] Не загрузился модуль:',src);resolve();};
+      const target='/'+src;
+      if(document.querySelector(`script[data-pravilo-module="${src}"]`)||[...document.scripts].some(script=>script.src&&pathOf(script.src).endsWith(target))){diagnostics.loaded.push(src);resolve();return;}
+      const script=document.createElement('script');
+      script.src=`${src}?v=${encodeURIComponent(VERSION)}`;
+      script.async=false;
+      script.dataset.praviloModule=src;
+      const finish=(ok)=>{clearTimeout(timer);if(ok)diagnostics.loaded.push(src);else if(!diagnostics.failed.includes(src))diagnostics.failed.push(src);resolve();};
+      const timer=setTimeout(()=>{console.error('[Правило] Таймаут загрузки модуля:',src);finish(false);},10000);
+      script.onload=()=>finish(true);
+      script.onerror=()=>{console.error('[Правило] Не загрузился модуль:',src);finish(false);};
       document.body.appendChild(script);
     });
   }
 
   async function start(){
-    styles.forEach(ensureStyle);
-    for(const src of scripts)await loadScript(src);
+    if(!manifest){
+      diagnostics.failed.push('app-manifest.js');
+      diagnostics.finishedAt=new Date().toISOString();
+      document.documentElement.dataset.praviloReady='0';
+      console.error('[Правило] Не найден центральный manifest приложения');
+      return;
+    }
+
+    manifest.styles.forEach(ensureStyle);
+    for(const src of manifest.scripts)await loadScript(src);
+
     diagnostics.finishedAt=new Date().toISOString();
-    document.documentElement.dataset.praviloReady='1';
+    document.documentElement.dataset.praviloReady=diagnostics.failed.length?'warning':'1';
     window.dispatchEvent(new CustomEvent('pravilo:ready',{detail:diagnostics}));
   }
 
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});
+  else start();
 })();
