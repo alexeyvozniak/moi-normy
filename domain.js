@@ -54,5 +54,13 @@
     return 0;
   }
 
-  return {DAY_MS,parseLocalDate,dateKey,daysBetween,daysLeft,readingTarget,accrualCount};
+  function prayerCue(sessionCount){
+    const count=Math.max(0,Math.floor(Number(sessionCount)||0));
+    if(count<1)return '';
+    if(count%100===0)return 'hundred';
+    if(count%10===0)return 'ten';
+    return '';
+  }
+
+  return {DAY_MS,parseLocalDate,dateKey,daysBetween,daysLeft,readingTarget,accrualCount,prayerCue};
 });
