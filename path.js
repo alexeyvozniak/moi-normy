@@ -62,7 +62,7 @@
     if(source==='history')state.history=state.history.filter(h=>h.id!==id);else state.pathJournal=state.pathJournal.filter(x=>x.id!==id);
     save();render();renderPath();
   }
-  function actionHtml(){return '<button type="button" class="entryMore pathEntryMore" aria-label="Действия с записью">⋯</button>';}
+  function actionHtml(){return '<button type="button" class="entryMore pathEntryMore" aria-label="Удалить запись" title="Удалить запись">×</button>';}
   function renderPath(){
     bookEvents();const root=$('pathTimeline');if(!root)return;const rows=entries();
     if(!rows.length){root.innerHTML='<div class="pathEmpty">Здесь постепенно появится твоя рукопись: завершённые практики, книги, заметки и изменения правила.</div>';return;}
