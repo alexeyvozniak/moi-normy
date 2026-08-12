@@ -1,4 +1,4 @@
-const CACHE='pravilo-shell-v34.2';
+const CACHE='pravilo-shell-v34.3';
 const CORE=[
   './','./index.html','./app.css','./app-core.js','./app-bootstrap.js','./manifest.webmanifest',
   './designer-fonts.css','./ui-controls.css','./ui-dialog.css','./responsive.css','./onboarding.css','./feature-ui.css','./mode-tools.css','./practice.css','./prayer-haptics.css','./reminders.css','./settings-hub.css','./quiet-ui.css','./install-helper.css',
@@ -7,7 +7,7 @@ const CORE=[
   './images/hero.webp','./images/stat_active.webp','./images/stat_debt.webp','./images/stat_done.webp',
   './images/prayer_person_beads.webp','./images/reading_person_book.webp','./images/contemplation_looking_up.webp','./images/samurai_training.webp','./images/selfcare_onsen.webp','./images/calligraphy_ink.webp','./images/walking_path.webp','./images/open_book.webp','./images/books_notes.webp','./images/enso.webp',
   './images/prayer_icons.webp','./images/prayer_prostration.webp','./images/prayer_bow.webp',
-  './images/settings-reminders.webp','./images/settings-data.webp','./images/settings-app.webp','./images/settings-gear.webp'
+  './images/settings-reminders.webp','./images/settings-data.webp','./images/settings-app.webp'
 ];
 
 self.addEventListener('install',event=>{
