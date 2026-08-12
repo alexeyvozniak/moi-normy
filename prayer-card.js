@@ -22,7 +22,7 @@
         document.querySelectorAll('#cards .task[data-item-id]').forEach(card=>{
           const item=itemById(card.dataset.itemId);card.classList.toggle('prayerCard',isPrayer(item));if(!isPrayer(item))return;
           const amount=card.querySelector('[data-action="amount"]'),quick=card.querySelector('[data-action="quick"]'),close=card.querySelector('[data-action="close"]');
-          if(amount)amount.textContent='Списать сотни';if(quick)quick.textContent='−100';if(close){close.classList.add('prayerHiddenAction');close.setAttribute('aria-hidden','true');close.tabIndex=-1;}
+          if(amount)amount.textContent='Списать';if(quick)quick.textContent='−100';if(close){close.classList.add('prayerHiddenAction');close.setAttribute('aria-hidden','true');close.tabIndex=-1;}
         });
       }finally{decorating=false;}
     });
