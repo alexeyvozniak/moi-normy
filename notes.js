@@ -28,7 +28,7 @@
   function decorateHistory(){
     const panel=$('historyPanel');if(!panel)return;const rows=[...panel.querySelectorAll('.historyItem')],entries=state.history.slice(0,80);
     rows.forEach((row,i)=>{row.querySelectorAll('.notesExtra').forEach(x=>x.remove());const entry=entries[i];if(!entry)return;const kind=kindOf(entry);if(!kind)return;
-      if(entry.note){const n=document.createElement('div');n.className='historyNote notesExtra';n.innerHTML=`<div class="historyNoteTag">${kind==='meditation'?'медитация':'чтение'}</div>${entry.note.title?`<div class="historyNoteTitle">${escapeHtml(entry.note.title)}</div>`:''}${entry.note.body?`<div class="historyNoteBody">${escapeHtml(entry.note.body)}</div>`:''}`;row.appendChild(n);}
+      if(entry.note){const n=document.createElement('div');n.className='historyNote notesExtra';n.innerHTML=`<div class="historyNoteTag">${kind==='meditation'?'медитация':'чтение'}</div>${entry.note.title?`<div class="historyNoteTitle">${escapeHtml(entry.note.title)}</div>`:''}${entry.note.body?`<div class="historyNoteBody">${escapeHtml(entry.note.body)}</div>`:''}<div class="historyNoteActions"><button type="button" class="noteShareButton" data-share-history-id="${escapeHtml(entry.id)}">Поделиться</button></div>`;row.appendChild(n);}
       else{const b=document.createElement('button');b.type='button';b.className='historyNoteButton notesExtra';b.textContent='+ добавить заметку';b.addEventListener('click',()=>openNote(entry.id));row.appendChild(b);}
     });
   }
