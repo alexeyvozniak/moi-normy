@@ -1,0 +1,41 @@
+/* Responsive layout only. Keep visual theme in app.css and typography in designer-fonts.css. */
+.task{display:grid;grid-template-columns:minmax(0,1fr) clamp(132px,35vw,205px);column-gap:14px}
+.taskTop{display:contents}.taskTop>div:first-child{grid-column:1;grid-row:1;min-width:0}
+.taskImage{grid-column:2;grid-row:1 / span 3;width:100%;height:auto;aspect-ratio:4/3;align-self:start;border-radius:17px;object-fit:cover;object-position:center;box-shadow:0 5px 16px rgba(54,38,20,.075)}
+.debtLine{grid-column:1;grid-row:2;margin-top:16px;min-width:0}.debtNote{grid-column:1;grid-row:3;min-width:0}.controlRow{grid-column:1/-1;grid-row:4}.subRow{grid-column:1/-1;grid-row:5}.bookProgress{grid-column:1/-1;grid-row:6}
+.taskName,.taskRule,.debtUnit,.debtNote{overflow-wrap:anywhere}
+.controlRow .button{min-width:0}
+
+@media(min-width:600px){
+  .app{max-width:760px}.hero{min-height:218px}
+  .task{grid-template-columns:minmax(0,1fr) clamp(225px,35vw,265px);column-gap:18px}
+  .taskImage{border-radius:18px}.stat img{width:46px;height:46px}
+}
+
+/* Большие iPhone (включая 11 Pro Max): изображение не уменьшаем до размера маленького телефона. */
+@media(min-width:400px) and (max-width:599px){
+  .task{grid-template-columns:minmax(0,1fr) 154px;column-gap:14px}.taskImage{width:154px;border-radius:18px}.taskName{font-size:30px}
+}
+@media(min-width:430px) and (max-width:599px){
+  .task{grid-template-columns:minmax(0,1fr) clamp(170px,39vw,215px);column-gap:16px}.taskImage{width:100%}.taskName{font-size:31px}
+}
+
+/* Обычные небольшие iPhone. */
+@media(max-width:399px){
+  .app{padding-left:9px;padding-right:9px}.header{gap:7px}.title{font-size:34px}.roundButton{width:40px;height:40px}
+  .hero{min-height:188px}.quoteCard{left:11px;right:11px;bottom:11px;max-width:none}.quoteText{font-size:16px}
+  .tabs{gap:6px}.tab{padding:9px 13px;font-size:12px}.stats{gap:5px}.stat{padding:8px 6px;gap:5px;overflow:hidden}.stat img{width:32px;height:32px}.statNum{font-size:20px}.statLabel{font-size:8px}
+  .task{grid-template-columns:minmax(0,1fr) 116px;column-gap:9px;padding:13px}.taskImage{width:116px}.taskName{font-size:26px}.taskRule{font-size:10px}.debtNumber{font-size:46px}.debtUnit,.debtNote{font-size:10px}.controlRow{gap:5px}.controlRow .button{padding:7px 4px;font-size:12px;line-height:1.08;white-space:normal}
+}
+
+@media(max-width:370px){
+  .app{padding-left:7px;padding-right:7px}.title{font-size:31px}.roundButton{width:38px;height:38px}
+  .task{grid-template-columns:minmax(0,1fr) 96px;column-gap:7px;padding:12px}.taskImage{width:96px}.taskName{font-size:23px}.taskRule{font-size:9px}
+  .debtLine{display:grid;grid-template-columns:1fr;gap:3px;align-items:start}.debtNumber{font-size:42px}.debtUnit{padding:0}
+  .controlRow{grid-template-columns:1fr 1fr}.controlRow .button:first-child{grid-column:1/-1}.two{grid-template-columns:1fr}
+  .stat{display:block;text-align:center}.stat img{width:29px;height:29px;margin:auto}.statNum{font-size:18px;margin-top:4px}
+}
+
+@media(max-width:340px){
+  .task{grid-template-columns:1fr}.taskTop{display:block}.taskTop>div:first-child{display:block}.taskImage{display:block;width:100%;height:auto;aspect-ratio:16/7;margin-top:10px}.debtLine,.debtNote,.controlRow,.subRow,.bookProgress{grid-column:1;grid-row:auto}.controlRow{grid-template-columns:1fr}.controlRow .button:first-child{grid-column:auto}.quoteText{font-size:15px}
+}
