@@ -1,6 +1,6 @@
 (()=>{
   'use strict';
-  const VERSION='35.8.0';
+  const VERSION='35.9.0';
 
   const styles=[
     'designer-fonts.css',
@@ -19,13 +19,16 @@
     'reminders.css',
     'settings-hub.css',
     'quiet-ui.css',
-    'install-helper.css'
+    'install-helper.css',
+    'header-polish.css',
+    'visual-polish.css'
   ];
 
   const scripts=[
     'ui-dialog.js',
     'ui-notice.js',
     'domain.js',
+    'quotes.js',
     'day-clock.js',
     'audio.js',
     'history-ledger.js',
