@@ -1,11 +1,10 @@
-.sectionHero{position:relative;min-height:176px;margin:0 0 16px;border:1px solid var(--hair);border-radius:24px;overflow:hidden;background:var(--paper2);isolation:isolate;box-shadow:0 5px 18px rgba(65,43,21,.035)}
-.sectionHero::before{content:"";position:absolute;inset:0;background-size:cover;background-position:center;z-index:-2}
-.sectionHero::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none}
-.weekHero::before{background-image:url("images/week-hero.webp");background-position:center 51%}
-.weekHero::after{background:linear-gradient(90deg,rgba(248,243,234,.90) 0%,rgba(248,243,234,.68) 42%,rgba(248,243,234,.14) 72%,rgba(248,243,234,.02) 100%)}
-.historyHero::before{background-image:url("images/history-hero.webp");background-position:center 48%}
-.historyHero::after{background:linear-gradient(90deg,rgba(248,243,234,.87) 0%,rgba(248,243,234,.57) 39%,rgba(248,243,234,.08) 68%,rgba(248,243,234,0) 100%)}
-.sectionHeroCopy{width:min(64%,310px);padding:21px 22px 20px}
+.sectionHero{position:relative;min-height:176px;margin:0 0 16px;border:1px solid var(--hair);border-radius:24px;overflow:hidden;background-color:var(--paper2);background-size:cover;background-repeat:no-repeat;box-shadow:0 5px 18px rgba(65,43,21,.035)}
+.sectionHero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none}
+.weekHero{background-image:url("images/week-hero.webp");background-position:center 51%}
+.weekHero::after{background:linear-gradient(90deg,rgba(248,243,234,.90) 0%,rgba(248,243,234,.66) 42%,rgba(248,243,234,.12) 72%,rgba(248,243,234,.01) 100%)}
+.historyHero{background-image:url("images/history-hero.webp");background-position:center 48%}
+.historyHero::after{background:linear-gradient(90deg,rgba(248,243,234,.84) 0%,rgba(248,243,234,.53) 38%,rgba(248,243,234,.06) 66%,rgba(248,243,234,0) 100%)}
+.sectionHeroCopy{position:relative;z-index:2;width:min(64%,310px);padding:21px 22px 20px}
 .sectionHeroKicker{font-size:9px;line-height:1.1;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--terracotta);margin-bottom:7px}
 .sectionHeroTitle{font:500 34px/1 var(--serif);letter-spacing:-.025em;color:var(--ink)}
 .sectionHeroText{margin-top:9px;font-size:11px;line-height:1.43;color:#766f66;max-width:29ch}
