@@ -3,7 +3,7 @@
 
   const DEFINITIONS={
     prayerTen:{src:'sounds/prayer-ten.mp3',volume:.36},
-    prayerHundred:{src:'sounds/prayer-hundred.mp3',volume:.72},
+    prayerHundred:{src:'sounds/prayer-hundred.mp3',volume:.50,maxDuration:2.2,fadeOut:.18},
     meditationBell:{src:'sounds/meditation-bell.mp3',volume:.68}
   };
 
@@ -61,6 +61,7 @@
       const audio=new Audio(def.src);
       audio.preload='auto';audio.volume=def.volume;audio.playsInline=true;
       await audio.play();
+      if(def.maxDuration)setTimeout(()=>{try{audio.pause();audio.currentTime=0;}catch(_){}},def.maxDuration*1000);
       return true;
     }catch(error){
       console.warn('[Правило] Звук заблокирован браузером',name,error);
@@ -78,10 +79,17 @@
       if(!buffer)return htmlFallback(name);
       const source=ctx.createBufferSource();
       const gain=ctx.createGain();
-      gain.gain.value=def.volume;
+      const duration=Math.min(buffer.duration,def.maxDuration||buffer.duration);
+      const now=ctx.currentTime;
+      gain.gain.setValueAtTime(def.volume,now);
+      if(def.fadeOut&&duration>def.fadeOut){
+        gain.gain.setValueAtTime(def.volume,now+duration-def.fadeOut);
+        gain.gain.linearRampToValueAtTime(0.0001,now+duration);
+      }
       source.buffer=buffer;
       source.connect(gain);gain.connect(ctx.destination);
-      source.start(0);
+      source.start(now);
+      if(duration<buffer.duration)source.stop(now+duration);
       return true;
     }catch(error){
       console.warn('[Правило] Не удалось воспроизвести звук',name,error);
