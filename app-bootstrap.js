@@ -20,6 +20,7 @@
 
   const scripts=[
     'ui-dialog.js',
+    'domain.js',
     'day-clock.js',
     'accrual.js',
     'onboarding.js',
