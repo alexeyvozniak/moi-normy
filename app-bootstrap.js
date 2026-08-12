@@ -1,11 +1,10 @@
 (()=>{
   'use strict';
-  const VERSION='31.0.0';
+  const VERSION='31.1.0';
 
   const styles=[
-    'polish.css?v=26',
     'designer-fonts.css?v=1',
-    'mobile-book-fix.css?v=3',
+    'responsive.css?v=1',
     'onboarding.css?v=4',
     'features.css?v=1',
     'enhancements.css?v=1',
@@ -17,8 +16,9 @@
     'install-helper.css?v=1'
   ];
 
-  /* Один модуль — одна ответственность. Старые features.js и reading-mode-fix.js больше не загружаются. */
+  /* Один модуль — одна ответственность. */
   const scripts=[
+    'accrual.js?v=1',
     'onboarding.js?v=4',
     'book-mode.js?v=1',
     'practice-types.js?v=2',
