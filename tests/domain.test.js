@@ -18,7 +18,8 @@ assert.equal(domain.accrualCount({lastKey:'2026-07-31',todayKey:'2026-08-12',per
 
 assert.equal(domain.prayerCue(1),'');
 assert.equal(domain.prayerCue(10),'ten');
-assert.equal(domain.prayerCue(80),'','80 is not a hundred milestone');
+assert.equal(domain.prayerCue(80),'ten','80 is an ordinary ten milestone, never a hundred milestone');
+assert.notEqual(domain.prayerCue(80),'hundred');
 assert.equal(domain.prayerCue(99),'');
 assert.equal(domain.prayerCue(100),'hundred');
 assert.equal(domain.prayerCue(110),'ten');
