@@ -32,4 +32,11 @@
 .settingsAudioPreview{display:grid;grid-template-columns:.7fr .7fr 1.4fr;gap:7px;margin-top:11px}
 .settingsAudioPreview .button{min-height:38px;font-size:10px;padding:7px 8px}
 .settingsAudioCard.audioMuted .settingsAudioVolume{opacity:.45}
-@media(max-width:390px){.settingsHubRow{grid-template-columns:48px minmax(0,1fr) 14px;padding:11px;min-height:72px;gap:10px}.settingsHubIcon{width:48px;height:48px;border-radius:14px}.settingsHubTitle{font-size:17px}.settingsHubSub{font-size:9.5px;margin-top:4px}.settingsActionGrid,.settingsDangerBody{grid-template-columns:1fr}.settingsAudioVolume{grid-template-columns:1fr 40px}.settingsAudioVolume>span{grid-column:1/-1}.settingsAudioPreview{grid-template-columns:1fr 1fr 1.35fr}}
+.settingsAboutCard{position:relative;overflow:hidden;padding:16px;background:linear-gradient(145deg,rgba(250,246,238,.98),rgba(239,233,220,.74));box-shadow:0 5px 18px rgba(65,43,21,.035)}
+.settingsAboutCard:after{content:'◯';position:absolute;right:-13px;top:-31px;font:400 88px/1 var(--serif);color:rgba(189,88,66,.09);pointer-events:none}
+.settingsAboutTop{position:relative;z-index:1;display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.settingsAboutName{font:500 25px/1 var(--serif);letter-spacing:-.025em;color:var(--ink)}
+.settingsAboutVersion{font-size:9px;color:var(--green);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.settingsAboutAuthor{position:relative;z-index:1;margin-top:8px;font-size:10px;color:#70675e}
+.settingsAboutCard .settingsCardText{position:relative;z-index:1;margin-top:10px;max-width:39ch}
+@media(max-width:390px){.settingsHubRow{grid-template-columns:48px minmax(0,1fr) 14px;padding:11px;min-height:72px;gap:10px}.settingsHubIcon{width:48px;height:48px;border-radius:14px}.settingsHubTitle{font-size:17px}.settingsHubSub{font-size:9.5px;margin-top:4px}.settingsActionGrid,.settingsDangerBody{grid-template-columns:1fr}.settingsAudioVolume{grid-template-columns:1fr 40px}.settingsAudioVolume>span{grid-column:1/-1}.settingsAudioPreview{grid-template-columns:1fr 1fr 1.35fr}.settingsAboutName{font-size:23px}.settingsAboutVersion{font-size:8.5px}}
