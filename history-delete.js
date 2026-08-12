@@ -28,6 +28,60 @@
     return button;
   }
 
+  function dayKey(entry){
+    if(entry?.day)return String(entry.day);
+    const d=new Date(entry?.ts||Date.now());
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  }
+
+  function localKey(date){
+    return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+  }
+
+  function keyDate(key){
+    const [y,m,d]=String(key).split('-').map(Number);
+    return new Date(y||1970,(m||1)-1,d||1,12,0,0,0);
+  }
+
+  function dayHeading(key){
+    const date=keyDate(key),now=new Date();now.setHours(12,0,0,0);
+    const yesterday=new Date(now);yesterday.setDate(now.getDate()-1);
+    const dateText=new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'long'}).format(date);
+    const weekday=new Intl.DateTimeFormat('ru-RU',{weekday:'long'}).format(date);
+    if(key===localKey(now))return {title:'Сегодня',meta:dateText};
+    if(key===localKey(yesterday))return {title:'Вчера',meta:dateText};
+    return {title:dateText,meta:weekday};
+  }
+
+  function timeText(entry){
+    const date=new Date(entry?.ts||Date.now());
+    return new Intl.DateTimeFormat('ru-RU',{hour:'2-digit',minute:'2-digit'}).format(date);
+  }
+
+  function groupRows(panel,entries,rows){
+    const groups=[];let current=null;
+    rows.forEach((row,i)=>{
+      const entry=entries[i];if(!entry)return;
+      const key=dayKey(entry);
+      if(!current||current.key!==key){current={key,rows:[]};groups.push(current);}
+      const meta=row.querySelector('.smallText');if(meta)meta.textContent=timeText(entry);
+      const amount=row.querySelector('.historyAmount');if(amount)amount.textContent=`−${entry.amount}`;
+      current.rows.push(row);
+    });
+    if(!groups.length){panel.classList.remove('historyGrouped');return;}
+    const fragment=document.createDocumentFragment();
+    groups.forEach(group=>{
+      const heading=dayHeading(group.key);
+      const section=document.createElement('section');section.className='historyDayGroup';
+      const header=document.createElement('div');header.className='historyDayHeader';
+      header.innerHTML=`<div class="historyDayTitle">${heading.title}</div><div class="historyDayMeta">${heading.meta}</div>`;
+      const body=document.createElement('div');body.className='historyDayRows';
+      group.rows.forEach(row=>body.appendChild(row));
+      section.append(header,body);fragment.appendChild(section);
+    });
+    panel.replaceChildren(fragment);panel.classList.add('historyGrouped');
+  }
+
   function decorate(){
     if(decorating)return;decorating=true;
     requestAnimationFrame(()=>{
@@ -39,6 +93,7 @@
           const entry=entries[i];if(!entry)return;
           row.appendChild(makeAction(entry));
         });
+        groupRows(panel,entries,rows);
       }finally{decorating=false;}
     });
   }
