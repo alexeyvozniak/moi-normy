@@ -1,6 +1,6 @@
 (()=>{
   'use strict';
-  const VERSION='35.1.0';
+  const VERSION='35.2.0';
 
   const styles=[
     'designer-fonts.css',
@@ -38,6 +38,7 @@
     'history-delete.js',
     'offline-storage.js',
     'reminders.js',
+    'interaction-dialogs.js',
     'app-help.js',
     'install-helper.js',
     'settings-hub.js',
