@@ -24,6 +24,7 @@
   function tap(event){
     if(!session||session.finished)return;const item=state.items.find(x=>x.id===session.itemId);if(!item||Number(item.debt)<=0)return;
     item.debt=Math.max(0,Number(item.debt)-1);session.logged+=1;save();
+    window.dispatchEvent(new CustomEvent('pravilo:prayer-tap',{detail:{itemId:item.id,sessionCount:session.logged,remaining:Number(item.debt)||0}}));
     const pulse=$('practicePulse');if(pulse){pulse.style.left=`${event.clientX-30}px`;pulse.style.top=`${event.clientY-30}px`;pulse.classList.remove('go');void pulse.offsetWidth;pulse.classList.add('go');}
     update();
     if(Number(item.debt)<=0){flush('close');window.praviloJournal?.('prayer_done','Завершено молитвенное правило',`${item.name}: ${session.startDebt} ${item.unit}`.trim(),item.id);render();}
