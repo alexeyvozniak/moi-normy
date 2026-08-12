@@ -1,0 +1,54 @@
+/* Focused polish for book/meditation cards, week details and history filters. */
+
+/* Book card: three useful facts, then quiet progress. */
+.bookPlanCard .debtNote{display:none}
+.bookMeta{grid-column:1/-1;grid-row:4;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:13px}
+.bookMetaCell{min-width:0;padding:9px 10px;border:1px solid rgba(216,205,191,.70);border-radius:13px;background:rgba(247,241,232,.72)}
+.bookMetaLabel{font-size:7.5px;line-height:1.1;text-transform:uppercase;letter-spacing:.10em;color:#9a9085;font-weight:750}
+.bookMetaValue{margin-top:4px;font:500 15px/1.05 var(--serif);color:#4f5849;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bookPlanCard .bookProgress{grid-column:1/-1;grid-row:5;margin-top:9px;padding:10px 11px;border-radius:13px;background:rgba(104,116,95,.045)}
+.bookPlanCard .bookProgressHead{font-size:8.5px}
+.bookPlanCard .bookProgressTrack{height:5px;margin-top:6px;background:rgba(104,116,95,.10)}
+.bookPlanCard .controlRow{grid-row:6}
+.bookPlanCard .subRow{grid-row:7}
+
+/* Meditation card: one clear action instead of generic bookkeeping controls. */
+.meditationTaskCard .debtLine,.meditationTaskCard .debtNote,.meditationTaskCard .controlRow{display:none!important}
+.meditationCardSummary{grid-column:1;grid-row:2 / span 2;align-self:start;margin-top:14px;display:grid;gap:6px}
+.meditationSummaryStep{display:flex;align-items:baseline;gap:7px;color:#665f56;font-size:9.5px}
+.meditationSummaryStep b{font:500 18px/1 var(--serif);color:var(--green);min-width:24px}
+.meditationSummaryStatus{margin-top:2px;color:#968c81;font-size:8.5px;line-height:1.3}
+.meditationTaskCard .subRow{grid-column:1/-1;grid-row:4;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin-top:14px}
+.meditationTaskCard .meditationPracticeButton{min-height:44px;border:0;border-radius:13px;background:var(--green);color:#fff;font-size:12px;font-weight:750;box-shadow:0 5px 14px rgba(75,88,67,.10)}
+.meditationTaskCard .editButton{align-self:center}
+
+/* Week: each day is tappable and opens a concise sheet. */
+.weekLegend span,.weekDay{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.weekLegend span:active,.weekDay:active{transform:translateY(1px)}
+.weekLegend span:focus-visible,.weekDay:focus-visible{outline:2px solid rgba(104,116,95,.28);outline-offset:2px}
+.weekDaySheet{padding-bottom:calc(env(safe-area-inset-bottom) + 22px)}
+.weekDaySheetLead{margin:3px 0 14px;color:var(--muted);font-size:10px;line-height:1.4}
+.weekDaySummary{display:grid;gap:7px}
+.weekDaySummaryRow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:11px 12px;border:1px solid var(--hair);border-radius:14px;background:var(--paper2)}
+.weekDaySummaryName{font:500 17px/1.08 var(--serif)}
+.weekDaySummaryValue{color:var(--green);font-size:11px;font-weight:750;white-space:nowrap}
+.weekDayEmpty{padding:22px 8px;text-align:center;color:var(--muted);font-size:10px;line-height:1.45}
+
+/* History: a single, quiet filter strip. */
+.historyFilters{display:flex;gap:6px;margin:0 1px 10px;overflow-x:auto;scrollbar-width:none}
+.historyFilters::-webkit-scrollbar{display:none}
+.historyFilter{flex:none;min-height:34px;padding:7px 12px;border:1px solid var(--hair);border-radius:999px;background:rgba(251,247,240,.86);color:#756d63;font-size:9.5px;font-weight:650}
+.historyFilter.active{background:var(--green);border-color:var(--green);color:#fff}
+.historyDayGroup.filteredEmpty{display:none}
+.historyItem.filteredOut{display:none!important}
+
+@media(max-width:390px){
+  .bookMeta{gap:5px;margin-top:11px}.bookMetaCell{padding:8px 7px}.bookMetaValue{font-size:14px}.bookMetaLabel{font-size:7px}
+  .meditationCardSummary{margin-top:11px}.meditationSummaryStep b{font-size:17px}.meditationTaskCard .meditationPracticeButton{font-size:11px}
+  .historyFilters{margin-bottom:9px}.historyFilter{padding-left:10px;padding-right:10px}
+}
+@media(max-width:340px){
+  .bookMeta,.bookPlanCard .bookProgress,.bookPlanCard .controlRow,.bookPlanCard .subRow,.meditationCardSummary,.meditationTaskCard .subRow{grid-column:1;grid-row:auto}
+  .bookMeta{grid-template-columns:1fr 1fr}.bookMetaCell:last-child{grid-column:1/-1}
+  .meditationTaskCard .subRow{grid-template-columns:1fr auto}
+}
