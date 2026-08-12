@@ -1,1 +1,24 @@
-.title{letter-spacing:-.035em}.date{font-size:12.5px}.hero{border-radius:25px;box-shadow:0 8px 24px rgba(71,48,22,.045)}.quoteCard{left:16px;bottom:15px;max-width:83%;padding:14px 15px 13px;background:rgba(251,247,240,.92);box-shadow:0 6px 20px rgba(59,43,28,.045)}.quoteLabel{letter-spacing:.11em}.quoteAuthor{max-width:42ch;line-height:1.35}.tabs{gap:6px;padding:12px 0 13px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{flex:1 1 0;min-width:0;padding:9px 8px;border-color:rgba(118,103,85,.22);font-size:12.5px;background:rgba(251,247,240,.78)}.tab.active{background:#6d7965;border-color:#6d7965;box-shadow:none}.task,.panel{box-shadow:0 6px 20px rgba(71,48,22,.045)}.task{border-radius:21px}.sectionTitle{letter-spacing:-.02em}.pathHero{border-radius:23px;box-shadow:0 7px 22px rgba(71,48,22,.045)}.pathLead{font-size:10.5px;line-height:1.5}.pathEntry{border-radius:17px;box-shadow:0 4px 14px rgba(69,48,26,.035)}.pathEntryTitle{line-height:1.13}.pathEntryText{line-height:1.5}.entryMore{color:#91877c!important}@media(max-width:390px){.header{padding-bottom:13px}.title{font-size:37px}.quoteCard{left:13px;bottom:13px;max-width:86%}.tabs{gap:5px}.tab{padding-left:6px;padding-right:6px;font-size:12px}}
+.title{letter-spacing:-.035em}.date{font-size:12.5px}.hero{border-radius:25px;box-shadow:0 8px 24px rgba(71,48,22,.045)}.quoteCard{left:16px;bottom:15px;max-width:83%;padding:14px 15px 13px;background:rgba(251,247,240,.92);box-shadow:0 6px 20px rgba(59,43,28,.045)}.quoteLabel{letter-spacing:.11em}.quoteAuthor{max-width:42ch;line-height:1.35}.tabs{gap:6px;padding:12px 0 13px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{flex:1 1 0;min-width:0;padding:9px 8px;border-color:rgba(118,103,85,.22);font-size:12.5px;background:rgba(251,247,240,.78)}.tab.active{background:#6d7965;border-color:#6d7965;box-shadow:none}.task,.panel{box-shadow:0 6px 20px rgba(71,48,22,.045)}.task{border-radius:21px}.sectionTitle{letter-spacing:-.02em}.pathHero{border-radius:23px;box-shadow:0 7px 22px rgba(71,48,22,.045)}.pathLead{font-size:10.5px;line-height:1.5}.pathEntry{border-radius:17px;box-shadow:0 4px 14px rgba(69,48,26,.035)}.pathEntryTitle{line-height:1.13}.pathEntryText{line-height:1.5}.entryMore{color:#91877c!important}
+
+/* Первый экран: меньше ощущения dashboard, больше спокойного ритма. */
+.stats{gap:7px;margin-bottom:11px}
+.stat{padding:9px 10px;border-color:rgba(118,103,85,.20);border-radius:17px;box-shadow:0 3px 12px rgba(71,48,22,.025)}
+.stat img{width:36px;height:36px}
+.statNum{font-size:23px;line-height:.92}
+.statLabel{font-size:8.7px;line-height:1.25}
+.stat:nth-child(3) .statLabel{font-size:0}
+.stat:nth-child(3) .statLabel::after{content:'сегодня';font-size:8.7px;line-height:1.25}
+
+.task{padding:14px 15px 13px;border-color:rgba(118,103,85,.22)}
+.taskTop{gap:11px}
+.taskImage{border-radius:14px}
+.taskRule{font-size:11.5px;margin-top:5px}
+.debtLine{margin-top:14px;gap:7px}
+.debtUnit{font-size:10.5px;letter-spacing:.01em}
+.controlRow{margin-top:13px}
+.controlRow .button{min-height:41px}
+.subRow{margin-top:7px;min-height:31px}
+.editButton{font-size:10.5px!important;color:#81786f!important;padding-right:2px!important}
+.prayerPracticeButton{padding:7px 11px!important;border-color:rgba(104,116,95,.25)!important;background:rgba(104,116,95,.055)!important;color:#626e5a!important;font-weight:650}
+
+@media(max-width:390px){.header{padding-bottom:13px}.title{font-size:37px}.quoteCard{left:13px;bottom:13px;max-width:86%}.tabs{gap:5px}.tab{padding-left:6px;padding-right:6px;font-size:12px}.stat{padding:8px 9px;gap:7px}.stat img{width:34px;height:34px}.statNum{font-size:22px}.task{padding:13px 14px 12px}.taskTop{grid-template-columns:minmax(0,1fr) 116px}.taskImage{width:116px;height:86px}.debtNumber{font-size:50px}.controlRow .button{min-height:40px}}
