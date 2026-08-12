@@ -1,0 +1,51 @@
+name: Validate Pravilo
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check JavaScript syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          while IFS= read -r -d '' file; do
+            echo "checking $file"
+            node --check "$file"
+          done < <(find . -maxdepth 2 -name '*.js' -print0)
+
+      - name: Check referenced local assets
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          root = Path('.')
+          sources = ['index.html', 'app-bootstrap.js', 'sw.js']
+          missing = []
+          for source in sources:
+              text = (root / source).read_text(encoding='utf-8')
+              refs = re.findall(r"['\"](\.?/?[^'\"?#]+\.(?:js|css|webp|png|webmanifest))(?:\?[^'\"]*)?['\"]", text)
+              for ref in refs:
+                  path = ref.removeprefix('./')
+                  if not (root / path).exists():
+                      missing.append(f'{source}: {ref}')
+          if missing:
+              raise SystemExit('Missing local references:\n' + '\n'.join(missing))
+
+          deprecated = {'features.js','enhancements.js','practice.js','reading-mode-fix.js','meditation-topic-fix.js','meditation-audio.js'}
+          bootstrap = (root / 'app-bootstrap.js').read_text(encoding='utf-8')
+          stale = sorted(name for name in deprecated if name in bootstrap)
+          if stale:
+              raise SystemExit('Deprecated modules still loaded: ' + ', '.join(stale))
+
+          print('Local references and module boundaries: OK')
