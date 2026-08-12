@@ -8,7 +8,11 @@
     if(!entry)return null;
     const amount=Math.max(0,Number(entry.amount)||0);
     const item=findItem(entry);
-    if(item&&amount>0)item.debt=Math.max(0,Number(item.debt)||0)+amount;
+    if(item&&amount>0){
+      item.debt=window.PraviloDomain?.restoredDebt
+        ?window.PraviloDomain.restoredDebt(item.debt,amount)
+        :Math.max(0,Number(item.debt)||0)+amount;
+    }
     state.history=(state.history||[]).filter(row=>String(row.id)!==String(entry.id));
     return {entry,item,amount};
   }
