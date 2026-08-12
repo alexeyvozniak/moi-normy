@@ -2,7 +2,6 @@
   'use strict';
 
   const LEGACY_REMINDERS_KEY='pravilo_reminders_v1';
-  const APP_AUTHOR='Алексей Возняк';
   const $=id=>document.getElementById(id);
 
   function appVersion(){return window.PraviloManifest?.version||'—';}
@@ -93,7 +92,7 @@
         ${menuRow('settingsCheckUpdate','↻','Проверить обновление','текущая версия '+version)}
         ${menuRow('settingsInstallHelp','⌂','Установка на телефон','добавить на экран «Домой»')}
       </div>
-      <div class="settingsCard settingsAboutCard"><div class="settingsAboutTop"><div class="settingsAboutName">Правило</div><div class="settingsAboutVersion">версия ${version}</div></div><div class="settingsAboutAuthor">Автор — ${APP_AUTHOR} · 2026</div><div class="settingsCardText">Личное локальное PWA для молитвы, чтения, медитации и собственного ритма. Основные данные остаются на устройстве; интернет нужен только для обновления приложения.</div></div>`);
+      <div class="settingsCard settingsAboutCard"><div class="settingsAboutTop"><div class="settingsAboutName">Правило</div><div class="settingsAboutVersion">версия ${version}</div></div><div class="settingsCardText">Личное локальное PWA для молитвы, чтения, медитации и собственного ритма. Основные данные остаются на устройстве; интернет нужен только для обновления приложения.</div></div>`);
 
     $('settingsOpenGuide').addEventListener('click',()=>window.praviloOpenGuide?.()||click('openGuideBtn'));
     $('settingsCheckUpdate').addEventListener('click',()=>window.praviloCheckUpdate?.()||click('checkUpdateBtn'));
