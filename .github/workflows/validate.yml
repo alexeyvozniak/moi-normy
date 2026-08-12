@@ -31,20 +31,30 @@ jobs:
 
           root = Path('.')
           sources = ['index.html', 'app-bootstrap.js', 'sw.js']
+          references = {}
           missing = []
+
           for source in sources:
               text = (root / source).read_text(encoding='utf-8')
               refs = re.findall(r"['\"](\.?/?[^'\"?#]+\.(?:js|css|webp|png|webmanifest))(?:\?[^'\"]*)?['\"]", text)
-              for ref in refs:
-                  path = ref.removeprefix('./')
+              normalized = {ref.removeprefix('./') for ref in refs}
+              references[source] = normalized
+              for path in sorted(normalized):
                   if not (root / path).exists():
-                      missing.append(f'{source}: {ref}')
+                      missing.append(f'{source}: {path}')
+
           if missing:
               raise SystemExit('Missing local references:\n' + '\n'.join(missing))
 
-          deprecated = {'features.js','enhancements.js','practice.js','reading-mode-fix.js','meditation-topic-fix.js','meditation-audio.js'}
-          bootstrap = (root / 'app-bootstrap.js').read_text(encoding='utf-8')
-          stale = sorted(name for name in deprecated if name in bootstrap)
+          deprecated = {
+              'features.js',
+              'enhancements.js',
+              'practice.js',
+              'reading-mode-fix.js',
+              'meditation-topic-fix.js',
+              'meditation-audio.js',
+          }
+          stale = sorted(deprecated & references['app-bootstrap.js'])
           if stale:
               raise SystemExit('Deprecated modules still loaded: ' + ', '.join(stale))
 
