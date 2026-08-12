@@ -1,6 +1,6 @@
 (()=>{
   'use strict';
-  const VERSION='32.1.0';
+  const VERSION='33.0.0';
 
   const styles=[
     'designer-fonts.css?v=1',
@@ -24,14 +24,15 @@
     'practice-types.js?v=3',
     'counter-mode.js?v=1',
     'catalog-extras.js?v=1',
-    'practice.js?v=1',
+    'path.js?v=1',
+    'prayer-practice.js?v=1',
     'prayer-haptics.js?v=4',
-    'meditation-topic-fix.js?v=1',
-    'meditation-audio.js?v=2',
+    'meditation-practice.js?v=1',
+    'meditation-topic-fix.js?v=2',
     'notes.js?v=1',
     'notes-export.js?v=1',
     'history-delete.js?v=2',
-    'offline-storage.js?v=1',
+    'offline-storage.js?v=2',
     'reminders.js?v=1',
     'quiet-ui.js?v=1',
     'app-help.js?v=1',
