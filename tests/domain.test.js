@@ -25,4 +25,15 @@ assert.equal(domain.prayerCue(100),'hundred');
 assert.equal(domain.prayerCue(110),'ten');
 assert.equal(domain.prayerCue(200),'hundred');
 
+assert.equal(domain.acceptedPrayerSessionCount(0),0);
+assert.equal(domain.acceptedPrayerSessionCount(37),0,'37 prayers are discarded');
+assert.equal(domain.acceptedPrayerSessionCount(99),0,'99 prayers are discarded');
+assert.equal(domain.acceptedPrayerSessionCount(100),100,'100 prayers are accepted');
+assert.equal(domain.acceptedPrayerSessionCount(137),137,'everything after the first hundred remains accepted');
+
+assert.equal(domain.restoredDebt(100,50),150,'deleted prayer history returns prayers');
+assert.equal(domain.restoredDebt(24,8),32,'deleted reading history returns pages');
+assert.equal(domain.restoredDebt(0,1),1,'deleted meditation history returns the session');
+assert.equal(domain.restoredDebt(10,-5),10,'negative restore amounts are ignored');
+
 console.log('Domain logic: OK');
