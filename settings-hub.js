@@ -5,7 +5,7 @@
   const APP_AUTHOR='Алексей Возняк';
   const $=id=>document.getElementById(id);
 
-  function appVersion(){return window.PraviloManifest?.version||'1.0.2';}
+  function appVersion(){return window.PraviloManifest?.version||'—';}
   function openOverlay(id){$(id)?.classList.add('show');}
   function closeOverlay(id){$(id)?.classList.remove('show');}
   function click(id){$(id)?.click();}
@@ -51,17 +51,17 @@
   }
 
   function buildSoundSection(){
-    const overlay=createSection('settingsSoundOverlay','Звуки','Тихие сигналы практики. Всё можно проверить здесь, не запуская счётчик.',`
+    const overlay=createSection('settingsSoundOverlay','Звуки','Сигналы молитвы и медитации. Здесь их можно включить, настроить и сразу проверить.',`
       <div class="settingsCard settingsAudioCard" id="settingsAudioCard">
         <div class="settingsAudioHead"><div><strong>Звуки практики</strong><div class="settingsCardText">Десятки и сотни молитв, переход и завершение медитации.</div></div><button class="switch" type="button" id="settingsAudioToggle" aria-label="Звуки практики" aria-pressed="true"></button></div>
-        <div class="settingsAudioVolumeBlock"><div class="settingsAudioVolumeHead"><span>Громкость</span><b id="settingsAudioVolumeValue">100%</b></div><input type="range" id="settingsAudioVolume" min="15" max="100" step="5" value="100" aria-label="Громкость звуков практики"></div>
+        <div class="settingsAudioVolumeBlock"><div class="settingsAudioVolumeHead"><span>Громкость сигналов</span><b id="settingsAudioVolumeValue">100%</b></div><input type="range" id="settingsAudioVolume" min="15" max="100" step="5" value="100" aria-label="Громкость звуков практики"></div>
       </div>
       <div class="settingsSoundPreview" aria-label="Проверка звуков">
         <button class="settingsSoundRow" type="button" data-audio-preview="prayerTen"><span class="settingsSoundMark">十</span><span><strong>10 молитв</strong><small>короткий сигнал</small></span><span class="settingsSoundPlay">▶</span></button>
-        <button class="settingsSoundRow" type="button" data-audio-preview="prayerHundred"><span class="settingsSoundMark">百</span><span><strong>100 молитв</strong><small>глубже и короче</small></span><span class="settingsSoundPlay">▶</span></button>
-        <button class="settingsSoundRow" type="button" data-audio-preview="meditationBell"><span class="settingsSoundMark">◯</span><span><strong>Медитация</strong><small>переход между частями</small></span><span class="settingsSoundPlay">▶</span></button>
+        <button class="settingsSoundRow" type="button" data-audio-preview="prayerHundred"><span class="settingsSoundMark">百</span><span><strong>100 молитв</strong><small>сигнал сотни</small></span><span class="settingsSoundPlay">▶</span></button>
+        <button class="settingsSoundRow" type="button" data-audio-preview="meditationBell"><span class="settingsSoundMark">◯</span><span><strong>Медитация</strong><small>колокол перехода</small></span><span class="settingsSoundPlay">▶</span></button>
       </div>
-      <div class="settingsSoundHint">На iPhone звук разрешается первым касанием внутри приложения. В беззвучном режиме поведение зависит от системных настроек iOS.</div>`);
+      <div class="settingsSoundHint">На iPhone первое касание разрешает воспроизведение звука внутри приложения.</div>`);
 
     $('settingsAudioToggle').addEventListener('click',()=>{
       const audio=window.PraviloAudio;if(!audio)return;
@@ -87,16 +87,14 @@
 
   function buildAppSection(){
     const version=appVersion();
-    const overlay=createSection('settingsAppOverlay','Приложение','Помощь, звук, установка и сведения о «Правиле».',`
+    const overlay=createSection('settingsAppOverlay','Приложение','Помощь, обновления, установка и сведения о «Правиле».',`
       <div class="settingsMenu">
-        ${menuRow('settingsOpenSound','♪','Звуки практики','сигналы молитвы и медитации')}
         ${menuRow('settingsOpenGuide','文','Как пользоваться','короткая инструкция')}
         ${menuRow('settingsCheckUpdate','↻','Проверить обновление','текущая версия '+version)}
         ${menuRow('settingsInstallHelp','⌂','Установка на телефон','добавить на экран «Домой»')}
       </div>
       <div class="settingsCard settingsAboutCard"><div class="settingsAboutTop"><div class="settingsAboutName">Правило</div><div class="settingsAboutVersion">версия ${version}</div></div><div class="settingsAboutAuthor">Автор — ${APP_AUTHOR} · 2026</div><div class="settingsCardText">Личное локальное PWA для молитвы, чтения, медитации и собственного ритма. Основные данные остаются на устройстве; интернет нужен только для обновления приложения.</div></div>`);
 
-    $('settingsOpenSound').addEventListener('click',()=>{syncAudioSettings();openOverlay('settingsSoundOverlay');});
     $('settingsOpenGuide').addEventListener('click',()=>window.praviloOpenGuide?.()||click('openGuideBtn'));
     $('settingsCheckUpdate').addEventListener('click',()=>window.praviloCheckUpdate?.()||click('checkUpdateBtn'));
     $('settingsInstallHelp').addEventListener('click',()=>window.praviloOpenInstallHelp?.()||click('installSettingsBtn'));
@@ -105,14 +103,14 @@
 
   function syncAudioSettings(){
     const audio=window.PraviloAudio;
-    const toggle=$('settingsAudioToggle'),range=$('settingsAudioVolume'),value=$('settingsAudioVolumeValue'),card=$('settingsAudioCard'),sub=$('settingsSoundSub');
+    const toggle=$('settingsAudioToggle'),range=$('settingsAudioVolume'),value=$('settingsAudioVolumeValue'),card=$('settingsAudioCard'),sub=$('settingsHubSoundSub');
     if(!audio)return;
     const settings=audio.getSettings(),percent=Math.round(settings.volume*100);
     if(toggle){toggle.classList.toggle('on',settings.enabled);toggle.setAttribute('aria-pressed',settings.enabled?'true':'false');}
     if(range)range.value=String(percent);
     if(value)value.textContent=`${percent}%`;
     card?.classList.toggle('audioMuted',!settings.enabled);
-    if(sub)sub.textContent=settings.enabled?`включены · ${percent}%`:'выключены';
+    if(sub)sub.textContent=settings.enabled?`включены · громкость ${percent}%`:'выключены';
   }
 
   function hideLegacySettingsContent(sheet,hub){
@@ -134,8 +132,9 @@
     hub.id='settingsHub';hub.className='settingsHub';
     hub.innerHTML=`
       <button class="settingsHubRow" id="settingsHubReminders" type="button"><span class="settingsHubIcon"><img src="images/settings-reminders.webp" alt=""></span><span><span class="settingsHubTitle">Напоминания</span><span class="settingsHubSub" id="settingsHubReminderSub"></span></span><span class="settingsHubArrow">›</span></button>
+      <button class="settingsHubRow" id="settingsHubSound" type="button"><span class="settingsHubIcon settingsHubSoundIcon" aria-hidden="true">音</span><span><span class="settingsHubTitle">Звуки</span><span class="settingsHubSub" id="settingsHubSoundSub">настройка сигналов</span></span><span class="settingsHubArrow">›</span></button>
       <button class="settingsHubRow" id="settingsHubData" type="button"><span class="settingsHubIcon"><img src="images/settings-data.webp" alt=""></span><span><span class="settingsHubTitle">Данные</span><span class="settingsHubSub">копия · экспорт · офлайн</span></span><span class="settingsHubArrow">›</span></button>
-      <button class="settingsHubRow" id="settingsHubApp" type="button"><span class="settingsHubIcon"><img src="images/settings-app.webp" alt=""></span><span><span class="settingsHubTitle">Приложение</span><span class="settingsHubSub"><span id="settingsSoundSub">звуки</span> · помощь · версия ${appVersion()}</span></span><span class="settingsHubArrow">›</span></button>`;
+      <button class="settingsHubRow" id="settingsHubApp" type="button"><span class="settingsHubIcon"><img src="images/settings-app.webp" alt=""></span><span><span class="settingsHubTitle">Приложение</span><span class="settingsHubSub">помощь · установка · версия ${appVersion()}</span></span><span class="settingsHubArrow">›</span></button>`;
 
     sheet.querySelector('.sheetHeader')?.insertAdjacentElement('afterend',hub);
     hideLegacySettingsContent(sheet,hub);
@@ -145,6 +144,7 @@
       else if($('openReminders'))click('openReminders');
       else openOverlay('remindersOverlay');
     });
+    $('settingsHubSound').addEventListener('click',()=>{syncAudioSettings();openOverlay('settingsSoundOverlay');});
     $('settingsHubData').addEventListener('click',async()=>{openOverlay('settingsDataOverlay');await refreshOfflineStatus();});
     $('settingsHubApp').addEventListener('click',()=>openOverlay('settingsAppOverlay'));
 
