@@ -13,10 +13,18 @@ button:disabled{opacity:.48;cursor:default}
 #settingsBtn{overflow:hidden;padding:0;background:var(--paper);border-color:var(--hair)}
 #settingsBtn .settingsGearIcon{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.04)}
 
-/* Тихие вторичные удаления: никогда не превращаются в iOS-blue. */
-.historyDelete,.pathDelete{border:0;background:transparent;color:#9a776d!important;padding:5px 0;font-size:9px;font-weight:600}
-.historyDelete{grid-column:1/-1;justify-self:start}
-.pathDelete{display:block;margin-top:7px}
+/* Тихое меню вторичных действий в истории и «Пути». */
+.entryMenu{position:relative;justify-self:end;align-self:start;z-index:3}
+.entryMenu>summary{list-style:none;width:30px;height:30px;display:grid;place-items:center;border-radius:999px;color:#8a8177;font-size:19px;line-height:1;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.entryMenu>summary::-webkit-details-marker{display:none}
+.entryMenu>summary::marker{content:''}
+.entryMenu[open]>summary{background:var(--soft)}
+.entryMenuPopup{position:absolute;right:0;top:32px;z-index:10;min-width:132px;padding:5px;border:1px solid var(--hair);border-radius:12px;background:var(--paper);box-shadow:0 12px 26px rgba(54,39,22,.13)}
+.entryMenuPopup button{width:100%;border:0;background:transparent;border-radius:8px;padding:9px 10px;text-align:left;color:#9a5547!important;font-size:10px;font-weight:650;white-space:nowrap}
+.entryMenuPopup button:active{background:var(--soft)}
+.historyItem{position:relative;grid-template-columns:minmax(0,1fr) auto auto!important;align-items:start}
+.pathEntry{position:relative}
+.pathEntryMenu{position:absolute;right:0;top:0}
 
 /* Нативные кнопки, которые создаются модулями, наследуют дизайн приложения. */
-.settingsBack,.featureClose,.installClose,.meditationControl,.practiceExit,.updateButton,.historyNoteButton,.pathDelete,.historyDelete{font-family:var(--sans);-webkit-appearance:none;appearance:none}
+.settingsBack,.featureClose,.installClose,.meditationControl,.practiceExit,.updateButton,.historyNoteButton,.pathDelete,.historyDelete,.entryMenuPopup button{font-family:var(--sans);-webkit-appearance:none;appearance:none}
