@@ -33,7 +33,7 @@ function localDateKey(date=new Date()){
 }
 function today(){return localDateKey();}
 function safeNumber(value,fallback=0){const n=Number(value);return Number.isFinite(n)?n:fallback;}
-function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));}
+function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 var esc=escapeHtml;
 function ask(options){
   if(typeof window.praviloConfirm==='function')return window.praviloConfirm(options);
@@ -47,21 +47,23 @@ function defaultPracticeType(name){
 }
 function freshState(){
   return {
-    version:2,
+    version:3,
     dayQuoteOffset:0,
     items:[
       {id:uid(),name:'Иисусова молитва',increment:200,unit:'молитв',period:'daily',intervalDays:1,quick:50,debt:200,practiceType:'prayer',image:'images/prayer_person_beads.webp',paused:false,lastAccrual:today()},
       {id:uid(),name:'Чтение',increment:15,unit:'страниц',period:'daily',intervalDays:1,quick:5,debt:15,image:'images/reading_person_book.webp',paused:false,lastAccrual:today()},
       {id:uid(),name:'Созерцание',increment:1,unit:'сессий',period:'weekly',intervalDays:7,quick:1,debt:1,practiceType:'meditation',image:'images/contemplation_looking_up.webp',paused:false,lastAccrual:today()}
     ],
-    history:[]
+    history:[],
+    reminders:[]
   };
 }
 function normalizeState(candidate){
   const s=candidate&&typeof candidate==='object'?candidate:freshState();
   if(!Array.isArray(s.items))s.items=[];
   if(!Array.isArray(s.history))s.history=[];
-  s.version=Math.max(2,safeNumber(s.version,1));
+  if(!Array.isArray(s.reminders))s.reminders=[];
+  s.version=Math.max(3,safeNumber(s.version,1));
   s.dayQuoteOffset=safeNumber(s.dayQuoteOffset,0);
   s.items.forEach(item=>{
     item.increment=Math.max(0,safeNumber(item.increment,0));
