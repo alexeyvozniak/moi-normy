@@ -1,4 +1,4 @@
-const APP_VERSION='35.15.1';
+const APP_VERSION='35.15.2';
 const CACHE=`pravilo-shell-v${APP_VERSION}`;
 const CORE=[
   './','./index.html','./app.css','./app-core.js','./app-bootstrap.js','./manifest.webmanifest',
@@ -43,12 +43,34 @@ self.addEventListener('notificationclick',event=>{
   })());
 });
 
+function canonicalRequest(request){
+  const url=new URL(request.url);
+  if(url.origin!==self.location.origin)return null;
+  url.search='';url.hash='';
+  return new Request(url.toString(),{method:'GET',credentials:'same-origin'});
+}
+
+async function matchCached(request,fallback){
+  const exact=await caches.match(request);
+  if(exact)return exact;
+  const withoutQuery=await caches.match(request,{ignoreSearch:true});
+  if(withoutQuery)return withoutQuery;
+  if(fallback){
+    const fallbackExact=await caches.match(fallback);
+    if(fallbackExact)return fallbackExact;
+    return caches.match(fallback,{ignoreSearch:true});
+  }
+  return null;
+}
+
 async function putIfUsable(request,response){
   if(!response?.ok)return response;
   const url=new URL(request.url);
   if(url.origin!==self.location.origin)return response;
   const cache=await caches.open(CACHE);
   cache.put(request,response.clone()).catch(()=>{});
+  const canonical=canonicalRequest(request);
+  if(canonical&&url.search)cache.put(canonical,response.clone()).catch(()=>{});
   return response;
 }
 
@@ -58,12 +80,12 @@ async function networkFirst(request,fallback){
     if(!response?.ok)throw new Error(`HTTP ${response?.status||0}`);
     return await putIfUsable(request,response);
   }catch(error){
-    return (await caches.match(request))||(fallback?await caches.match(fallback):null)||Response.error();
+    return (await matchCached(request,fallback))||Response.error();
   }
 }
 
 async function staleWhileRevalidate(request){
-  const cached=await caches.match(request);
+  const cached=await matchCached(request);
   const refresh=fetch(request).then(response=>putIfUsable(request,response)).catch(()=>null);
   return cached||(await refresh)||Response.error();
 }
