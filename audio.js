@@ -3,7 +3,7 @@
 
   const DEFINITIONS={
     prayerTen:{src:'sounds/prayer-ten.mp3',volume:.36},
-    prayerHundred:{src:'sounds/prayer-hundred.mp3',volume:.50,maxDuration:2.2,fadeOut:.18},
+    prayerHundred:{src:'sounds/prayer-hundred.mp3',volume:.38,maxDuration:1.4,fadeOut:.16},
     meditationBell:{src:'sounds/meditation-bell.mp3',volume:.68}
   };
 
