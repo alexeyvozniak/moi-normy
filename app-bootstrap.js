@@ -1,6 +1,6 @@
 (()=>{
   'use strict';
-  const VERSION='34.0.0';
+  const VERSION='34.1.0';
 
   const styles=[
     'designer-fonts.css?v=2',
@@ -14,11 +14,10 @@
     'prayer-haptics.css?v=2',
     'reminders.css?v=1',
     'settings-hub.css?v=6',
-    'quiet-ui.css?v=2',
+    'quiet-ui.css?v=3',
     'install-helper.css?v=1'
   ];
 
-  /* Один модуль — одна ответственность; порядок зависимостей явный. */
   const scripts=[
     'ui-dialog.js?v=1',
     'accrual.js?v=1',
@@ -39,7 +38,8 @@
     'quiet-ui.js?v=1',
     'app-help.js?v=1',
     'install-helper.js?v=1',
-    'settings-hub.js?v=6'
+    'settings-hub.js?v=6',
+    'app-self-test.js?v=1'
   ];
 
   const diagnostics={version:VERSION,loaded:[],failed:[],startedAt:new Date().toISOString()};
