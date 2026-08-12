@@ -3,12 +3,22 @@
   let decorating=false;
 
   async function deleteEntry(id){
-    const entry=state.history.find(h=>h.id===id);if(!entry)return;
+    const entry=state.history.find(h=>String(h.id)===String(id));if(!entry)return;
+    const amount=Math.max(0,Number(entry.amount)||0);
     const label=entry.item?`«${entry.item}»`:'эту запись';
-    const ok=await (window.praviloConfirm?.({kicker:'История',title:'Удалить запись?',message:`${label} исчезнет из истории и из «Пути», если там есть связанная заметка.`,confirmText:'Удалить',danger:true})??Promise.resolve(false));
+    const unit=entry.unit||'ед.';
+    const message=amount>0
+      ?`${label}: ${amount} ${unit} вернутся в текущий остаток, а запись исчезнет из истории и из «Пути», если там есть связанная заметка.`
+      :`${label} исчезнет из истории и из «Пути», если там есть связанная заметка.`;
+    const ok=await (window.praviloConfirm?.({kicker:'История',title:'Удалить запись?',message,confirmText:'Удалить и вернуть',danger:true})??Promise.resolve(false));
     if(!ok)return;
-    state.history=state.history.filter(h=>h.id!==id);
-    save();render();setTimeout(decorate,0);
+    if(window.PraviloHistoryLedger?.removeHistory)window.PraviloHistoryLedger.removeHistory(entry.id);
+    else{
+      const item=(state.items||[]).find(x=>String(x.id)===String(entry.itemId));
+      if(item&&amount>0)item.debt=Math.max(0,Number(item.debt)||0)+amount;
+      state.history=state.history.filter(h=>String(h.id)!==String(entry.id));save();render();
+    }
+    setTimeout(decorate,0);
   }
 
   function makeAction(entry){
