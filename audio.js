@@ -26,10 +26,7 @@
   }
   function getSettings(){return {...settings};}
   function setSettings(next={}){
-    settings={
-      enabled:typeof next.enabled==='boolean'?next.enabled:settings.enabled,
-      volume:next.volume===undefined?settings.volume:clamp(next.volume,.15,1)
-    };
+    settings={enabled:typeof next.enabled==='boolean'?next.enabled:settings.enabled,volume:next.volume===undefined?settings.volume:clamp(next.volume,.15,1)};
     saveSettings();return getSettings();
   }
 
@@ -43,41 +40,26 @@
   async function decode(name){
     if(buffers.has(name))return buffers.get(name);
     if(loading.has(name))return loading.get(name);
-    const def=DEFINITIONS[name];
-    const ctx=audioContext();
-    if(!def||!ctx)return null;
+    const def=DEFINITIONS[name],ctx=audioContext();if(!def||!ctx)return null;
     const promise=(async()=>{
       try{
-        const response=await fetch(def.src,{cache:'force-cache'});
-        if(!response.ok)throw new Error(`HTTP ${response.status}`);
-        const raw=await response.arrayBuffer();
-        const buffer=await ctx.decodeAudioData(raw.slice(0));
-        buffers.set(name,buffer);
-        return buffer;
-      }catch(error){
-        console.warn('[Правило] Не удалось подготовить звук',name,error);
-        return null;
-      }finally{loading.delete(name);}
+        const response=await fetch(def.src,{cache:'force-cache'});if(!response.ok)throw new Error(`HTTP ${response.status}`);
+        const raw=await response.arrayBuffer(),buffer=await ctx.decodeAudioData(raw.slice(0));buffers.set(name,buffer);return buffer;
+      }catch(error){console.warn('[Правило] Не удалось подготовить звук',name,error);return null;}
+      finally{loading.delete(name);}
     })();
     loading.set(name,promise);return promise;
   }
 
   function preload(){Object.keys(DEFINITIONS).forEach(name=>{void decode(name);});}
-
-  async function unlock(){
-    const ctx=audioContext();if(!ctx)return false;
-    try{if(ctx.state==='suspended')await ctx.resume();preload();return ctx.state==='running';}catch(_){return false;}
-  }
-
-  function effectiveVolume(def,preview){return def.volume*(preview?1:settings.volume);}
+  async function unlock(){const ctx=audioContext();if(!ctx)return false;try{if(ctx.state==='suspended')await ctx.resume();preload();return ctx.state==='running';}catch(_){return false;}}
+  function effectiveVolume(def){return def.volume*settings.volume;}
 
   async function htmlFallback(name,{preview=false}={}){
     const def=DEFINITIONS[name];if(!def||(!settings.enabled&&!preview))return false;
     try{
-      const audio=new Audio(def.src);audio.preload='auto';audio.volume=effectiveVolume(def,preview);audio.playsInline=true;
-      await audio.play();
-      if(def.maxDuration)setTimeout(()=>{try{audio.pause();audio.currentTime=0;}catch(_){}},def.maxDuration*1000);
-      return true;
+      const audio=new Audio(def.src);audio.preload='auto';audio.volume=effectiveVolume(def);audio.playsInline=true;await audio.play();
+      if(def.maxDuration)setTimeout(()=>{try{audio.pause();audio.currentTime=0;}catch(_){}},def.maxDuration*1000);return true;
     }catch(error){console.warn('[Правило] Звук заблокирован браузером',name,error);return false;}
   }
 
@@ -88,7 +70,7 @@
       if(ctx.state==='suspended')await ctx.resume();
       const buffer=await decode(name);if(!buffer)return htmlFallback(name,{preview});
       const source=ctx.createBufferSource(),gain=ctx.createGain();
-      const duration=Math.min(buffer.duration,def.maxDuration||buffer.duration),now=ctx.currentTime,volume=effectiveVolume(def,preview);
+      const duration=Math.min(buffer.duration,def.maxDuration||buffer.duration),now=ctx.currentTime,volume=effectiveVolume(def);
       gain.gain.setValueAtTime(volume,now);
       if(def.fadeOut&&duration>def.fadeOut){gain.gain.setValueAtTime(volume,now+duration-def.fadeOut);gain.gain.linearRampToValueAtTime(.0001,now+duration);}
       source.buffer=buffer;source.connect(gain);gain.connect(ctx.destination);source.start(now);if(duration<buffer.duration)source.stop(now+duration);return true;
@@ -96,7 +78,6 @@
   }
 
   window.PraviloAudio=Object.freeze({play,preload,unlock,getSettings,setSettings,names:Object.freeze(Object.keys(DEFINITIONS))});
-
   const firstGesture=()=>{void unlock();};
   document.addEventListener('pointerdown',firstGesture,{once:true,capture:true,passive:true});
   document.addEventListener('keydown',firstGesture,{once:true,capture:true});
