@@ -4,6 +4,8 @@
 .settingsHubRow>span:nth-child(2){display:block;min-width:0}
 .settingsHubIcon{width:54px;height:54px;border-radius:15px;display:block;overflow:hidden;background:#f7f0e3;box-shadow:0 3px 10px rgba(65,43,21,.07)}
 .settingsHubIcon img{width:100%;height:100%;display:block;object-fit:cover}
+.settingsHubSoundIcon{position:relative;display:grid;place-items:center;overflow:hidden;background:radial-gradient(circle at 68% 30%,rgba(189,88,66,.15) 0 8%,transparent 9%),linear-gradient(145deg,#f8f1e5,#e9dfd0);color:var(--green);font:600 22px/1 var(--serif);box-shadow:0 3px 10px rgba(65,43,21,.07),inset 0 0 0 1px rgba(104,116,95,.06)}
+.settingsHubSoundIcon:after{content:'';position:absolute;width:10px;height:10px;border-radius:50%;right:7px;top:7px;background:rgba(189,88,66,.8);box-shadow:0 0 0 3px rgba(248,241,229,.72)}
 .settingsHubTitle{display:block;font:500 18px/1.08 var(--serif);letter-spacing:-.01em;white-space:normal}
 .settingsHubSub{display:block;margin-top:5px;font-size:10px;line-height:1.25;color:var(--muted);white-space:normal;overflow-wrap:anywhere}
 .settingsHubArrow{display:block;font-size:20px;line-height:1;color:#aaa094;text-align:right}
@@ -57,7 +59,7 @@
 .settingsAboutCard .settingsCardText{position:relative;z-index:1;margin-top:10px;max-width:39ch}
 
 @media(max-width:390px){
-  .settingsHubRow{grid-template-columns:48px minmax(0,1fr) 14px;padding:11px;min-height:72px;gap:10px}.settingsHubIcon{width:48px;height:48px;border-radius:14px}.settingsHubTitle{font-size:17px}.settingsHubSub{font-size:9.5px;margin-top:4px}
+  .settingsHubRow{grid-template-columns:48px minmax(0,1fr) 14px;padding:11px;min-height:72px;gap:10px}.settingsHubIcon{width:48px;height:48px;border-radius:14px}.settingsHubSoundIcon{font-size:20px}.settingsHubSoundIcon:after{width:9px;height:9px;right:6px;top:6px}.settingsHubTitle{font-size:17px}.settingsHubSub{font-size:9.5px;margin-top:4px}
   .settingsActionGrid,.settingsDangerBody{grid-template-columns:1fr}.settingsAboutName{font-size:23px}.settingsAboutVersion{font-size:8.5px}
   .settingsMenuRow{grid-template-columns:32px minmax(0,1fr) 14px;padding:11px}.settingsMenuGlyph{width:32px;height:32px}
   .settingsSoundRow{grid-template-columns:36px minmax(0,1fr) 26px;padding:10px}.settingsSoundMark{width:36px;height:36px}.settingsSoundPlay{width:26px;height:26px}
