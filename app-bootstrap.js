@@ -1,6 +1,6 @@
 (()=>{
   'use strict';
-  const VERSION='35.3.0';
+  const VERSION='35.4.0';
 
   const styles=[
     'designer-fonts.css',
@@ -8,6 +8,7 @@
     'ui-dialog.css',
     'responsive.css',
     'dashboard.css',
+    'editor-layout.css',
     'onboarding.css',
     'feature-ui.css',
     'mode-tools.css',
@@ -43,6 +44,7 @@
     'app-help.js',
     'install-helper.js',
     'settings-hub.js',
+    'editor-layout.js',
     'app-self-test.js'
   ];
 
