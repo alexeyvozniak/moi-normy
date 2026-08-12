@@ -1,6 +1,6 @@
 (()=>{
   'use strict';
-  const VERSION='35.6.1';
+  const VERSION='35.7.0';
 
   const styles=[
     'designer-fonts.css',
@@ -11,6 +11,7 @@
     'editor-layout.css',
     'onboarding.css',
     'feature-ui.css',
+    'share-text.css',
     'mode-tools.css',
     'practice.css',
     'prayer-haptics.css',
@@ -27,6 +28,7 @@
     'day-clock.js',
     'audio.js',
     'history-ledger.js',
+    'share-text.js',
     'accrual.js',
     'onboarding.js',
     'book-mode.js',
