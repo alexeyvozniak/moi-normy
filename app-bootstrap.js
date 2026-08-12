@@ -12,7 +12,11 @@
     if(globalThis.PraviloManifest)return Promise.resolve(globalThis.PraviloManifest);
     return new Promise(resolve=>{
       const existing=[...document.scripts].find(script=>script.src&&pathOf(script.src).endsWith('/app-manifest.js'));
-      if(existing){existing.addEventListener('load',()=>resolve(globalThis.PraviloManifest||null),{once:true});existing.addEventListener('error',()=>resolve(null),{once:true});return;}
+      if(existing){
+        existing.addEventListener('load',()=>resolve(globalThis.PraviloManifest||null),{once:true});
+        existing.addEventListener('error',()=>resolve(null),{once:true});
+        return;
+      }
       const script=document.createElement('script');
       script.src='app-manifest.js';
       script.async=false;
@@ -21,6 +25,13 @@
       script.onerror=()=>resolve(null);
       document.head.appendChild(script);
     });
+  }
+
+  function refreshServiceWorker(){
+    if(!('serviceWorker' in navigator))return;
+    navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'})
+      .then(registration=>registration.update())
+      .catch(error=>console.warn('[Правило] Не удалось обновить service worker',error));
   }
 
   function ensureStyle(href,version){
@@ -62,6 +73,7 @@
     }
 
     diagnostics.version=manifest.version;
+    refreshServiceWorker();
     manifest.styles.forEach(href=>ensureStyle(href,manifest.version));
     for(const src of manifest.scripts)await loadScript(src,manifest.version);
 
