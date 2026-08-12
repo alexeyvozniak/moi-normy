@@ -27,11 +27,20 @@
     }
   }
 
-  window.PraviloShareText=Object.freeze({shareHistoryNote});
+  function decoratePath(){
+    document.querySelectorAll('.pathEntry.note[data-source="history"]').forEach(row=>{
+      if(row.querySelector('[data-share-history-id]'))return;
+      const id=row.dataset.sourceId;if(!id)return;
+      const button=document.createElement('button');button.type='button';button.className='noteShareButton pathNoteShare';button.dataset.shareHistoryId=id;button.textContent='Поделиться';
+      row.appendChild(button);
+    });
+  }
+
+  window.PraviloShareText=Object.freeze({shareHistoryNote,decoratePath});
 
   document.addEventListener('click',event=>{
-    const button=event.target.closest?.('[data-share-history-id]');if(!button)return;
-    event.preventDefault();event.stopPropagation();
-    void shareHistoryNote(button.dataset.shareHistoryId);
+    const button=event.target.closest?.('[data-share-history-id]');if(button){event.preventDefault();event.stopPropagation();void shareHistoryNote(button.dataset.shareHistoryId);return;}
+    if(event.target.closest?.('.tab[data-tab="path"]'))setTimeout(decoratePath,30);
   });
+  window.addEventListener('pravilo:render',()=>setTimeout(decoratePath,0));
 })();
