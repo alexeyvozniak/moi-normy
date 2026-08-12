@@ -29,17 +29,23 @@
 
   function decoratePath(){
     document.querySelectorAll('.pathEntry.note[data-source="history"]').forEach(row=>{
-      if(row.querySelector('[data-share-history-id]'))return;
       const id=row.dataset.sourceId;if(!id)return;
-      const button=document.createElement('button');button.type='button';button.className='noteShareButton pathNoteShare';button.dataset.shareHistoryId=id;button.textContent='Поделиться';
-      row.appendChild(button);
+      let actions=row.querySelector('.pathNoteActions');
+      if(!actions){actions=document.createElement('div');actions.className='pathNoteActions';row.appendChild(actions);}
+      if(!actions.querySelector('[data-edit-note-id]')){
+        const edit=document.createElement('button');edit.type='button';edit.className='noteEditButton pathNoteEdit';edit.dataset.editNoteId=id;edit.textContent='✎ Изменить';actions.appendChild(edit);
+      }
+      if(!actions.querySelector('[data-share-history-id]')){
+        const share=document.createElement('button');share.type='button';share.className='noteShareButton pathNoteShare';share.dataset.shareHistoryId=id;share.textContent='Поделиться';actions.appendChild(share);
+      }
     });
   }
 
   window.PraviloShareText=Object.freeze({shareHistoryNote,decoratePath});
 
   document.addEventListener('click',event=>{
-    const button=event.target.closest?.('[data-share-history-id]');if(button){event.preventDefault();event.stopPropagation();void shareHistoryNote(button.dataset.shareHistoryId);return;}
+    const share=event.target.closest?.('[data-share-history-id]');if(share){event.preventDefault();event.stopPropagation();void shareHistoryNote(share.dataset.shareHistoryId);return;}
+    const edit=event.target.closest?.('[data-edit-note-id]');if(edit){event.preventDefault();event.stopPropagation();window.PraviloNotes?.openNote?.(edit.dataset.editNoteId);return;}
     if(event.target.closest?.('.tab[data-tab="path"]'))setTimeout(decoratePath,30);
   });
   window.addEventListener('pravilo:render',()=>setTimeout(decoratePath,0));
