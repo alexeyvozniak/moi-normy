@@ -45,15 +45,16 @@
   async function deleteEntry(source,id){
     const row=entries().find(x=>x.source===source&&String(x.sourceId)===String(id));
     const title=row?.title||'эту запись';
-    const ok=await (window.praviloConfirm?.({kicker:'Путь',title:'Удалить запись из «Пути»?',message:`«${title}» будет удалена${source==='history'?' вместе со связанной записью истории':''}.`,confirmText:'Удалить',danger:true})??Promise.resolve(confirm('Удалить эту запись из «Пути»?')));
+    const ok=await (window.praviloConfirm?.({kicker:'Путь',title:'Удалить запись из «Пути»?',message:`«${title}» будет удалена${source==='history'?' вместе со связанной записью истории':''}.`,confirmText:'Удалить',danger:true})??Promise.resolve(false));
     if(!ok)return;
     if(source==='history')state.history=state.history.filter(h=>h.id!==id);else state.pathJournal=state.pathJournal.filter(x=>x.id!==id);
     save();render();renderPath();
   }
+  function menuHtml(){return '<details class="entryMenu pathEntryMenu"><summary aria-label="Действия с записью">⋯</summary><div class="entryMenuPopup"><button type="button" class="pathDelete">Удалить запись</button></div></details>';}
   function renderPath(){
     bookEvents();const root=$('pathTimeline');if(!root)return;const rows=entries();
     if(!rows.length){root.innerHTML='<div class="pathEmpty">Здесь постепенно появится твоя рукопись: завершённые практики, книги, заметки и изменения правила.</div>';return;}
-    root.innerHTML=rows.map(x=>{const tag=x.tag||({book_start:'книга',book_done:'книга завершена',prayer_done:'молитва',meditation_done:'медитация',rule:'изменение правила',note:'заметка'}[x.type]||'путь');return `<article class="pathEntry ${x.type==='note'?'note':''}" data-source="${x.source}" data-source-id="${escapeHtml(x.sourceId)}"><div class="pathDate">${fmtDate(x.ts)}</div><div class="pathEntryTitle">${escapeHtml(x.title)}</div>${x.text?`<div class="pathEntryText">${escapeHtml(x.text)}</div>`:''}<div class="pathTag">${escapeHtml(tag)}</div><button class="pathDelete" type="button">Удалить</button></article>`;}).join('');
+    root.innerHTML=rows.map(x=>{const tag=x.tag||({book_start:'книга',book_done:'книга завершена',prayer_done:'молитва',meditation_done:'медитация',rule:'изменение правила',note:'заметка'}[x.type]||'путь');return `<article class="pathEntry ${x.type==='note'?'note':''}" data-source="${x.source}" data-source-id="${escapeHtml(x.sourceId)}"><div class="pathDate">${fmtDate(x.ts)}</div><div class="pathEntryTitle">${escapeHtml(x.title)}</div>${x.text?`<div class="pathEntryText">${escapeHtml(x.text)}</div>`:''}<div class="pathTag">${escapeHtml(tag)}</div>${menuHtml()}</article>`;}).join('');
   }
   function snapshot(id){const item=id?state.items.find(x=>x.id===id):null;if(!item)return null;return {id:item.id,name:item.name,increment:item.increment,period:item.period,intervalDays:item.intervalDays,quick:item.quick,paused:item.paused,resetMode:item.resetMode,dailyTarget:item.dailyTarget,readingPlan:item.readingPlan?JSON.stringify(item.readingPlan):''};}
   function ruleText(item){if(item.readingPlan)return `Книга «${item.readingPlan.title}» · до ${fmtDate(item.readingPlan.deadline+'T12:00:00')}`;if(item.resetMode==='daily')return `${item.dailyTarget} ${item.unit} каждый день без переноса`;return `${item.increment} ${item.unit} · ${item.period}`;}
@@ -63,6 +64,11 @@
     const after={name:item.name,increment:item.increment,period:item.period,intervalDays:item.intervalDays,quick:item.quick,paused:item.paused,resetMode:item.resetMode,dailyTarget:item.dailyTarget,readingPlan:item.readingPlan?JSON.stringify(item.readingPlan):''};const old={name:before.name,increment:before.increment,period:before.period,intervalDays:before.intervalDays,quick:before.quick,paused:before.paused,resetMode:before.resetMode,dailyTarget:before.dailyTarget,readingPlan:before.readingPlan};
     if(JSON.stringify(after)!==JSON.stringify(old))journal('rule',`Изменено правило «${item.name}»`,ruleText(item),item.id);
   }
-  function init(){ensureJournal();addTab();bookEvents();window.addEventListener('pravilo:render',()=>{bookEvents();if(!$('pathView')?.classList.contains('hidden'))renderPath();});window.addEventListener('pravilo:editor-open',onEditorOpen);window.addEventListener('pravilo:editor-saved',onEditorSaved);$('pathTimeline')?.addEventListener('click',e=>{const button=e.target.closest('.pathDelete');if(!button)return;const row=button.closest('.pathEntry');deleteEntry(row.dataset.source,row.dataset.sourceId);});}
+  function init(){
+    ensureJournal();addTab();bookEvents();
+    window.addEventListener('pravilo:render',()=>{bookEvents();if(!$('pathView')?.classList.contains('hidden'))renderPath();});
+    window.addEventListener('pravilo:editor-open',onEditorOpen);window.addEventListener('pravilo:editor-saved',onEditorSaved);
+    $('pathTimeline')?.addEventListener('click',e=>{const button=e.target.closest('.pathDelete');if(!button)return;e.preventDefault();e.stopPropagation();const menu=button.closest('details');menu?.removeAttribute('open');const row=button.closest('.pathEntry');deleteEntry(row.dataset.source,row.dataset.sourceId);});
+  }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
