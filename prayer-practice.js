@@ -102,7 +102,7 @@
   }
 
   function decorate(){
-    if(decorating)return;decorating=true;requestAnimationFrame(()=>{try{document.querySelectorAll('#cards .task[data-item-id]').forEach(card=>{const item=state.items.find(x=>x.id===card.dataset.itemId),row=card.querySelector('.subRow');if(!row)return;row.querySelectorAll('.prayerPracticeButton').forEach(x=>x.remove());if(item?.practiceType!=='prayer')return;const b=document.createElement('button');b.type='button';b.className='practiceButton prayerPracticeButton';b.textContent='◯ Режим практики';b.addEventListener('click',()=>open(item.id));row.insertBefore(b,row.firstChild);});}finally{decorating=false;}});
+    if(decorating)return;decorating=true;requestAnimationFrame(()=>{try{document.querySelectorAll('#cards .task[data-item-id]').forEach(card=>{const item=state.items.find(x=>x.id===card.dataset.itemId),row=card.querySelector('.subRow');if(!row)return;row.querySelectorAll('.prayerPracticeButton').forEach(x=>x.remove());if(item?.practiceType!=='prayer')return;const b=document.createElement('button');b.type='button';b.className='practiceButton prayerPracticeButton';b.textContent='Начать практику';b.addEventListener('click',()=>open(item.id));row.insertBefore(b,row.firstChild);});}finally{decorating=false;}});
   }
   function init(){ensureScreen();decorate();window.addEventListener('pravilo:render',decorate);setTimeout(()=>{void offerResume();},220);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
