@@ -21,14 +21,21 @@
   }
   async function lock(){try{if('wakeLock'in navigator)wakeLock=await navigator.wakeLock.request('screen');}catch(e){}}
   function unlock(){try{wakeLock?.release();}catch(e){}wakeLock=null;}
-  function signal(kind){try{if(typeof navigator.vibrate==='function')navigator.vibrate(kind==='finish'?[90,80,140]:80);}catch(e){}}
+  function signal(kind){
+    try{void window.PraviloAudio?.play('meditationBell');}catch(_){/* vibration remains the fallback */}
+    try{if(typeof navigator.vibrate==='function')navigator.vibrate(kind==='finish'?[90,80,140]:80);}catch(e){}
+  }
   function open(id){
     const item=state.items.find(x=>x.id===id);if(!item||item.practiceType!=='meditation')return;
     ensureScreen();session={itemId:id,topic:'',phase:0,running:false,paused:false,endAt:0,remaining:PART_MS,historyId:null};
     $('meditationBackdrop').style.backgroundImage=`url("${item.image||'images/contemplation_looking_up.webp'}")`;
     $('meditationPractice').className='practiceScreen meditationScreen show';$('meditationTopic').value='';$('meditationFinalTopic').value='';$('meditationNoteFields').classList.add('hidden');$('meditationNoteBody').value='';$('meditationPause').textContent='Пауза';
   }
-  function start(){if(!session)return;session.topic=$('meditationTopic').value.trim();session.phase=1;session.running=true;session.paused=false;session.remaining=PART_MS;session.endAt=Date.now()+PART_MS;$('meditationPractice').classList.add('running');lock();tick();}
+  function start(){
+    if(!session)return;
+    void window.PraviloAudio?.unlock?.();
+    session.topic=$('meditationTopic').value.trim();session.phase=1;session.running=true;session.paused=false;session.remaining=PART_MS;session.endAt=Date.now()+PART_MS;$('meditationPractice').classList.add('running');lock();tick();
+  }
   function tick(){clearInterval(timer);timer=setInterval(update,250);update();}
   function update(){
     if(!session?.running||session.paused)return;let ms=session.endAt-Date.now();
