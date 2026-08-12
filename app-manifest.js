@@ -1,7 +1,7 @@
 (()=>{
   'use strict';
 
-  const VERSION='1.0.3';
+  const VERSION='1.0.4';
   const STYLES=Object.freeze([
     'designer-fonts.css','ui-controls.css','ui-dialog.css','responsive.css','dashboard.css','editor-layout.css','onboarding.css','feature-ui.css','share-text.css','mode-tools.css','practice.css','prayer-card.css','prayer-haptics.css','reminders.css','settings-hub.css','quiet-ui.css','install-helper.css','header-polish.css','visual-polish.css','section-heroes.css','insights.css'
   ]);
