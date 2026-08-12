@@ -25,6 +25,8 @@ var editId=null;
 var amountId=null;
 var selectedImage='';
 var currentTab='today';
+var undoTimer=null;
+var undoAction=null;
 
 function $(id){return document.getElementById(id);}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8);}
@@ -38,6 +40,10 @@ var esc=escapeHtml;
 function ask(options){
   if(typeof window.praviloConfirm==='function')return window.praviloConfirm(options);
   return Promise.resolve(window.confirm(options?.message||options?.title||'Подтвердить действие?'));
+}
+function notify(options){
+  if(typeof window.praviloNotice==='function')window.praviloNotice(options);
+  else console.warn('[Правило]',options?.title||'',options?.message||'');
 }
 
 function defaultPracticeType(name){
@@ -80,7 +86,8 @@ function normalizeState(candidate){
   return s;
 }
 function load(){
-  try{const raw=localStorage.getItem(STORAGE_KEY);if(raw)return normalizeState(JSON.parse(raw));}catch(error){console.warn('[Правило] Не удалось прочитать локальные данные',error);}
+  try{const raw=localStorage.getItem(STORAGE_KEY);if(raw)return normalizeState(JSON.parse(raw));}
+  catch(error){console.warn('[Правило] Не удалось прочитать локальные данные',error);}
   return freshState();
 }
 var state=load();
@@ -95,33 +102,57 @@ function logAction(item,amount,source='manual'){
 }
 
 function periodText(item){
-  if(item.readingPlan)return 'режим книги';
+  if(item.readingPlan)return 'книга';
   if(item.resetMode==='daily')return `${safeNumber(item.dailyTarget,item.increment)} ${item.unit} каждый день`;
   if(item.period==='daily')return `+${item.increment} каждый день`;
   if(item.period==='weekly')return `+${item.increment} каждую неделю`;
   if(item.period==='monthly')return `+${item.increment} каждый месяц`;
   return `+${item.increment} каждые ${item.intervalDays} дн.`;
 }
+function quoteIndex(){
+  const now=new Date(),start=new Date(now.getFullYear(),0,0);
+  return Math.floor((now-start)/86400000);
+}
 function renderDayQuote(){
   const text=$('dayQuoteText'),author=$('dayQuoteAuthor');if(!text||!author||!quotes.length)return;
-  const q=quotes[(new Date().getDate()+safeNumber(state.dayQuoteOffset,0))%quotes.length];
+  const q=quotes[(quoteIndex()+safeNumber(state.dayQuoteOffset,0))%quotes.length];
   text.textContent=q.text;author.textContent='— '+q.author;
+}
+function todayActivityCount(){
+  return new Set((state.history||[]).filter(h=>(h.day||localDateKey(new Date(h.ts)))===today()&&h.itemId).map(h=>h.itemId)).size;
 }
 function renderStats(){
   const el=$('stats');if(!el)return;
   const active=state.items.filter(i=>!i.paused).length;
   const debt=state.items.filter(i=>i.debt>0&&!i.paused).length;
-  const done=state.history.filter(h=>h.day===today()).length;
-  el.innerHTML=`<div class="stat"><img src="images/stat_active.webp" alt=""><div><div class="statNum">${active}</div><div class="statLabel">активных</div></div></div><div class="stat"><img src="images/stat_debt.webp" alt=""><div><div class="statNum">${debt}</div><div class="statLabel">с долгом</div></div></div><div class="stat"><img src="images/stat_done.webp" alt=""><div><div class="statNum">${done}</div><div class="statLabel">сделано сегодня</div></div></div>`;
+  const touched=todayActivityCount();
+  el.innerHTML=`<div class="stat"><img src="images/stat_active.webp" alt=""><div><div class="statNum">${active}</div><div class="statLabel">активных</div></div></div><div class="stat"><img src="images/stat_debt.webp" alt=""><div><div class="statNum">${debt}</div><div class="statLabel">с долгом</div></div></div><div class="stat"><img src="images/stat_done.webp" alt=""><div><div class="statNum">${touched}</div><div class="statLabel">занятий сегодня</div></div></div>`;
 }
 function cardHtml(item){
-  const special=item.readingPlan?`<div class="bookIdentity"><span class="bookIdentityLabel">книга</span><span class="bookIdentityTitle">${esc(item.readingPlan.title||item.name)}</span></div>`:'';
-  return `<article class="task" data-item-id="${esc(item.id)}"><div class="taskTop"><div><div class="taskName">${esc(item.name)}</div><div class="taskRule">${esc(periodText(item))}</div>${special}</div><img class="taskImage" src="${esc(item.image)}" alt=""></div><div class="debtLine"><div class="debtNumber">${item.debt}</div><div class="debtUnit">${esc(item.unit)} осталось</div></div><div class="debtNote"></div><div class="controlRow"><button class="button primary" data-action="amount" data-id="${esc(item.id)}">Списать</button><button class="button" data-action="quick" data-id="${esc(item.id)}">−${item.quick}</button><button class="button" data-action="close" data-id="${esc(item.id)}">Закрыть</button></div><div class="subRow"><button class="editButton" data-action="edit" data-id="${esc(item.id)}">Изменить</button></div></article>`;
+  const pause=item.paused?'<span class="pauseBadge">пауза</span>':'';
+  return `<article class="task${item.paused?' paused':''}" data-item-id="${esc(item.id)}"><div class="taskTop"><div><div class="taskName">${esc(item.name)}</div><div class="taskRule">${esc(periodText(item))}${pause}</div></div><img class="taskImage" src="${esc(item.image)}" alt=""></div><div class="debtLine"><div class="debtNumber">${item.debt}</div><div class="debtUnit">${esc(item.unit)} осталось</div></div><div class="debtNote"></div><div class="controlRow"><button class="button primary" data-action="amount" data-id="${esc(item.id)}">Списать</button><button class="button" data-action="quick" data-id="${esc(item.id)}">−${item.quick}</button><button class="button" data-action="close" data-id="${esc(item.id)}">Выполнено</button></div><div class="subRow"><button class="editButton" data-action="edit" data-id="${esc(item.id)}">Изменить</button></div></article>`;
 }
 function renderCards(){const el=$('cards');if(el)el.innerHTML=state.items.map(cardHtml).join('');}
+
+function lastSevenDays(){
+  const days=[];const now=new Date();now.setHours(12,0,0,0);
+  for(let offset=6;offset>=0;offset--){const d=new Date(now);d.setDate(now.getDate()-offset);days.push({key:localDateKey(d),date:d});}
+  return days;
+}
+function historyDay(entry){return entry.day||localDateKey(new Date(entry.ts));}
 function renderWeek(){
   const el=$('weekPanel');if(!el)return;
-  el.innerHTML=state.items.map(i=>`<div class="weekItem"><b>${esc(i.name)}</b> · осталось ${i.debt} ${esc(i.unit)}</div>`).join('')||'<div class="empty">Пока пусто.</div>';
+  const days=lastSevenDays(),keys=new Set(days.map(d=>d.key));
+  const relevant=(state.history||[]).filter(h=>keys.has(historyDay(h))&&h.itemId);
+  if(!state.items.length){el.innerHTML='<div class="empty">Пока нет занятий.</div>';return;}
+  el.innerHTML=`<div class="weekLegend">${days.map(d=>`<span><b>${new Intl.DateTimeFormat('ru-RU',{weekday:'short'}).format(d.date).replace('.','')}</b><small>${d.date.getDate()}</small></span>`).join('')}</div>`+
+    state.items.map(item=>{
+      const byDay=new Map(days.map(d=>[d.key,0]));
+      relevant.filter(h=>h.itemId===item.id).forEach(h=>byDay.set(historyDay(h),(byDay.get(historyDay(h))||0)+safeNumber(h.amount,0)));
+      const total=[...byDay.values()].reduce((a,b)=>a+b,0);
+      const cells=days.map(d=>{const value=byDay.get(d.key)||0;return `<div class="weekDay ${value>0?'done':''}" title="${value?`${value} ${esc(item.unit)}`:'нет записи'}"><span>${value?esc(value):'·'}</span></div>`;}).join('');
+      return `<div class="weekItem"><div class="weekItemHead"><div><b>${esc(item.name)}</b>${item.paused?'<span class="pauseBadge">пауза</span>':''}</div><div class="weekTotal">${total?`${total} ${esc(item.unit)}`:'—'}</div></div><div class="weekGrid">${cells}</div></div>`;
+    }).join('');
 }
 function renderHistory(){
   const el=$('historyPanel');if(!el)return;
@@ -140,10 +171,28 @@ function openAmount(id){
   amountId=id;const item=state.items.find(x=>x.id===id);if(!item)return;
   $('amountTitle').textContent='Списать: '+item.name;$('amountHint').textContent=`Сейчас осталось ${item.debt} ${item.unit}.`;$('amountInput').value='';show('amountOverlay');
 }
+function ensureUndoToast(){
+  let toast=$('undoToast');if(toast)return toast;
+  toast=document.createElement('div');toast.id='undoToast';toast.className='undoToast';toast.setAttribute('role','status');toast.innerHTML='<div class="undoText" id="undoText"></div><button type="button" id="undoButton">Отменить</button>';
+  document.body.appendChild(toast);$('undoButton').addEventListener('click',undoLastAction);return toast;
+}
+function hideUndoToast(){clearTimeout(undoTimer);undoTimer=null;undoAction=null;$('undoToast')?.classList.remove('show');}
+function undoLastAction(){
+  const action=undoAction;if(!action)return hideUndoToast();
+  const item=state.items.find(x=>x.id===action.itemId);if(item)item.debt=Math.max(0,safeNumber(item.debt,0)+action.amount);
+  state.history=state.history.filter(h=>h.id!==action.historyId);
+  save();render();hideUndoToast();
+}
+function showUndo(item,amount,entry){
+  if(!item||!entry||!['quick','manual','close','book-today','book-finished'].includes(entry.source))return;
+  const toast=ensureUndoToast();undoAction={itemId:item.id,amount,historyId:entry.id};
+  $('undoText').textContent=`−${amount} ${item.unit} · ${item.name}`;toast.classList.add('show');
+  clearTimeout(undoTimer);undoTimer=setTimeout(hideUndoToast,5000);
+}
 function subtract(id,n,source='manual'){
   const item=state.items.find(x=>x.id===id);if(!item)return;
   const amount=Math.min(item.debt,Math.max(0,safeNumber(n,0)));if(!amount)return;
-  item.debt=Math.max(0,item.debt-amount);logAction(item,amount,source);save();render();
+  item.debt=Math.max(0,item.debt-amount);const entry=logAction(item,amount,source);save();render();showUndo(item,amount,entry);
 }
 function picker(){const el=$('imagePicker');if(el)el.innerHTML=assets.map(a=>`<button type="button" class="pick ${selectedImage===a.src?'selected':''}" data-image-src="${esc(a.src)}"><img src="${a.src}" alt=""><span>${esc(a.name)}</span></button>`).join('');}
 function selectImage(src){selectedImage=src;if($('eImageUrl'))$('eImageUrl').value='';picker();}
@@ -188,10 +237,9 @@ function bindCoreUi(){
   $('ePeriod')?.addEventListener('change',toggleIntervalField);
   $('addBtn')?.addEventListener('click',()=>openEditor());
   $('settingsBtn')?.addEventListener('click',()=>show('settingsOverlay'));
-  $('dayQuote')?.addEventListener('click',()=>{state.dayQuoteOffset=(safeNumber(state.dayQuoteOffset,0)+1)%Math.max(1,quotes.length);save();renderDayQuote();});
   $('exportBtn')?.addEventListener('click',exportState);
   $('importBtn')?.addEventListener('click',()=>$('importFile')?.click());
-  $('importFile')?.addEventListener('change',e=>{const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const x=normalizeState(JSON.parse(r.result));state=x;save();render();hide('settingsOverlay');}catch(_){alert('Не удалось прочитать файл.');}};r.readAsText(f);});
+  $('importFile')?.addEventListener('change',e=>{const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{state=normalizeState(JSON.parse(r.result));save();render();hide('settingsOverlay');}catch(_){notify({kicker:'Данные',title:'Не удалось импортировать',message:'Файл резервной копии не удалось прочитать. Проверь, что это JSON-экспорт из «Правила».'});}};r.readAsText(f);});
   $('clearHistory')?.addEventListener('click',async()=>{const ok=await ask({kicker:'История',title:'Очистить всю историю?',message:'Будут удалены записи о выполненных действиях и связанные с ними заметки. Сами занятия останутся.',confirmText:'Очистить',danger:true});if(ok){state.history=[];save();render();}});
   $('resetAll')?.addEventListener('click',async()=>{const ok=await ask({kicker:'Сброс',title:'Сбросить всё приложение?',message:'Все занятия, история и настройки будут заменены исходным набором. Перед этим лучше сделать экспорт.',confirmText:'Сбросить всё',danger:true});if(ok){state=freshState();save();render();hide('settingsOverlay');}});
 }
