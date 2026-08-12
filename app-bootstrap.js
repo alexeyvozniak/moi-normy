@@ -1,6 +1,6 @@
 (()=>{
   'use strict';
-  const VERSION='31.1.0';
+  const VERSION='32.0.0';
 
   const styles=[
     'designer-fonts.css?v=1',
@@ -16,19 +16,21 @@
     'install-helper.css?v=1'
   ];
 
-  /* Один модуль — одна ответственность. */
+  /* Один модуль — одна ответственность; порядок зависимостей явный. */
   const scripts=[
     'accrual.js?v=1',
     'onboarding.js?v=4',
     'book-mode.js?v=1',
-    'practice-types.js?v=2',
-    'enhancements.js?v=1',
+    'practice-types.js?v=3',
+    'counter-mode.js?v=1',
+    'catalog-extras.js?v=1',
     'practice.js?v=1',
     'prayer-haptics.js?v=4',
     'meditation-topic-fix.js?v=1',
     'meditation-audio.js?v=2',
     'notes.js?v=1',
-    'history-delete.js?v=1',
+    'notes-export.js?v=1',
+    'history-delete.js?v=2',
     'offline-storage.js?v=1',
     'reminders.js?v=1',
     'quiet-ui.js?v=1',
