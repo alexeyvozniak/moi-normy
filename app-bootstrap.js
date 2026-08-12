@@ -1,6 +1,6 @@
 (()=>{
   'use strict';
-  const VERSION='33.0.0';
+  const VERSION='33.1.0';
 
   const styles=[
     'designer-fonts.css?v=1',
@@ -27,8 +27,7 @@
     'path.js?v=1',
     'prayer-practice.js?v=1',
     'prayer-haptics.js?v=4',
-    'meditation-practice.js?v=1',
-    'meditation-topic-fix.js?v=2',
+    'meditation-practice.js?v=2',
     'notes.js?v=1',
     'notes-export.js?v=1',
     'history-delete.js?v=2',
