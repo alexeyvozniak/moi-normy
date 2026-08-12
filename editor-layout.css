@@ -1,0 +1,20 @@
+/* Activity editor: frequent fields first, infrequent settings grouped below. */
+.editorPrimaryQuick{margin-top:9px}
+.editorSection{margin:10px 0;border:1px solid var(--hair);border-radius:15px;background:var(--paper2);overflow:hidden}
+.editorSection>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 13px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.editorSection>summary::-webkit-details-marker{display:none}
+.editorSection>summary::marker{content:''}
+.editorSection>summary span:first-child{display:grid;gap:2px}
+.editorSection>summary strong{font:500 16px/1.1 var(--serif)}
+.editorSection>summary small{color:var(--muted);font-size:9px;line-height:1.3}
+.editorSectionArrow{color:var(--muted);font-size:24px;line-height:1;transform:rotate(0deg);transition:transform .16s ease}
+.editorSection[open] .editorSectionArrow{transform:rotate(90deg)}
+.editorSectionBody{padding:0 12px 12px;border-top:1px solid rgba(216,205,191,.72)}
+.editorSectionBody>.field:first-child,.editorSectionBody>.bookModeBox:first-child,.editorSectionBody>.modeBox:first-child{margin-top:11px}
+.editorSectionBody>.field:last-child,.editorSectionBody>.toggleRow:last-child,.editorSectionBody>.bookModeBox:last-child,.editorSectionBody>.modeBox:last-child{margin-bottom:0}
+.editorSection .bookModeBox,.editorSection .modeBox{background:var(--paper);border-color:rgba(216,205,191,.8)}
+.editorSection .pickerGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+@media(max-width:370px){
+  .editorSection>summary{padding:11px}.editorSection>summary strong{font-size:15px}
+}
