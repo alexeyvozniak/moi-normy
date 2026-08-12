@@ -15,22 +15,26 @@
   function unlock(){try{wakeLock?.release();}catch(e){}wakeLock=null;}
   function update(){
     if(!session)return;const item=state.items.find(x=>x.id===session.itemId);if(!item)return;
-    const left=Math.max(0,Number(item.debt)||0);$('practiceCount').textContent=left;$('practiceCountLabel').textContent=item.unit||'молитв';$('practiceDone').textContent=session.logged?`в этой практике: ${session.logged}`:'';
+    const left=Math.max(0,Number(item.debt)||0);$('practiceCount').textContent=left;$('practiceCountLabel').textContent=item.unit||'молитв';$('practiceDone').textContent=session.count?`в этой практике: ${session.count}`:'';
     if(left<=0){$('prayerPractice').classList.add('practiceFinished');$('practiceCount').textContent='Завершено';$('practiceCountLabel').textContent='молитвенное правило';$('practiceHint').textContent='Можно спокойно вернуться в «Правило».';session.finished=true;}
   }
   function open(id){
-    const item=state.items.find(x=>x.id===id);if(!item||item.practiceType!=='prayer')return;ensureScreen();session={itemId:id,logged:0,startDebt:Number(item.debt)||0,finished:false};$('practiceBackdrop').style.backgroundImage=`url("${item.image||'images/prayer_icons.webp'}")`;$('practiceName').textContent=item.name;$('practiceHint').textContent='Коснись свободного места на экране после каждой молитвы.';$('prayerPractice').classList.remove('practiceFinished');$('prayerPractice').classList.add('show');update();lock();
+    const item=state.items.find(x=>x.id===id);if(!item||item.practiceType!=='prayer')return;ensureScreen();
+    session={itemId:id,count:0,pending:0,startDebt:Number(item.debt)||0,finished:false};
+    $('practiceBackdrop').style.backgroundImage=`url("${item.image||'images/prayer_icons.webp'}")`;$('practiceName').textContent=item.name;$('practiceHint').textContent='Коснись свободного места на экране после каждой молитвы.';$('prayerPractice').classList.remove('practiceFinished');$('prayerPractice').classList.add('show');update();lock();
+    window.dispatchEvent(new CustomEvent('pravilo:prayer-open',{detail:{itemId:item.id}}));
   }
   function tap(event){
     if(!session||session.finished)return;const item=state.items.find(x=>x.id===session.itemId);if(!item||Number(item.debt)<=0)return;
-    item.debt=Math.max(0,Number(item.debt)-1);session.logged+=1;save();
-    window.dispatchEvent(new CustomEvent('pravilo:prayer-tap',{detail:{itemId:item.id,sessionCount:session.logged,remaining:Number(item.debt)||0}}));
+    item.debt=Math.max(0,Number(item.debt)-1);session.count+=1;session.pending+=1;save();
+    window.dispatchEvent(new CustomEvent('pravilo:prayer-tap',{detail:{itemId:item.id,sessionCount:session.count,remaining:Number(item.debt)||0}}));
     const pulse=$('practicePulse');if(pulse){pulse.style.left=`${event.clientX-30}px`;pulse.style.top=`${event.clientY-30}px`;pulse.classList.remove('go');void pulse.offsetWidth;pulse.classList.add('go');}
     update();
     if(Number(item.debt)<=0){flush('close');window.praviloJournal?.('prayer_done','Завершено молитвенное правило',`${item.name}: ${session.startDebt} ${item.unit}`.trim(),item.id);render();}
   }
   function flush(source='practice'){
-    if(!session?.logged)return;const item=state.items.find(x=>x.id===session.itemId);if(!item)return;logAction(item,session.logged,source);session.logged=0;save();
+    if(!session?.pending)return;const item=state.items.find(x=>x.id===session.itemId);if(!item)return;
+    logAction(item,session.pending,source);session.pending=0;save();
   }
   function close(){if(!session)return;flush('practice');$('prayerPractice')?.classList.remove('show');unlock();render();session=null;}
   function decorate(){
