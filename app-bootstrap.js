@@ -38,7 +38,6 @@
     'history-delete.js',
     'offline-storage.js',
     'reminders.js',
-    'quiet-ui.js',
     'app-help.js',
     'install-helper.js',
     'settings-hub.js',
