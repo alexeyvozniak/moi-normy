@@ -17,14 +17,28 @@ button:disabled{opacity:.48;cursor:default}
 .entryMore{width:30px;height:30px;display:grid;place-items:center;border:0;border-radius:999px;background:transparent;color:#8a8177!important;font-size:20px;line-height:1;padding:0;flex:none}
 .entryMore:active{background:var(--soft)}
 .entryMore:focus-visible{outline:2px solid rgba(104,116,95,.28);outline-offset:1px}
-.historyItem{position:relative;grid-template-columns:minmax(0,1fr) auto auto!important;align-items:center;padding:15px 0 15px 17px!important}
-.historyItem::before{content:"";position:absolute;left:1px;top:22px;width:7px;height:7px;border:1.5px solid rgba(104,116,95,.70);border-radius:50%;background:var(--paper);box-shadow:0 0 0 3px rgba(104,116,95,.045)}
-.historyItem b{display:block;font:600 18px/1.08 var(--serif);margin-bottom:4px;letter-spacing:-.01em}
-.historyItem .smallText{font-size:9.5px;line-height:1.35;color:#91877d;font-variant-numeric:tabular-nums}
-.historyAmount{min-width:62px;text-align:right;font:500 24px/.9 var(--serif);letter-spacing:-.025em;font-variant-numeric:tabular-nums}
-.historyEntryMore{margin-left:2px}
+
+/* История: не журнал операций, а спокойная летопись по дням. */
+#historyPanel.historyGrouped{display:grid;gap:10px;padding:0;background:transparent;border:0;box-shadow:none}
+.historyDayGroup{overflow:hidden;border:1px solid var(--hair);border-radius:20px;background:rgba(251,247,240,.92);box-shadow:0 5px 18px rgba(71,48,22,.035)}
+.historyDayHeader{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:13px 15px 10px;border-bottom:1px solid rgba(216,205,191,.68)}
+.historyDayTitle{font-size:9px;line-height:1.1;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--green)}
+.historyDayMeta{font-size:9px;line-height:1.2;color:#9a9085}
+.historyDayRows{padding:0 15px}
+.historyItem{position:relative;display:grid!important;grid-template-columns:minmax(0,1fr) auto 26px!important;gap:9px;align-items:center;padding:12px 0!important;border-bottom:1px solid rgba(216,205,191,.62)!important}
+.historyItem:last-child{border-bottom:0!important}
+.historyItem::before{content:none!important}
+.historyItem b{display:block;margin:0 0 4px;font:500 17px/1.08 var(--serif);letter-spacing:-.012em}
+.historyItem .smallText{font-size:9.5px;line-height:1.2;color:#999086;font-variant-numeric:tabular-nums}
+.historyAmount{min-width:0;padding:5px 8px;border-radius:999px;background:rgba(104,116,95,.075);color:var(--green);text-align:right;font:600 16px/1 var(--serif);letter-spacing:-.015em;font-variant-numeric:tabular-nums}
+.historyEntryMore{width:26px;height:26px;margin:0;font-size:17px;color:#a0988f!important}
+
 .pathEntry{position:relative;padding-right:38px}
 .pathEntryMore{position:absolute;right:0;top:0}
 
 /* Нативные кнопки, которые создаются модулями, наследуют дизайн приложения. */
 .settingsBack,.featureClose,.installClose,.meditationControl,.practiceExit,.updateButton,.historyNoteButton,.pathDelete,.historyDelete,.entryMore{font-family:var(--sans);-webkit-appearance:none;appearance:none}
+
+@media(max-width:390px){
+  .historyDayHeader{padding:12px 13px 9px}.historyDayRows{padding:0 13px}.historyItem{padding:11px 0!important;gap:8px}.historyItem b{font-size:16px}.historyAmount{font-size:15px;padding:5px 7px}
+}
