@@ -24,7 +24,8 @@
   function saveNote(){
     const entry=state.history.find(h=>String(h.id)===String(entryId));if(!entry)return;const title=$('noteSubject').value.trim(),body=$('noteBody').value.trim();if(!title&&!body){toast('Заметка пустая');return;}
     const previous=entry.note||{};
-    entry.note={kind:kindOf(entry),title,body,createdAt:previous.createdAt||new Date().toISOString(),updatedAt:new Date().toISOString()};save();$('noteFeatureOverlay').classList.remove('show');renderHistory();decorateHistory();window.PraviloShareText?.decoratePath?.();
+    entry.note={kind:kindOf(entry),title,body,createdAt:previous.createdAt||new Date().toISOString(),updatedAt:new Date().toISOString()};
+    save();$('noteFeatureOverlay').classList.remove('show');render();window.PraviloShareText?.decoratePath?.();
   }
   function decorateHistory(){
     const panel=$('historyPanel');if(!panel)return;const rows=[...panel.querySelectorAll('.historyItem')],entries=state.history.slice(0,80);
