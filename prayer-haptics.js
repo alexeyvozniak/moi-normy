@@ -7,7 +7,7 @@
     try{return navigator.vibrate(pattern)!==false;}catch(_){return false;}
   }
   function playCue(name){
-    try{void window.PraviloAudio?.play(name);}catch(_){/* vibration + visual cue remain the fallback */}
+    try{void window.PraviloAudio?.play(name,{direct:true});}catch(_){/* vibration + visual cue remain the fallback */}
   }
   function visualCue(kind){
     const root=$('prayerPractice');if(!root)return;
