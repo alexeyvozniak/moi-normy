@@ -62,11 +62,11 @@
     if(source==='history')state.history=state.history.filter(h=>h.id!==id);else state.pathJournal=state.pathJournal.filter(x=>x.id!==id);
     save();render();renderPath();
   }
-  function menuHtml(){return '<details class="entryMenu pathEntryMenu"><summary aria-label="Действия с записью">⋯</summary><div class="entryMenuPopup"><button type="button" class="pathDelete">Удалить запись</button></div></details>';}
+  function actionHtml(){return '<button type="button" class="entryMore pathEntryMore" aria-label="Действия с записью">⋯</button>';}
   function renderPath(){
     bookEvents();const root=$('pathTimeline');if(!root)return;const rows=entries();
     if(!rows.length){root.innerHTML='<div class="pathEmpty">Здесь постепенно появится твоя рукопись: завершённые практики, книги, заметки и изменения правила.</div>';return;}
-    root.innerHTML=rows.map(x=>{const tag=x.tag||({book_start:'книга',book_done:'книга завершена',prayer_done:'молитва',meditation_done:'медитация',rule:'изменение правила',note:'заметка'}[x.type]||'путь');return `<article class="pathEntry ${x.type==='note'?'note':''}" data-source="${x.source}" data-source-id="${escapeHtml(x.sourceId)}"><div class="pathDate">${fmtDate(x.ts)}</div><div class="pathEntryTitle">${escapeHtml(x.title)}</div>${x.text?`<div class="pathEntryText">${escapeHtml(x.text)}</div>`:''}<div class="pathTag">${escapeHtml(tag)}</div>${menuHtml()}</article>`;}).join('');
+    root.innerHTML=rows.map(x=>{const tag=x.tag||({book_start:'книга',book_done:'книга завершена',prayer_done:'молитва',meditation_done:'медитация',rule:'изменение правила',note:'заметка'}[x.type]||'путь');return `<article class="pathEntry ${x.type==='note'?'note':''}" data-source="${x.source}" data-source-id="${escapeHtml(x.sourceId)}"><div class="pathDate">${fmtDate(x.ts)}</div><div class="pathEntryTitle">${escapeHtml(x.title)}</div>${x.text?`<div class="pathEntryText">${escapeHtml(x.text)}</div>`:''}<div class="pathTag">${escapeHtml(tag)}</div>${actionHtml()}</article>`;}).join('');
   }
   function snapshot(id){const item=id?state.items.find(x=>x.id===id):null;if(!item)return null;return {id:item.id,name:item.name,increment:item.increment,period:item.period,intervalDays:item.intervalDays,quick:item.quick,paused:item.paused,resetMode:item.resetMode,dailyTarget:item.dailyTarget,readingPlan:item.readingPlan?JSON.stringify(item.readingPlan):''};}
   function ruleText(item){if(item.readingPlan)return `Книга «${item.readingPlan.title}» · до ${fmtDate(item.readingPlan.deadline+'T12:00:00')}`;if(item.resetMode==='daily')return `${item.dailyTarget} ${item.unit} каждый день без переноса`;return `${item.increment} ${item.unit} · ${item.period}`;}
@@ -80,7 +80,7 @@
     ensureJournal();addTab();bookEvents();
     window.addEventListener('pravilo:render',()=>{bookEvents();if(!$('pathView')?.classList.contains('hidden'))renderPath();});
     window.addEventListener('pravilo:editor-open',onEditorOpen);window.addEventListener('pravilo:editor-saved',onEditorSaved);
-    $('pathTimeline')?.addEventListener('click',e=>{const button=e.target.closest('.pathDelete');if(!button)return;e.preventDefault();e.stopPropagation();const menu=button.closest('details');menu?.removeAttribute('open');const row=button.closest('.pathEntry');deleteEntry(row.dataset.source,row.dataset.sourceId);});
+    $('pathTimeline')?.addEventListener('click',e=>{const button=e.target.closest('.entryMore');if(!button)return;e.preventDefault();e.stopPropagation();const row=button.closest('.pathEntry');deleteEntry(row.dataset.source,row.dataset.sourceId);});
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
