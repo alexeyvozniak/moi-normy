@@ -1,6 +1,6 @@
 (()=>{
   'use strict';
-  const VERSION='35.14.0';
+  const VERSION='35.15.0';
 
   const styles=[
     'designer-fonts.css',
@@ -22,7 +22,8 @@
     'install-helper.css',
     'header-polish.css',
     'visual-polish.css',
-    'section-heroes.css'
+    'section-heroes.css',
+    'insights.css'
   ];
 
   const scripts=[
@@ -49,6 +50,8 @@
     'notes.js',
     'notes-export.js',
     'history-delete.js',
+    'today-polish.js',
+    'week-history-tools.js',
     'offline-storage.js',
     'reminders.js',
     'interaction-dialogs.js',
