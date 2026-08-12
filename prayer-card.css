@@ -1,0 +1,6 @@
+.prayerCard .controlRow{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr)}
+.prayerCard .prayerHiddenAction{display:none!important}
+.prayerCard .controlRow .button{min-width:0}
+.prayerFixedField{opacity:.72}
+.prayerFixedField input{pointer-events:none;background:var(--soft)!important;color:var(--muted)!important}
+@media(max-width:390px){.prayerCard .controlRow{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)}}
