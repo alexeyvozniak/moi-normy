@@ -1,6 +1,8 @@
 (()=>{
   'use strict';
   const LEGACY_REMINDERS_KEY='pravilo_reminders_v1';
+  const APP_VERSION='1.0.0';
+  const APP_AUTHOR='Алексей Возняк';
   const $=id=>document.getElementById(id);
 
   function openOverlay(id){$(id)?.classList.add('show');}
@@ -38,14 +40,18 @@
   }
 
   function buildAppSection(){
-    const overlay=createSection('settingsAppOverlay','Приложение','Помощь, обновления, звуки и установка на телефон.',`
+    const overlay=createSection('settingsAppOverlay','Приложение','Звуки, обновления, установка и сведения о приложении.',`
       <div class="settingsActionStack"><button class="button" type="button" id="settingsOpenGuide">Как пользоваться</button><button class="button" type="button" id="settingsCheckUpdate">Проверить обновление</button><button class="button" type="button" id="settingsInstallHelp">Установка на телефон</button></div>
       <div class="settingsCard settingsAudioCard" id="settingsAudioCard">
         <div class="settingsAudioHead"><div><strong>Звуки практики</strong><div class="settingsCardText">Сигналы на 10 и 100 молитв и колокол медитации.</div></div><button class="switch" type="button" id="settingsAudioToggle" aria-label="Звуки практики" aria-pressed="true"></button></div>
         <label class="settingsAudioVolume"><span>Общая громкость</span><input type="range" id="settingsAudioVolume" min="15" max="100" step="5" value="100"><b id="settingsAudioVolumeValue">100%</b></label>
         <div class="settingsAudioPreview"><button class="button" type="button" data-audio-preview="prayerTen">10</button><button class="button" type="button" data-audio-preview="prayerHundred">100</button><button class="button" type="button" data-audio-preview="meditationBell">Медитация</button></div>
       </div>
-      <div class="settingsCard"><strong>«Правило» работает как локальное PWA</strong><div class="settingsCardText">Основные данные остаются на устройстве; интернет нужен только для получения новой версии приложения.</div></div>`);
+      <div class="settingsCard settingsAboutCard">
+        <div class="settingsAboutTop"><div class="settingsAboutName">Правило</div><div class="settingsAboutVersion">версия ${APP_VERSION}</div></div>
+        <div class="settingsAboutAuthor">Автор — ${APP_AUTHOR} · 2026</div>
+        <div class="settingsCardText">Личное локальное PWA для молитвы, чтения, медитации и собственного ритма. Основные данные остаются на устройстве; интернет нужен только для обновления приложения.</div>
+      </div>`);
     $('settingsOpenGuide').addEventListener('click',()=>window.praviloOpenGuide?.()||click('openGuideBtn'));
     $('settingsCheckUpdate').addEventListener('click',()=>window.praviloCheckUpdate?.()||click('checkUpdateBtn'));
     $('settingsInstallHelp').addEventListener('click',()=>window.praviloOpenInstallHelp?.()||click('installSettingsBtn'));
@@ -72,7 +78,7 @@
     const sheet=$('settingsOverlay')?.querySelector('.sheet');if(!sheet||$('settingsHub'))return;
     buildDataSection();buildAppSection();
     const hub=document.createElement('div');hub.id='settingsHub';hub.className='settingsHub';
-    hub.innerHTML=`<button class="settingsHubRow" id="settingsHubReminders" type="button"><span class="settingsHubIcon"><img src="images/settings-reminders.webp" alt=""></span><span><span class="settingsHubTitle">Напоминания</span><span class="settingsHubSub" id="settingsHubReminderSub"></span></span><span class="settingsHubArrow">›</span></button><button class="settingsHubRow" id="settingsHubData" type="button"><span class="settingsHubIcon"><img src="images/settings-data.webp" alt=""></span><span><span class="settingsHubTitle">Данные</span><span class="settingsHubSub">копия · экспорт · офлайн</span></span><span class="settingsHubArrow">›</span></button><button class="settingsHubRow" id="settingsHubApp" type="button"><span class="settingsHubIcon"><img src="images/settings-app.webp" alt=""></span><span><span class="settingsHubTitle">Приложение</span><span class="settingsHubSub">звуки · помощь · обновления</span></span><span class="settingsHubArrow">›</span></button>`;
+    hub.innerHTML=`<button class="settingsHubRow" id="settingsHubReminders" type="button"><span class="settingsHubIcon"><img src="images/settings-reminders.webp" alt=""></span><span><span class="settingsHubTitle">Напоминания</span><span class="settingsHubSub" id="settingsHubReminderSub"></span></span><span class="settingsHubArrow">›</span></button><button class="settingsHubRow" id="settingsHubData" type="button"><span class="settingsHubIcon"><img src="images/settings-data.webp" alt=""></span><span><span class="settingsHubTitle">Данные</span><span class="settingsHubSub">копия · экспорт · офлайн</span></span><span class="settingsHubArrow">›</span></button><button class="settingsHubRow" id="settingsHubApp" type="button"><span class="settingsHubIcon"><img src="images/settings-app.webp" alt=""></span><span><span class="settingsHubTitle">Приложение</span><span class="settingsHubSub">звуки · помощь · версия 1.0</span></span><span class="settingsHubArrow">›</span></button>`;
     sheet.querySelector('.sheetHeader')?.insertAdjacentElement('afterend',hub);
     hideLegacySettingsContent(sheet,hub);
     $('settingsHubReminders').addEventListener('click',()=>{if(window.praviloOpenReminders)window.praviloOpenReminders();else if($('openReminders'))click('openReminders');else openOverlay('remindersOverlay');});
