@@ -55,7 +55,6 @@
 .settingsAboutTop{position:relative;z-index:1;display:flex;align-items:baseline;justify-content:space-between;gap:12px}
 .settingsAboutName{font:500 25px/1 var(--serif);letter-spacing:-.025em;color:var(--ink)}
 .settingsAboutVersion{font-size:9px;color:var(--green);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
-.settingsAboutAuthor{position:relative;z-index:1;margin-top:8px;font-size:10px;color:#70675e}
 .settingsAboutCard .settingsCardText{position:relative;z-index:1;margin-top:10px;max-width:39ch}
 
 @media(max-width:390px){
