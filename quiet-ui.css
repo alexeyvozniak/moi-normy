@@ -1,27 +1,22 @@
-/* Более тихий интерфейс: одно духовное слово наверху, вторичные действия визуально отступают. */
-.wordButton{display:none!important}
+/* Тихий интерфейс: вторичные действия отступают, частые остаются заметными. */
 .quoteTap{display:none!important}
 .quoteCard{cursor:pointer}
 .quoteText{font-size:19px;line-height:1.32;max-width:34ch}
 .quoteAuthor{margin-top:8px;font-size:9.5px;line-height:1.35}
 .subRow{min-height:30px}
 .editButton{margin-left:auto;border:0!important;background:transparent!important;color:#8a8177!important;padding:6px 4px!important;min-height:30px!important}
-.editButton:before{content:'⋯ ';letter-spacing:.08em}
+.editButton::before{content:'⋯ ';letter-spacing:.08em}
 .task:not(:has(.practiceButton)) .subRow{justify-content:flex-end}
 
-/* «Образы» остаются функцией выбора обложки, но больше не занимают место в основной навигации. */
+/* «Образы» остаются в редакторе занятий, но не занимают вкладку основной навигации. */
 .tab[data-tab="catalog"]{display:none!important}
 #catalogView{display:none!important}
 
-/* Самое частое действие — быстрое списание фиксированной нормы. */
+/* После рефакторинга действия определяются data-action, а не inline onclick. */
 .controlRow{grid-template-columns:1.2fr .82fr .76fr}
-.controlRow .button[onclick^="quickSubtract"]{
-  order:1;background:var(--green)!important;border-color:var(--green)!important;color:#fff!important;font-weight:720
-}
-.controlRow .button[onclick^="openAmount"]{
-  order:2;background:transparent!important;border-color:var(--hair)!important;color:var(--muted)!important;font-weight:600
-}
-.controlRow .button[onclick^="closeDebt"]{order:3;background:var(--paper2);color:#5f584f}
+.controlRow .button[data-action="quick"]{order:1;background:var(--green)!important;border-color:var(--green)!important;color:#fff!important;font-weight:700}
+.controlRow .button[data-action="amount"]{order:2;background:transparent!important;border-color:var(--hair)!important;color:var(--muted)!important;font-weight:600}
+.controlRow .button[data-action="close"]{order:3;background:var(--paper2);border-color:var(--hair);color:#5f584f}
 
 @media(max-width:390px){
   .quoteText{font-size:18px;line-height:1.3}
