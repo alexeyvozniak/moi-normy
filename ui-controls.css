@@ -1,0 +1,22 @@
+/* Базовые интерактивные элементы. Без бизнес-логики. */
+button{color:inherit;-webkit-appearance:none;appearance:none}
+button:disabled{opacity:.48;cursor:default}
+
+/* Переключатель паузы: отдельная дорожка и настоящий ползунок. */
+.switch{position:relative;display:inline-block;flex:none;width:49px;height:30px;padding:0;border:1px solid rgba(94,82,68,.10);border-radius:999px;background:#cbc2b7;box-shadow:inset 0 1px 2px rgba(63,48,30,.08);transition:background .18s ease,border-color .18s ease}
+.switch::after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fffaf4;box-shadow:0 2px 6px rgba(54,39,22,.18);transition:transform .18s ease}
+.switch.on{background:var(--green);border-color:var(--green)}
+.switch.on::after{transform:translateX(19px)}
+.switch:focus-visible{outline:2px solid rgba(104,116,95,.35);outline-offset:2px}
+
+/* Кнопка настроек использует утверждённую японскую шестерёнку. */
+#settingsBtn{overflow:hidden;padding:0;background:var(--paper);border-color:var(--hair)}
+#settingsBtn .settingsGearIcon{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.04)}
+
+/* Тихие вторичные удаления: никогда не превращаются в iOS-blue. */
+.historyDelete,.pathDelete{border:0;background:transparent;color:#9a776d!important;padding:5px 0;font-size:9px;font-weight:600}
+.historyDelete{grid-column:1/-1;justify-self:start}
+.pathDelete{display:block;margin-top:7px}
+
+/* Нативные кнопки, которые создаются модулями, наследуют дизайн приложения. */
+.settingsBack,.featureClose,.installClose,.meditationControl,.practiceExit,.updateButton,.historyNoteButton,.pathDelete,.historyDelete{font-family:var(--sans);-webkit-appearance:none;appearance:none}
