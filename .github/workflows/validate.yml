@@ -23,6 +23,9 @@ jobs:
             node --check "$file"
           done < <(find . -maxdepth 2 -name '*.js' -print0)
 
+      - name: Run domain logic tests
+        run: node tests/domain.test.js
+
       - name: Check referenced local assets
         shell: python
         run: |
