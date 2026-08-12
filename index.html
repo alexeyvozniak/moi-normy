@@ -8,14 +8,29 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Правило">
 <meta name="format-detection" content="telephone=no">
-<meta name="author" content="Алексей Возняк">
 <meta name="description" content="Правило — личное локальное PWA для молитвы, чтения, медитации и собственного ритма.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="stylesheet" href="app.css">
+<style id="praviloCriticalBoot">
+html,body{margin:0;min-height:100%;background:#f3ede3;color:#1d1915}
+html.pravilo-booting body{overflow:hidden}
+html.pravilo-booting .app{visibility:hidden}
+.praviloBoot{position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;padding:max(24px,env(safe-area-inset-top)) 24px max(24px,env(safe-area-inset-bottom));box-sizing:border-box;background:#f3ede3;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .24s ease,visibility .24s ease}
+html.pravilo-booting .praviloBoot{opacity:1;visibility:visible;pointer-events:auto}
+.praviloBootInner{display:grid;justify-items:center;gap:9px;transform:translateY(-3vh);text-align:center}
+.praviloBootMark{position:relative;width:31px;height:31px;border:1.5px solid rgba(104,116,95,.48);border-right-color:rgba(104,116,95,.12);border-radius:50%;animation:praviloBootTurn 1.7s linear infinite}
+.praviloBootMark:after{content:"";position:absolute;width:6px;height:6px;border-radius:50%;right:-1px;top:4px;background:#bd5842;box-shadow:0 0 0 4px rgba(189,88,66,.06)}
+.praviloBootTitle{font:500 34px/1.02 Georgia,"Times New Roman",serif;letter-spacing:-.035em}
+.praviloBootText{font:500 10px/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#8a8177}
+@keyframes praviloBootTurn{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.praviloBootMark{animation:none}}
+</style>
+<script>document.documentElement.classList.add('pravilo-booting');window.__praviloBootStarted=performance.now();</script>
 <title>Правило</title>
 </head>
 <body>
+<div class="praviloBoot" id="praviloBoot" role="status" aria-label="Правило загружается"><div class="praviloBootInner"><div class="praviloBootMark" aria-hidden="true"></div><div class="praviloBootTitle">Правило</div><div class="praviloBootText">личный ритм</div></div></div>
 <main class="app">
   <header class="header">
     <div><div class="title">Правило</div><div class="date" id="date"></div></div>
@@ -46,6 +61,25 @@
 
 <div class="overlay" id="settingsOverlay"><div class="sheet"><div class="grabber"></div><div class="sheetHeader"><div class="sheetTitle">Настройки</div><button class="closeBtn" type="button" data-close="settingsOverlay">✕</button></div><div class="panel"><b>Данные хранятся на этом устройстве</b><div class="smallText">Резервная копия пригодится на случай очистки данных браузера.</div></div><div class="sheetActions"><button class="button" type="button" id="exportBtn">Экспорт</button><button class="button" type="button" id="importBtn">Импорт</button></div><input id="importFile" type="file" accept=".json,application/json" class="hidden"><div class="sheetActions"><button class="button danger" type="button" id="clearHistory">Очистить историю</button><button class="button danger" type="button" id="resetAll">Сбросить всё</button></div></div></div>
 
+<script>
+(()=>{
+  const started=window.__praviloBootStarted||performance.now();
+  let finished=false;
+  function finish(){
+    if(finished)return;
+    finished=true;
+    const wait=Math.max(0,320-(performance.now()-started));
+    setTimeout(()=>document.documentElement.classList.remove('pravilo-booting'),wait);
+  }
+  window.PraviloBoot={finish};
+  window.addEventListener('pravilo:ready',finish,{once:true});
+  window.addEventListener('pageshow',()=>{
+    const ready=document.documentElement.dataset.praviloReady;
+    if(ready==='1'||ready==='warning')finish();
+  });
+  setTimeout(finish,9000);
+})();
+</script>
 <script src="app-manifest.js"></script>
 <script src="app-core.js"></script>
 <script src="app-bootstrap.js" defer></script>
