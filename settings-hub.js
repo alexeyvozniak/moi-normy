@@ -1,15 +1,81 @@
 (()=>{
   'use strict';
-  const $=id=>document.getElementById(id);const REM_KEY='pravilo_reminders_v1';
-  function reminderCount(){try{return(JSON.parse(localStorage.getItem(REM_KEY)||'[]')||[]).filter(x=>x.enabled!==false).length}catch(e){return 0}}
-  function closeOverlay(id){$(id)?.classList.remove('show')}function openOverlay(id){$(id)?.classList.add('show')}
-  function makeSection(id,title,lead){if($(id))return $(id);const o=document.createElement('div');o.id=id;o.className='overlay settingsSectionOverlay';o.innerHTML=`<div class="sheet settingsSectionSheet"><div class="grabber"></div><div class="sheetHeader"><div class="sheetTitle">${title}</div><button class="settingsBack" data-settings-back>Назад</button></div><div class="settingsSectionLead">${lead}</div><div class="settingsSectionBody"></div></div>`;document.body.appendChild(o);o.querySelector('[data-settings-back]').addEventListener('click',()=>closeOverlay(id));o.addEventListener('click',e=>{if(e.target===o)closeOverlay(id)});return o}
-  function moveUnique(body,node){if(node&&node.parentElement!==body)body.appendChild(node)}
-  function buildDataSection(){const o=makeSection('settingsDataOverlay','Данные','Локальное хранение, резервные копии и экспорт.');const body=o.querySelector('.settingsSectionBody');body.classList.add('settingsDataBody');const settings=$('settingsOverlay')?.querySelector('.sheet');if(!settings)return;const dataPanel=[...settings.children].find(x=>x.classList?.contains('panel')&&x.querySelector?.('#exportBtn')===null)||settings.querySelector('.panel');const exportRow=$('exportBtn')?.closest('.sheetActions');const importFile=$('importFile');const notes=$('notesExportPanel');const offline=$('offlineStoragePanel');const destructive=$('clearHistory')?.closest('.sheetActions');moveUnique(body,dataPanel);moveUnique(body,exportRow);moveUnique(body,importFile);moveUnique(body,notes);moveUnique(body,offline);if(destructive){let danger=$('settingsDanger');if(!danger){danger=document.createElement('details');danger.id='settingsDanger';danger.className='settingsDanger';danger.innerHTML='<summary>Опасные действия</summary>';body.appendChild(danger)}moveUnique(danger,destructive)}return o}
-  function buildAppSection(){const o=makeSection('settingsAppOverlay','Приложение','Помощь, обновления и установка на телефон.');const body=o.querySelector('.settingsSectionBody');body.classList.add('settingsAppBody');const feature=$('featureSettingsRow');if(feature)moveUnique(body,feature);return o}
-  function statusText(){const count=reminderCount();const rem=$('settingsHubReminderSub');if(rem)rem.textContent=count?`${count} ${count===1?'активное':'активных'}`:'не настроены';const data=$('settingsHubDataSub');if(data)data.textContent='копия · экспорт · офлайн';const app=$('settingsHubAppSub');if(app)app.textContent='помощь · обновления · установка'}
-  function buildHub(){const sheet=$('settingsOverlay')?.querySelector('.sheet');if(!sheet||$('settingsHub'))return;buildDataSection();buildAppSection();$('remindersPanel')?.classList.add('settingsHubSource');const hub=document.createElement('div');hub.id='settingsHub';hub.className='settingsHub';hub.innerHTML=`<button class="settingsHubRow" id="settingsHubReminders"><span class="settingsHubIcon"><img src="images/settings-reminders.webp?v=3" alt=""></span><span><span class="settingsHubTitle">Напоминания</span><span class="settingsHubSub" id="settingsHubReminderSub"></span></span><span class="settingsHubArrow">›</span></button><button class="settingsHubRow" id="settingsHubData"><span class="settingsHubIcon"><img src="images/settings-data.webp?v=3" alt=""></span><span><span class="settingsHubTitle">Данные</span><span class="settingsHubSub" id="settingsHubDataSub"></span></span><span class="settingsHubArrow">›</span></button><button class="settingsHubRow" id="settingsHubApp"><span class="settingsHubIcon"><img src="images/settings-app.webp?v=3" alt=""></span><span><span class="settingsHubTitle">Приложение</span><span class="settingsHubSub" id="settingsHubAppSub"></span></span><span class="settingsHubArrow">›</span></button>`;const header=sheet.querySelector('.sheetHeader');header?.insertAdjacentElement('afterend',hub);[...sheet.children].forEach(n=>{if(n===hub||n.classList.contains('grabber')||n.classList.contains('sheetHeader'))return;n.classList.add('settingsHubSource')});$('settingsHubReminders').addEventListener('click',()=>{const open=$('openReminders');if(open)open.click();else openOverlay('remindersOverlay');statusText()});$('settingsHubData').addEventListener('click',()=>openOverlay('settingsDataOverlay'));$('settingsHubApp').addEventListener('click',()=>{buildAppSection();openOverlay('settingsAppOverlay')});statusText()}
-  function reconcile(){if(!$('settingsHub'))buildHub();else{buildDataSection();buildAppSection();$('remindersPanel')?.classList.add('settingsHubSource');statusText()}}
-  function init(){reconcile();setTimeout(reconcile,180);setTimeout(reconcile,900);document.addEventListener('click',e=>{if(e.target.closest?.('#settingsBtn'))setTimeout(()=>{reconcile();statusText()},0);if(e.target.closest?.('#reminderSave')||e.target.closest?.('[data-rem-toggle]')||e.target.closest?.('#reminderDelete'))setTimeout(statusText,80)},true)}
+  const LEGACY_REMINDERS_KEY='pravilo_reminders_v1';
+  const $=id=>document.getElementById(id);
+
+  function openOverlay(id){$(id)?.classList.add('show');}
+  function closeOverlay(id){$(id)?.classList.remove('show');}
+  function click(id){$(id)?.click();}
+
+  function reminderCount(){
+    if(Array.isArray(window.state?.reminders))return state.reminders.filter(r=>r.enabled!==false).length;
+    try{const legacy=JSON.parse(localStorage.getItem(LEGACY_REMINDERS_KEY)||'[]');return Array.isArray(legacy)?legacy.filter(r=>r.enabled!==false).length:0;}catch(e){return 0;}
+  }
+
+  function createSection(id,title,lead,bodyHtml){
+    if($(id))return $(id);
+    const overlay=document.createElement('div');overlay.id=id;overlay.className='overlay settingsSectionOverlay';
+    overlay.innerHTML=`<div class="sheet settingsSectionSheet"><div class="grabber"></div><div class="sheetHeader"><div class="sheetTitle">${title}</div><button class="settingsBack" type="button" data-settings-back>Назад</button></div><div class="settingsSectionLead">${lead}</div><div class="settingsSectionBody">${bodyHtml}</div></div>`;
+    document.body.appendChild(overlay);
+    overlay.querySelector('[data-settings-back]').addEventListener('click',()=>closeOverlay(id));
+    overlay.addEventListener('click',event=>{if(event.target===overlay)closeOverlay(id);});
+    return overlay;
+  }
+
+  function buildDataSection(){
+    const overlay=createSection('settingsDataOverlay','Данные','Резервные копии, экспорт и локальное хранение.',`
+      <div class="settingsCard"><strong>Данные хранятся на этом устройстве</strong><div class="settingsCardText">Экспорт JSON — внешняя резервная копия. Локальная копия IndexedDB помогает при работе офлайн.</div></div>
+      <div class="settingsActionGrid"><button class="button" type="button" id="settingsExportData">Экспорт данных</button><button class="button" type="button" id="settingsImportData">Импорт данных</button><button class="button" type="button" id="settingsExportNotes">Выгрузить заметки</button><button class="button" type="button" id="settingsRefreshOffline">Обновить локальную копию</button></div>
+      <div class="settingsStatus" id="settingsOfflineStatus">Проверяю локальное хранение…</div>
+      <details class="settingsDanger"><summary>Опасные действия</summary><div class="settingsDangerBody"><button class="button danger" type="button" id="settingsClearHistory">Очистить историю</button><button class="button danger" type="button" id="settingsResetAll">Сбросить всё</button></div></details>`);
+    $('settingsExportData').addEventListener('click',()=>click('exportBtn'));
+    $('settingsImportData').addEventListener('click',()=>click('importBtn'));
+    $('settingsExportNotes').addEventListener('click',()=>window.praviloExportNotes?.()||click('exportNotesBtn'));
+    $('settingsRefreshOffline').addEventListener('click',async()=>{if(window.praviloRefreshOfflineBackup)await window.praviloRefreshOfflineBackup();else click('refreshOfflineBackup');await refreshOfflineStatus();});
+    $('settingsClearHistory').addEventListener('click',()=>click('clearHistory'));
+    $('settingsResetAll').addEventListener('click',()=>click('resetAll'));
+    return overlay;
+  }
+
+  function buildAppSection(){
+    const overlay=createSection('settingsAppOverlay','Приложение','Помощь, обновления и установка на телефон.',`
+      <div class="settingsActionStack"><button class="button" type="button" id="settingsOpenGuide">Как пользоваться</button><button class="button" type="button" id="settingsCheckUpdate">Проверить обновление</button><button class="button" type="button" id="settingsInstallHelp">Установка на телефон</button></div>
+      <div class="settingsCard"><strong>«Правило» работает как локальное PWA</strong><div class="settingsCardText">Основные данные остаются на устройстве; интернет нужен только для получения новой версии приложения.</div></div>`);
+    $('settingsOpenGuide').addEventListener('click',()=>window.praviloOpenGuide?.()||click('openGuideBtn'));
+    $('settingsCheckUpdate').addEventListener('click',()=>window.praviloCheckUpdate?.()||click('checkUpdateBtn'));
+    $('settingsInstallHelp').addEventListener('click',()=>window.praviloOpenInstallHelp?.()||click('installSettingsBtn'));
+    return overlay;
+  }
+
+  function hideLegacySettingsContent(sheet,hub){
+    [...sheet.children].forEach(node=>{
+      if(node===hub||node.classList.contains('grabber')||node.classList.contains('sheetHeader'))return;
+      node.classList.add('settingsHubSource');
+    });
+  }
+
+  function buildHub(){
+    const sheet=$('settingsOverlay')?.querySelector('.sheet');if(!sheet||$('settingsHub'))return;
+    buildDataSection();buildAppSection();
+    const hub=document.createElement('div');hub.id='settingsHub';hub.className='settingsHub';
+    hub.innerHTML=`<button class="settingsHubRow" id="settingsHubReminders" type="button"><span class="settingsHubIcon"><img src="images/settings-reminders.webp" alt=""></span><span><span class="settingsHubTitle">Напоминания</span><span class="settingsHubSub" id="settingsHubReminderSub"></span></span><span class="settingsHubArrow">›</span></button><button class="settingsHubRow" id="settingsHubData" type="button"><span class="settingsHubIcon"><img src="images/settings-data.webp" alt=""></span><span><span class="settingsHubTitle">Данные</span><span class="settingsHubSub">копия · экспорт · офлайн</span></span><span class="settingsHubArrow">›</span></button><button class="settingsHubRow" id="settingsHubApp" type="button"><span class="settingsHubIcon"><img src="images/settings-app.webp" alt=""></span><span><span class="settingsHubTitle">Приложение</span><span class="settingsHubSub">помощь · обновления · установка</span></span><span class="settingsHubArrow">›</span></button>`;
+    sheet.querySelector('.sheetHeader')?.insertAdjacentElement('afterend',hub);
+    hideLegacySettingsContent(sheet,hub);
+    $('settingsHubReminders').addEventListener('click',()=>{if(window.praviloOpenReminders)window.praviloOpenReminders();else if($('openReminders'))click('openReminders');else openOverlay('remindersOverlay');});
+    $('settingsHubData').addEventListener('click',async()=>{openOverlay('settingsDataOverlay');await refreshOfflineStatus();});
+    $('settingsHubApp').addEventListener('click',()=>openOverlay('settingsAppOverlay'));
+    updateReminderStatus();
+  }
+
+  function updateReminderStatus(){const count=reminderCount(),el=$('settingsHubReminderSub');if(el)el.textContent=count?`${count} ${count===1?'активное':'активных'}`:'не настроены';}
+  async function refreshOfflineStatus(){const el=$('settingsOfflineStatus');if(!el)return;if(!window.praviloOfflineStatus){el.textContent='Локальная копия подготавливается.';return;}const status=await window.praviloOfflineStatus();el.textContent=status.text;}
+
+  function init(){
+    buildHub();
+    updateReminderStatus();
+    window.addEventListener('pravilo:reminders-changed',updateReminderStatus);
+    window.addEventListener('pravilo:state-saved',updateReminderStatus);
+    window.addEventListener('pravilo:offline-status',refreshOfflineStatus);
+  }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
