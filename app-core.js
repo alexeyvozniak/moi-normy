@@ -33,8 +33,12 @@ function localDateKey(date=new Date()){
 }
 function today(){return localDateKey();}
 function safeNumber(value,fallback=0){const n=Number(value);return Number.isFinite(n)?n:fallback;}
-function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));}
 var esc=escapeHtml;
+function ask(options){
+  if(typeof window.praviloConfirm==='function')return window.praviloConfirm(options);
+  return Promise.resolve(window.confirm(options?.message||options?.title||'Подтвердить действие?'));
+}
 
 function defaultPracticeType(name){
   if(/молитв|иисус/i.test(name))return 'prayer';
@@ -142,11 +146,12 @@ function subtract(id,n,source='manual'){
 function picker(){const el=$('imagePicker');if(el)el.innerHTML=assets.map(a=>`<button type="button" class="pick ${selectedImage===a.src?'selected':''}" data-image-src="${esc(a.src)}"><img src="${a.src}" alt=""><span>${esc(a.name)}</span></button>`).join('');}
 function selectImage(src){selectedImage=src;if($('eImageUrl'))$('eImageUrl').value='';picker();}
 function toggleIntervalField(){const f=$('intervalField'),p=$('ePeriod');if(f&&p)f.classList.toggle('hidden',p.value!=='interval');}
+function setPauseSwitch(on){const button=$('pauseSwitch');if(!button)return;button.classList.toggle('on',!!on);button.setAttribute('aria-pressed',on?'true':'false');}
 function openEditor(id=null){
   editId=id;const item=id?state.items.find(x=>x.id===id):null;
   $('editorTitle').textContent=item?'Изменить норму':'Новая норма';
   $('eName').value=item?.name||'';$('eIncrement').value=item?.increment??1;$('eUnit').value=item?.unit||'';$('ePeriod').value=item?.period||'daily';$('eIntervalDays').value=item?.intervalDays??2;$('eQuick').value=item?.quick??1;$('eDebt').value=item?.debt??1;
-  selectedImage=item?.image||'images/enso.webp';$('eImageUrl').value='';$('pauseSwitch').classList.toggle('on',!!item?.paused);$('deleteTask').classList.toggle('hidden',!item);toggleIntervalField();picker();show('editorOverlay');
+  selectedImage=item?.image||'images/enso.webp';$('eImageUrl').value='';setPauseSwitch(!!item?.paused);$('deleteTask').classList.toggle('hidden',!item);toggleIntervalField();picker();show('editorOverlay');
   window.dispatchEvent(new CustomEvent('pravilo:editor-open',{detail:{id}}));
 }
 function saveEditor(){
@@ -156,7 +161,13 @@ function saveEditor(){
   if(!item.practiceType){const inferred=defaultPracticeType(item.name);if(inferred)item.practiceType=inferred;}
   save();hide('editorOverlay');render();window.dispatchEvent(new CustomEvent('pravilo:editor-saved',{detail:{id:item.id}}));
 }
-function deleteCurrentTask(){if(!editId||!confirm('Удалить норму?'))return;state.items=state.items.filter(i=>i.id!==editId);save();hide('editorOverlay');render();}
+async function deleteCurrentTask(){
+  if(!editId)return;
+  const item=state.items.find(i=>i.id===editId);if(!item)return;
+  const ok=await ask({kicker:'Удаление',title:'Удалить занятие?',message:`«${item.name}» исчезнет из списка занятий. История выполненного останется отдельно.`,confirmText:'Удалить',danger:true});
+  if(!ok)return;
+  state.items=state.items.filter(i=>i.id!==editId);save();hide('editorOverlay');render();
+}
 function switchTab(tab){
   currentTab=tab;document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
   ['today','week','history','catalog'].forEach(x=>$(x+'View')?.classList.toggle('hidden',x!==tab));
@@ -171,7 +182,7 @@ function bindCoreUi(){
   $('amountSave')?.addEventListener('click',()=>{subtract(amountId,$('amountInput').value);hide('amountOverlay');});
   $('saveTask')?.addEventListener('click',saveEditor);
   $('deleteTask')?.addEventListener('click',deleteCurrentTask);
-  $('pauseSwitch')?.addEventListener('click',()=>$('pauseSwitch').classList.toggle('on'));
+  $('pauseSwitch')?.addEventListener('click',()=>setPauseSwitch(!$('pauseSwitch').classList.contains('on')));
   $('ePeriod')?.addEventListener('change',toggleIntervalField);
   $('addBtn')?.addEventListener('click',()=>openEditor());
   $('settingsBtn')?.addEventListener('click',()=>show('settingsOverlay'));
@@ -179,8 +190,8 @@ function bindCoreUi(){
   $('exportBtn')?.addEventListener('click',exportState);
   $('importBtn')?.addEventListener('click',()=>$('importFile')?.click());
   $('importFile')?.addEventListener('change',e=>{const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const x=normalizeState(JSON.parse(r.result));state=x;save();render();hide('settingsOverlay');}catch(_){alert('Не удалось прочитать файл.');}};r.readAsText(f);});
-  $('clearHistory')?.addEventListener('click',()=>{if(confirm('Очистить историю?')){state.history=[];save();render();}});
-  $('resetAll')?.addEventListener('click',()=>{if(confirm('Полностью сбросить приложение?')){state=freshState();save();render();hide('settingsOverlay');}});
+  $('clearHistory')?.addEventListener('click',async()=>{const ok=await ask({kicker:'История',title:'Очистить всю историю?',message:'Будут удалены записи о выполненных действиях и связанные с ними заметки. Сами занятия останутся.',confirmText:'Очистить',danger:true});if(ok){state.history=[];save();render();}});
+  $('resetAll')?.addEventListener('click',async()=>{const ok=await ask({kicker:'Сброс',title:'Сбросить всё приложение?',message:'Все занятия, история и настройки будут заменены исходным набором. Перед этим лучше сделать экспорт.',confirmText:'Сбросить всё',danger:true});if(ok){state=freshState();save();render();hide('settingsOverlay');}});
 }
 
 function initCore(){bindCoreUi();render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').then(r=>r.update()).catch(error=>console.warn('[Правило] service worker',error));window.dispatchEvent(new CustomEvent('pravilo:core-ready'));}
