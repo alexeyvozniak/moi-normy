@@ -38,32 +38,46 @@
   }
 
   function buildAppSection(){
-    const overlay=createSection('settingsAppOverlay','Приложение','Помощь, обновления и установка на телефон.',`
+    const overlay=createSection('settingsAppOverlay','Приложение','Помощь, обновления, звуки и установка на телефон.',`
       <div class="settingsActionStack"><button class="button" type="button" id="settingsOpenGuide">Как пользоваться</button><button class="button" type="button" id="settingsCheckUpdate">Проверить обновление</button><button class="button" type="button" id="settingsInstallHelp">Установка на телефон</button></div>
+      <div class="settingsCard settingsAudioCard" id="settingsAudioCard">
+        <div class="settingsAudioHead"><div><strong>Звуки практики</strong><div class="settingsCardText">Сигналы на 10 и 100 молитв и колокол медитации.</div></div><button class="switch" type="button" id="settingsAudioToggle" aria-label="Звуки практики" aria-pressed="true"></button></div>
+        <label class="settingsAudioVolume"><span>Общая громкость</span><input type="range" id="settingsAudioVolume" min="15" max="100" step="5" value="100"><b id="settingsAudioVolumeValue">100%</b></label>
+        <div class="settingsAudioPreview"><button class="button" type="button" data-audio-preview="prayerTen">10</button><button class="button" type="button" data-audio-preview="prayerHundred">100</button><button class="button" type="button" data-audio-preview="meditationBell">Медитация</button></div>
+      </div>
       <div class="settingsCard"><strong>«Правило» работает как локальное PWA</strong><div class="settingsCardText">Основные данные остаются на устройстве; интернет нужен только для получения новой версии приложения.</div></div>`);
     $('settingsOpenGuide').addEventListener('click',()=>window.praviloOpenGuide?.()||click('openGuideBtn'));
     $('settingsCheckUpdate').addEventListener('click',()=>window.praviloCheckUpdate?.()||click('checkUpdateBtn'));
     $('settingsInstallHelp').addEventListener('click',()=>window.praviloOpenInstallHelp?.()||click('installSettingsBtn'));
+    $('settingsAudioToggle').addEventListener('click',()=>{const audio=window.PraviloAudio;if(!audio)return;const current=audio.getSettings();audio.setSettings({enabled:!current.enabled});syncAudioSettings();});
+    $('settingsAudioVolume').addEventListener('input',event=>{const audio=window.PraviloAudio;if(!audio)return;audio.setSettings({volume:Number(event.target.value)/100});syncAudioSettings();});
+    overlay.querySelectorAll('[data-audio-preview]').forEach(button=>button.addEventListener('click',()=>{void window.PraviloAudio?.play(button.dataset.audioPreview,{preview:true});}));
+    syncAudioSettings();
     return overlay;
   }
 
+  function syncAudioSettings(){
+    const audio=window.PraviloAudio,toggle=$('settingsAudioToggle'),range=$('settingsAudioVolume'),value=$('settingsAudioVolumeValue'),card=$('settingsAudioCard');
+    if(!audio||!toggle||!range||!value)return;
+    const settings=audio.getSettings(),percent=Math.round(settings.volume*100);
+    toggle.classList.toggle('on',settings.enabled);toggle.setAttribute('aria-pressed',settings.enabled?'true':'false');
+    range.value=String(percent);value.textContent=`${percent}%`;card?.classList.toggle('audioMuted',!settings.enabled);
+  }
+
   function hideLegacySettingsContent(sheet,hub){
-    [...sheet.children].forEach(node=>{
-      if(node===hub||node.classList.contains('grabber')||node.classList.contains('sheetHeader'))return;
-      node.classList.add('settingsHubSource');
-    });
+    [...sheet.children].forEach(node=>{if(node===hub||node.classList.contains('grabber')||node.classList.contains('sheetHeader'))return;node.classList.add('settingsHubSource');});
   }
 
   function buildHub(){
     const sheet=$('settingsOverlay')?.querySelector('.sheet');if(!sheet||$('settingsHub'))return;
     buildDataSection();buildAppSection();
     const hub=document.createElement('div');hub.id='settingsHub';hub.className='settingsHub';
-    hub.innerHTML=`<button class="settingsHubRow" id="settingsHubReminders" type="button"><span class="settingsHubIcon"><img src="images/settings-reminders.webp" alt=""></span><span><span class="settingsHubTitle">Напоминания</span><span class="settingsHubSub" id="settingsHubReminderSub"></span></span><span class="settingsHubArrow">›</span></button><button class="settingsHubRow" id="settingsHubData" type="button"><span class="settingsHubIcon"><img src="images/settings-data.webp" alt=""></span><span><span class="settingsHubTitle">Данные</span><span class="settingsHubSub">копия · экспорт · офлайн</span></span><span class="settingsHubArrow">›</span></button><button class="settingsHubRow" id="settingsHubApp" type="button"><span class="settingsHubIcon"><img src="images/settings-app.webp" alt=""></span><span><span class="settingsHubTitle">Приложение</span><span class="settingsHubSub">помощь · обновления · установка</span></span><span class="settingsHubArrow">›</span></button>`;
+    hub.innerHTML=`<button class="settingsHubRow" id="settingsHubReminders" type="button"><span class="settingsHubIcon"><img src="images/settings-reminders.webp" alt=""></span><span><span class="settingsHubTitle">Напоминания</span><span class="settingsHubSub" id="settingsHubReminderSub"></span></span><span class="settingsHubArrow">›</span></button><button class="settingsHubRow" id="settingsHubData" type="button"><span class="settingsHubIcon"><img src="images/settings-data.webp" alt=""></span><span><span class="settingsHubTitle">Данные</span><span class="settingsHubSub">копия · экспорт · офлайн</span></span><span class="settingsHubArrow">›</span></button><button class="settingsHubRow" id="settingsHubApp" type="button"><span class="settingsHubIcon"><img src="images/settings-app.webp" alt=""></span><span><span class="settingsHubTitle">Приложение</span><span class="settingsHubSub">звуки · помощь · обновления</span></span><span class="settingsHubArrow">›</span></button>`;
     sheet.querySelector('.sheetHeader')?.insertAdjacentElement('afterend',hub);
     hideLegacySettingsContent(sheet,hub);
     $('settingsHubReminders').addEventListener('click',()=>{if(window.praviloOpenReminders)window.praviloOpenReminders();else if($('openReminders'))click('openReminders');else openOverlay('remindersOverlay');});
     $('settingsHubData').addEventListener('click',async()=>{openOverlay('settingsDataOverlay');await refreshOfflineStatus();});
-    $('settingsHubApp').addEventListener('click',()=>openOverlay('settingsAppOverlay'));
+    $('settingsHubApp').addEventListener('click',()=>{syncAudioSettings();openOverlay('settingsAppOverlay');});
     updateReminderStatus();
   }
 
@@ -71,11 +85,11 @@
   async function refreshOfflineStatus(){const el=$('settingsOfflineStatus');if(!el)return;if(!window.praviloOfflineStatus){el.textContent='Локальная копия подготавливается.';return;}const status=await window.praviloOfflineStatus();el.textContent=status.text;}
 
   function init(){
-    buildHub();
-    updateReminderStatus();
+    buildHub();updateReminderStatus();
     window.addEventListener('pravilo:reminders-changed',updateReminderStatus);
     window.addEventListener('pravilo:state-saved',updateReminderStatus);
     window.addEventListener('pravilo:offline-status',refreshOfflineStatus);
+    window.addEventListener('pravilo:audio-settings',syncAudioSettings);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
