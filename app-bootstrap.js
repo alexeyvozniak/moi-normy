@@ -1,6 +1,6 @@
 (()=>{
   'use strict';
-  const VERSION='35.9.0';
+  const VERSION='35.10.0';
 
   const styles=[
     'designer-fonts.css',
@@ -21,7 +21,8 @@
     'quiet-ui.css',
     'install-helper.css',
     'header-polish.css',
-    'visual-polish.css'
+    'visual-polish.css',
+    'section-heroes.css'
   ];
 
   const scripts=[
