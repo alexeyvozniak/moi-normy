@@ -1,13 +1,16 @@
 (()=>{
   'use strict';
+  function hasStyle(name){return [...document.styleSheets].some(sheet=>sheet.href&&new URL(sheet.href).pathname.endsWith('/'+name));}
   function run(){
     const checks={
       state:Array.isArray(window.state?.items)&&Array.isArray(window.state?.history),
       core:['save','render','openEditor','subtract'].every(name=>typeof window[name]==='function'),
       editor:!!document.getElementById('editorOverlay')&&!!document.getElementById('saveTask'),
+      editorLayout:['editorScheduleSection','editorModesSection','editorStateSection','editorImageSection'].every(id=>!!document.getElementById(id)),
       pause:!!document.getElementById('pauseSwitch'),
       book:!!document.getElementById('bookModeBox'),
-      dialog:typeof window.praviloConfirm==='function',
+      dialog:typeof window.praviloConfirm==='function'&&typeof window.praviloNotice==='function',
+      dashboardStyle:hasStyle('dashboard.css'),
       settings:!!document.getElementById('settingsBtn')&&!!document.querySelector('#settingsBtn .settingsGearIcon'),
       history:!!document.getElementById('historyPanel')
     };
