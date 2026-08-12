@@ -1,29 +1,53 @@
-#praviloWelcome{position:fixed;inset:0;z-index:1000;background:#f5eee5;display:none;overflow:auto;-webkit-overflow-scrolling:touch;color:#1b1814}
+#praviloWelcome{position:fixed;inset:0;z-index:1000;background:#f5eee5;display:none;overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;color:#1b1814}
 #praviloWelcome.show{display:block}
-.praviloWelcomeShell{min-height:100dvh;background:linear-gradient(180deg,#e8dfd2 0,#f8f2e9 28%,#f8f3eb 100%)}
-.praviloWelcomeHero{position:relative;height:178px;overflow:hidden;background:#d9d0c3 url('images/onboarding_hero.webp') center 42%/cover no-repeat}
-.praviloWelcomeHero:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(31,24,17,.02) 10%,rgba(248,243,235,.04) 62%,#f8f3eb 100%)}
-.praviloWelcomeBody{position:relative;width:min(680px,100%);margin:-20px auto 0;padding:0 15px calc(env(safe-area-inset-bottom) + 22px)}
+.praviloWelcomeShell{min-height:100svh;overflow:hidden;background:linear-gradient(180deg,#e8dfd2 0,#f8f2e9 24%,#f8f3eb 100%)}
+.praviloWelcomeHero{position:relative;height:calc(118px + env(safe-area-inset-top));min-height:118px;overflow:hidden;background-color:#ddd3c6;background-image:linear-gradient(180deg,rgba(232,223,210,.04),rgba(248,243,235,.16)),url('images/onboarding_hero.webp');background-position:center,center 42%;background-size:cover,cover;background-repeat:no-repeat}
+.praviloWelcomeHero:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(31,24,17,.01) 8%,rgba(248,243,235,.06) 58%,#f8f3eb 100%)}
+.praviloWelcomeBody{position:relative;width:min(680px,100%);margin:-24px auto 0;padding:0 15px calc(env(safe-area-inset-bottom) + 24px)}
 .praviloWelcomeIntro{padding:0 3px 13px}
 .praviloWelcomeKicker{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:#b95743;font-weight:800}
-.praviloWelcomeTitle{margin-top:4px;font:500 43px/.93 ui-serif,'Iowan Old Style','Baskerville','Times New Roman',serif;letter-spacing:-.052em}
-.praviloWelcomeLead{max-width:520px;margin-top:8px;font:500 16px/1.32 ui-serif,'Iowan Old Style','Baskerville','Times New Roman',serif;color:#494139}
+.praviloWelcomeTitle{margin-top:4px;font:500 43px/.93 var(--serif,ui-serif);letter-spacing:-.052em}
+.praviloWelcomeLead{max-width:520px;margin-top:8px;font:500 16px/1.32 var(--serif,ui-serif);color:#494139}
 .praviloWelcomeCards{display:grid;gap:7px}
-.praviloWelcomeCard{display:grid;grid-template-columns:68px 1fr;gap:11px;align-items:center;padding:9px 10px;background:rgba(251,247,240,.88);border:1px solid rgba(208,195,180,.88);border-radius:17px;box-shadow:0 5px 17px rgba(70,48,25,.035)}
+.praviloWelcomeCard{display:grid;grid-template-columns:68px minmax(0,1fr);gap:11px;align-items:center;padding:9px 10px;background:rgba(251,247,240,.91);border:1px solid rgba(208,195,180,.88);border-radius:17px;box-shadow:0 5px 17px rgba(70,48,25,.035)}
 .praviloWelcomeIcon{width:68px;height:68px;border-radius:14px;object-fit:cover;background:#e7ddd1;box-shadow:inset 0 0 0 1px rgba(80,60,40,.045)}
 .praviloWelcomeCardCopy{min-width:0}
-.praviloWelcomeNum{font:600 11px/1 ui-serif,'Iowan Old Style','Baskerville','Times New Roman',serif;color:#7b8670}
-.praviloWelcomeCardTitle{margin-top:3px;font:500 18px/1.02 ui-serif,'Iowan Old Style','Baskerville','Times New Roman',serif;letter-spacing:-.025em}
-.praviloWelcomeCardText{margin-top:4px;color:#6e655b;font-size:9.5px;line-height:1.37}
-.praviloWelcomePractice{display:grid;grid-template-columns:54px 1fr;gap:11px;align-items:center;margin-top:9px;padding:9px 10px;border-radius:16px;background:rgba(104,116,95,.075);border:1px solid rgba(104,116,95,.13)}
+.praviloWelcomeNum{font:600 11px/1 var(--serif,ui-serif);color:#7b8670}
+.praviloWelcomeCardTitle{margin-top:3px;font:500 18px/1.04 var(--serif,ui-serif);letter-spacing:-.025em;overflow-wrap:anywhere}
+.praviloWelcomeCardText{margin-top:4px;color:#6e655b;font-size:9.5px;line-height:1.4;overflow-wrap:anywhere}
+.praviloWelcomePractice{display:grid;grid-template-columns:54px minmax(0,1fr);gap:11px;align-items:center;margin-top:9px;padding:9px 10px;border-radius:16px;background:rgba(104,116,95,.075);border:1px solid rgba(104,116,95,.13)}
 .praviloWelcomePractice img{width:54px;height:54px;border-radius:13px;object-fit:cover;filter:saturate(.82)}
 .praviloWelcomePracticeKicker{font-size:7.5px;text-transform:uppercase;letter-spacing:.14em;color:#68745f;font-weight:800}
-.praviloWelcomePracticeTitle{margin-top:3px;font:500 16px/1.05 ui-serif,'Iowan Old Style','Baskerville','Times New Roman',serif}
-.praviloWelcomePracticeText{margin-top:4px;color:#696158;font-size:9px;line-height:1.35}
+.praviloWelcomePracticeTitle{margin-top:3px;font:500 16px/1.08 var(--serif,ui-serif)}
+.praviloWelcomePracticeText{margin-top:4px;color:#696158;font-size:9px;line-height:1.38}
 .praviloWelcomeFoot{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;margin-top:11px}
 .praviloWelcomeNote{color:#756d63;font-size:8.5px;line-height:1.4;padding-left:2px}
 .praviloWelcomeButton{min-width:112px;min-height:46px;border:0;border-radius:14px;background:#68745f;color:#fff;font-weight:750;font-size:13px;box-shadow:0 5px 16px rgba(65,77,56,.13);padding:10px 18px}
 .praviloWelcomeButton:active{transform:scale(.99)}
 #showWelcomeBtn,#openWelcomePageBtn{display:none!important}
-@media(min-width:700px){.praviloWelcomeShell{padding-top:0}.praviloWelcomeHero{height:270px;background-position:center 45%}.praviloWelcomeBody{margin-top:-32px;padding-left:20px;padding-right:20px}.praviloWelcomeTitle{font-size:52px}.praviloWelcomeLead{font-size:19px}.praviloWelcomeCards{grid-template-columns:repeat(3,1fr);gap:9px}.praviloWelcomeCard{display:block;padding:10px}.praviloWelcomeIcon{width:100%;height:auto;aspect-ratio:1.22;border-radius:15px}.praviloWelcomeNum{margin-top:8px}.praviloWelcomeCardTitle{font-size:19px}.praviloWelcomePractice{grid-template-columns:68px 1fr}.praviloWelcomePractice img{width:68px;height:68px}}
-@media(max-width:390px){.praviloWelcomeHero{height:150px}.praviloWelcomeBody{margin-top:-14px;padding-left:12px;padding-right:12px}.praviloWelcomeTitle{font-size:39px}.praviloWelcomeLead{font-size:15px}.praviloWelcomeCard{grid-template-columns:61px 1fr;padding:8px 9px}.praviloWelcomeIcon{width:61px;height:61px}.praviloWelcomeCardTitle{font-size:17px}.praviloWelcomeCardText{font-size:9px}.praviloWelcomeFoot{grid-template-columns:1fr}.praviloWelcomeButton{width:100%}.praviloWelcomeNote{text-align:center;padding:0 8px}}
+
+@media(min-width:700px){
+  .praviloWelcomeHero{height:calc(210px + env(safe-area-inset-top));background-position:center,center 45%}
+  .praviloWelcomeBody{margin-top:-34px;padding-left:20px;padding-right:20px}
+  .praviloWelcomeTitle{font-size:52px}.praviloWelcomeLead{font-size:19px}
+  .praviloWelcomeCards{grid-template-columns:repeat(3,1fr);gap:9px}
+  .praviloWelcomeCard{display:block;padding:10px}.praviloWelcomeIcon{width:100%;height:auto;aspect-ratio:1.22;border-radius:15px}
+  .praviloWelcomeNum{margin-top:8px}.praviloWelcomeCardTitle{font-size:19px}
+  .praviloWelcomePractice{grid-template-columns:68px 1fr}.praviloWelcomePractice img{width:68px;height:68px}
+}
+
+@media(max-width:390px){
+  .praviloWelcomeHero{height:calc(100px + env(safe-area-inset-top));min-height:100px}
+  .praviloWelcomeBody{margin-top:-20px;padding-left:12px;padding-right:12px}
+  .praviloWelcomeTitle{font-size:39px}.praviloWelcomeLead{font-size:15px}
+  .praviloWelcomeCard{grid-template-columns:61px minmax(0,1fr);padding:8px 9px}.praviloWelcomeIcon{width:61px;height:61px}
+  .praviloWelcomeCardTitle{font-size:17px}.praviloWelcomeCardText{font-size:9px}
+  .praviloWelcomeFoot{grid-template-columns:1fr}.praviloWelcomeButton{width:100%}.praviloWelcomeNote{text-align:center;padding:0 8px}
+}
+
+@media(max-height:720px) and (max-width:699px){
+  .praviloWelcomeHero{height:calc(82px + env(safe-area-inset-top));min-height:82px}
+  .praviloWelcomeBody{margin-top:-18px}.praviloWelcomeIntro{padding-bottom:9px}.praviloWelcomeLead{font-size:14px;margin-top:6px}
+  .praviloWelcomeCards{gap:6px}.praviloWelcomeCard{grid-template-columns:56px minmax(0,1fr);padding:7px 8px}.praviloWelcomeIcon{width:56px;height:56px}
+  .praviloWelcomePractice{margin-top:7px;padding:7px 8px}.praviloWelcomeFoot{margin-top:8px}
+}
