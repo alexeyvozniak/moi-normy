@@ -1,8 +1,8 @@
-const CACHE='pravilo-shell-v32.1';
+const CACHE='pravilo-shell-v33';
 const CORE=[
   './','./index.html','./app.css','./app-core.js','./app-bootstrap.js','./manifest.webmanifest',
   './designer-fonts.css','./responsive.css','./onboarding.css','./feature-ui.css','./mode-tools.css','./practice.css','./prayer-haptics.css','./reminders.css','./settings-hub.css','./quiet-ui.css','./install-helper.css',
-  './accrual.js','./onboarding.js','./book-mode.js','./practice-types.js','./counter-mode.js','./catalog-extras.js','./practice.js','./prayer-haptics.js','./meditation-topic-fix.js','./meditation-audio.js','./notes.js','./notes-export.js','./history-delete.js','./offline-storage.js','./reminders.js','./quiet-ui.js','./app-help.js','./install-helper.js','./settings-hub.js',
+  './accrual.js','./onboarding.js','./book-mode.js','./practice-types.js','./counter-mode.js','./catalog-extras.js','./path.js','./prayer-practice.js','./prayer-haptics.js','./meditation-practice.js','./meditation-topic-fix.js','./notes.js','./notes-export.js','./history-delete.js','./offline-storage.js','./reminders.js','./quiet-ui.js','./app-help.js','./install-helper.js','./settings-hub.js',
   './icon-180.png','./icon-192.png','./icon-512.png',
   './images/hero.webp','./images/stat_active.webp','./images/stat_debt.webp','./images/stat_done.webp',
   './images/prayer_person_beads.webp','./images/reading_person_book.webp','./images/contemplation_looking_up.webp','./images/samurai_training.webp','./images/selfcare_onsen.webp','./images/calligraphy_ink.webp','./images/walking_path.webp','./images/open_book.webp','./images/books_notes.webp','./images/enso.webp',
