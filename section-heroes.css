@@ -1,16 +1,16 @@
 .sectionHero{position:relative;min-height:176px;margin:0 0 16px;border:1px solid var(--hair);border-radius:24px;overflow:hidden;background:var(--paper2);box-shadow:0 5px 18px rgba(65,43,21,.035)}
 .sectionHeroImage{position:absolute;inset:0;z-index:0;width:100%;height:100%;display:block;object-fit:cover;pointer-events:none;-webkit-user-select:none;user-select:none}
-.weekHero .sectionHeroImage{object-position:center 50%;filter:saturate(1.04) contrast(1.05)}
+.weekHero .sectionHeroImage{object-position:center 50%;filter:saturate(1.05) contrast(1.04)}
 .historyHero{min-height:156px}
-.historyHero .sectionHeroImage{object-position:center 50%;filter:saturate(.90) contrast(1.10);transform:scale(1.055);transform-origin:center}
+.historyHero .sectionHeroImage{object-position:center 50%;filter:saturate(.90) contrast(1.08);transform:scale(1.055);transform-origin:center}
 .sectionHeroVeil{position:absolute;inset:0;z-index:1;pointer-events:none}
-.weekHero .sectionHeroVeil{background:linear-gradient(90deg,rgba(248,243,234,.88) 0%,rgba(248,243,234,.57) 39%,rgba(248,243,234,.08) 68%,rgba(248,243,234,0) 100%)}
-.historyHero .sectionHeroVeil{background:linear-gradient(90deg,rgba(248,243,234,.86) 0%,rgba(248,243,234,.55) 40%,rgba(248,243,234,.08) 66%,rgba(248,243,234,0) 100%)}
-.sectionHeroCopy{position:relative;z-index:2;width:min(64%,310px);padding:21px 22px 20px}
-.historyHero .sectionHeroCopy{padding-top:18px;padding-bottom:17px}
+.weekHero .sectionHeroVeil{background:linear-gradient(90deg,rgba(248,243,234,.91) 0%,rgba(248,243,234,.70) 38%,rgba(248,243,234,.24) 66%,rgba(248,243,234,.02) 100%)}
+.historyHero .sectionHeroVeil{background:linear-gradient(90deg,rgba(248,243,234,.93) 0%,rgba(248,243,234,.73) 40%,rgba(248,243,234,.25) 68%,rgba(248,243,234,.03) 100%)}
+.sectionHeroCopy{position:relative;z-index:2;width:min(64%,310px);margin:14px 0 14px 14px;padding:17px 18px 16px;border:1px solid rgba(216,205,191,.62);border-radius:18px;background:rgba(251,247,240,.70);box-shadow:0 7px 20px rgba(73,50,25,.04);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+.historyHero .sectionHeroCopy{padding-top:16px;padding-bottom:15px}
 .sectionHeroKicker{font-size:9px;line-height:1.1;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--terracotta);margin-bottom:7px}
 .sectionHeroTitle{font:500 34px/1 var(--serif);letter-spacing:-.025em;color:var(--ink)}
-.sectionHeroText{margin-top:9px;font-size:11px;line-height:1.43;color:#766f66;max-width:29ch}
+.sectionHeroText{margin-top:9px;font-size:11px;line-height:1.46;color:#6d655c;max-width:27ch}
 #weekView>.sectionTitle,#historyView>.sectionTitle{display:none}
 #weekPanel,#historyPanel{margin-top:0}
-@media(max-width:390px){.sectionHero{min-height:166px;border-radius:22px;margin-bottom:14px}.historyHero{min-height:150px}.sectionHeroCopy{width:66%;padding:19px 18px 18px}.historyHero .sectionHeroCopy{padding-top:17px;padding-bottom:15px}.sectionHeroTitle{font-size:31px}.sectionHeroText{font-size:10.5px}}
+@media(max-width:390px){.sectionHero{min-height:166px;border-radius:22px;margin-bottom:14px}.historyHero{min-height:150px}.sectionHeroCopy{width:67%;margin:12px 0 12px 12px;padding:16px 16px 15px}.historyHero .sectionHeroCopy{padding-top:15px;padding-bottom:14px}.sectionHeroTitle{font-size:31px}.sectionHeroText{font-size:10.5px;max-width:25ch}}
