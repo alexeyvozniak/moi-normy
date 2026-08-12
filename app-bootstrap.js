@@ -1,6 +1,6 @@
 (()=>{
   'use strict';
-  const VERSION='35.4.2';
+  const VERSION='35.5.0';
 
   const styles=[
     'designer-fonts.css',
@@ -25,6 +25,7 @@
     'ui-notice.js',
     'domain.js',
     'day-clock.js',
+    'audio.js',
     'accrual.js',
     'onboarding.js',
     'book-mode.js',
