@@ -1,6 +1,6 @@
 (()=>{
   'use strict';
-  const VERSION='35.7.0';
+  const VERSION='35.8.0';
 
   const styles=[
     'designer-fonts.css',
@@ -14,6 +14,7 @@
     'share-text.css',
     'mode-tools.css',
     'practice.css',
+    'prayer-card.css',
     'prayer-haptics.css',
     'reminders.css',
     'settings-hub.css',
@@ -33,6 +34,7 @@
     'onboarding.js',
     'book-mode.js',
     'practice-types.js',
+    'prayer-card.js',
     'counter-mode.js',
     'catalog-extras.js',
     'path.js',
