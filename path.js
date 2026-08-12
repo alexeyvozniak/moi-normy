@@ -57,9 +57,19 @@
   async function deleteEntry(source,id){
     const row=entries().find(x=>x.source===source&&String(x.sourceId)===String(id));
     const title=row?.title||'эту запись';
-    const ok=await (window.praviloConfirm?.({kicker:'Путь',title:'Удалить запись из «Пути»?',message:`«${title}» будет удалена${source==='history'?' вместе со связанной записью истории':''}.`,confirmText:'Удалить',danger:true})??Promise.resolve(false));
+    const historyEntry=source==='history'?(state.history||[]).find(h=>String(h.id)===String(id)):null;
+    const amount=Math.max(0,Number(historyEntry?.amount)||0),unit=historyEntry?.unit||'ед.';
+    const restoreText=source==='history'&&amount>0?` ${amount} ${unit} вернутся в остаток соответствующего занятия.`:'';
+    const ok=await (window.praviloConfirm?.({kicker:'Путь',title:'Удалить запись из «Пути»?',message:`«${title}» будет удалена${source==='history'?' вместе со связанной записью истории':''}.${restoreText}`,confirmText:source==='history'?'Удалить и вернуть':'Удалить',danger:true})??Promise.resolve(false));
     if(!ok)return;
-    if(source==='history')state.history=state.history.filter(h=>h.id!==id);else state.pathJournal=state.pathJournal.filter(x=>x.id!==id);
+    if(source==='history'){
+      if(window.PraviloHistoryLedger?.removeHistory)window.PraviloHistoryLedger.removeHistory(id,{renderUI:false});
+      else{
+        const item=(state.items||[]).find(x=>String(x.id)===String(historyEntry?.itemId));
+        if(item&&amount>0)item.debt=Math.max(0,Number(item.debt)||0)+amount;
+        state.history=state.history.filter(h=>String(h.id)!==String(id));
+      }
+    }else state.pathJournal=state.pathJournal.filter(x=>String(x.id)!==String(id));
     save();render();renderPath();
   }
   function actionHtml(){return '<button type="button" class="entryMore pathEntryMore" aria-label="Удалить запись" title="Удалить запись">×</button>';}
