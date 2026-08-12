@@ -17,9 +17,13 @@
     root._beadCueTimer=setTimeout(()=>root.classList.remove('decadeBowCue','centuryBowCue'),kind==='century'?1450:850);
   }
   function onPrayerTap(event){
-    const n=Number(event.detail?.sessionCount)||0;if(n<1)return;
-    if(n%100===0){playCue('prayerHundred');vibrate(320);visualCue('century');}
-    else if(n%10===0){playCue('prayerTen');vibrate(45);visualCue('decade');}
+    const count=Number(event.detail?.sessionCount)||0;
+    const cue=window.PraviloDomain?.prayerCue?.(count)||'';
+    if(cue==='hundred'){
+      playCue('prayerHundred');vibrate(320);visualCue('century');
+    }else if(cue==='ten'){
+      playCue('prayerTen');vibrate(45);visualCue('decade');
+    }
   }
   function onPrayerOpen(){try{void window.PraviloAudio?.unlock?.();}catch(_){}}
 
