@@ -25,11 +25,15 @@ assert.equal(domain.prayerCue(100),'hundred');
 assert.equal(domain.prayerCue(110),'ten');
 assert.equal(domain.prayerCue(200),'hundred');
 
-assert.equal(domain.acceptedPrayerSessionCount(0),0);
-assert.equal(domain.acceptedPrayerSessionCount(37),0,'37 prayers are discarded');
-assert.equal(domain.acceptedPrayerSessionCount(99),0,'99 prayers are discarded');
-assert.equal(domain.acceptedPrayerSessionCount(100),100,'100 prayers are accepted');
-assert.equal(domain.acceptedPrayerSessionCount(137),137,'everything after the first hundred remains accepted');
+assert.equal(domain.prayerCredited(0),0);
+assert.equal(domain.prayerCredited(37),0,'less than one hundred credits nothing');
+assert.equal(domain.prayerCredited(99),0,'99 credits nothing');
+assert.equal(domain.prayerCredited(100),100);
+assert.equal(domain.prayerCredited(101),100,'101 credits 100');
+assert.equal(domain.prayerCredited(202),200,'202 credits 200');
+assert.equal(domain.prayerCredited(288),200,'288 credits 200');
+assert.equal(domain.prayerCredited(333),300,'333 credits 300');
+assert.equal(domain.prayerCredited(400),400);
 
 assert.equal(domain.restoredDebt(100,50),150,'deleted prayer history returns prayers');
 assert.equal(domain.restoredDebt(24,8),32,'deleted reading history returns pages');
