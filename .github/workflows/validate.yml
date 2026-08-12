@@ -26,39 +26,68 @@ jobs:
       - name: Run domain logic tests
         run: node tests/domain.test.js
 
-      - name: Check referenced local assets
+      - name: Validate runtime manifest
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          require('./app-manifest.js');
+          const m=globalThis.PraviloManifest;
+          if(!m)throw new Error('PraviloManifest was not created');
+          if(!/^\d+\.\d+\.\d+$/.test(m.version))throw new Error(`Invalid version: ${m.version}`);
+
+          const groups={styles:m.styles,scripts:m.scripts,staticAssets:m.staticAssets};
+          for(const [name,list] of Object.entries(groups)){
+            if(!Array.isArray(list))throw new Error(`${name} must be an array`);
+            const duplicates=list.filter((value,index)=>list.indexOf(value)!==index);
+            if(duplicates.length)throw new Error(`${name} contains duplicates: ${[...new Set(duplicates)].join(', ')}`);
+            const missing=list.filter(path=>!fs.existsSync(path));
+            if(missing.length)throw new Error(`${name} references missing files: ${missing.join(', ')}`);
+          }
+
+          const required=[
+            'sounds/prayer-ten.mp3','sounds/prayer-hundred.mp3','sounds/meditation-bell.mp3',
+            'images/onboarding_hero.webp','images/onboarding_prayer.webp','images/onboarding_reading.webp','images/onboarding_meditation.webp'
+          ];
+          const absent=required.filter(path=>!m.staticAssets.includes(path));
+          if(absent.length)throw new Error(`Required offline assets missing from manifest: ${absent.join(', ')}`);
+
+          const deprecated=['features.js','enhancements.js','practice.js','reading-mode-fix.js','meditation-topic-fix.js','meditation-audio.js','quiet-ui.js'];
+          const stale=deprecated.filter(path=>m.scripts.includes(path));
+          if(stale.length)throw new Error(`Deprecated modules still loaded: ${stale.join(', ')}`);
+
+          console.log(`Runtime manifest ${m.version}: ${m.styles.length} styles, ${m.scripts.length} scripts, ${m.staticAssets.length} static assets`);
+          NODE
+
+      - name: Check shell references
         shell: python
         run: |
           from pathlib import Path
           import re
 
           root = Path('.')
-          sources = ['index.html', 'app-bootstrap.js', 'sw.js']
-          references = {}
+          sources = ['index.html', 'sw.js']
           missing = []
 
           for source in sources:
               text = (root / source).read_text(encoding='utf-8')
               refs = re.findall(r"['\"](\.?/?[^'\"?#]+\.(?:js|css|webp|png|webmanifest))(?:\?[^'\"]*)?['\"]", text)
-              normalized = {ref.removeprefix('./') for ref in refs}
-              references[source] = normalized
-              for path in sorted(normalized):
+              for ref in sorted(set(refs)):
+                  path = ref.removeprefix('./')
                   if not (root / path).exists():
                       missing.append(f'{source}: {path}')
 
           if missing:
               raise SystemExit('Missing local references:\n' + '\n'.join(missing))
 
-          deprecated = {
-              'features.js',
-              'enhancements.js',
-              'practice.js',
-              'reading-mode-fix.js',
-              'meditation-topic-fix.js',
-              'meditation-audio.js',
-          }
-          stale = sorted(deprecated & references['app-bootstrap.js'])
-          if stale:
-              raise SystemExit('Deprecated modules still loaded: ' + ', '.join(stale))
+          index = (root / 'index.html').read_text(encoding='utf-8')
+          if '?v=' in index:
+              raise SystemExit('index.html must not hard-code version query strings; use app-manifest.js')
+          if 'app-manifest.js' not in index:
+              raise SystemExit('index.html must load app-manifest.js')
 
-          print('Local references and module boundaries: OK')
+          sw = (root / 'sw.js').read_text(encoding='utf-8')
+          if "importScripts('./app-manifest.js')" not in sw:
+              raise SystemExit('sw.js must import the central app manifest')
+
+          print('Shell references and central version boundary: OK')
