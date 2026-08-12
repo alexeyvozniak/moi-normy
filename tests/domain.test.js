@@ -16,4 +16,12 @@ assert.equal(domain.accrualCount({lastKey:'2026-08-06',todayKey:'2026-08-12',per
 assert.equal(domain.accrualCount({lastKey:'2026-07-12',todayKey:'2026-08-12',period:'monthly'}),1);
 assert.equal(domain.accrualCount({lastKey:'2026-07-31',todayKey:'2026-08-12',period:'monthly'}),0);
 
+assert.equal(domain.prayerCue(1),'');
+assert.equal(domain.prayerCue(10),'ten');
+assert.equal(domain.prayerCue(80),'','80 is not a hundred milestone');
+assert.equal(domain.prayerCue(99),'');
+assert.equal(domain.prayerCue(100),'hundred');
+assert.equal(domain.prayerCue(110),'ten');
+assert.equal(domain.prayerCue(200),'hundred');
+
 console.log('Domain logic: OK');
