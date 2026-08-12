@@ -11,6 +11,10 @@
       book:!!document.getElementById('bookModeBox'),
       dialog:typeof window.praviloConfirm==='function'&&typeof window.praviloNotice==='function',
       dashboardStyle:hasStyle('dashboard.css'),
+      prayerCard:typeof window.PraviloPrayerCard?.validHundreds==='function'&&hasStyle('prayer-card.css'),
+      audio:typeof window.PraviloAudio?.play==='function'&&typeof window.PraviloAudio?.getSettings==='function'&&typeof window.PraviloAudio?.setSettings==='function',
+      notes:typeof window.PraviloNotes?.openNote==='function'&&typeof window.PraviloShareText?.shareHistoryNote==='function',
+      audioSettings:!!document.getElementById('settingsAudioCard')&&!!document.getElementById('settingsAudioToggle'),
       settings:!!document.getElementById('settingsBtn')&&!!document.querySelector('#settingsBtn .settingsGearIcon'),
       history:!!document.getElementById('historyPanel')
     };
