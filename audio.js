@@ -58,13 +58,21 @@
   async function htmlFallback(name,{preview=false}={}){
     const def=DEFINITIONS[name];if(!def||(!settings.enabled&&!preview))return false;
     try{
-      const audio=new Audio(def.src);audio.preload='auto';audio.volume=effectiveVolume(def);audio.playsInline=true;await audio.play();
-      if(def.maxDuration)setTimeout(()=>{try{audio.pause();audio.currentTime=0;}catch(_){}},def.maxDuration*1000);return true;
+      const audio=new Audio(def.src);audio.preload='auto';audio.volume=effectiveVolume(def);audio.playsInline=true;
+      const started=audio.play();
+      if(started&&typeof started.then==='function')await started;
+      if(def.maxDuration)setTimeout(()=>{try{audio.pause();audio.currentTime=0;}catch(_){}},def.maxDuration*1000);
+      return true;
     }catch(error){console.warn('[Правило] Звук заблокирован браузером',name,error);return false;}
   }
 
-  async function play(name,{preview=false}={}){
+  async function play(name,{preview=false,direct=false}={}){
     const def=DEFINITIONS[name];if(!def||(!settings.enabled&&!preview))return false;
+
+    // На iOS короткие сигналы, вызванные непосредственно нажатием,
+    // надёжнее запускать через HTMLAudio до любого await.
+    if(direct)return htmlFallback(name,{preview});
+
     const ctx=audioContext();if(!ctx)return htmlFallback(name,{preview});
     try{
       if(ctx.state==='suspended')await ctx.resume();
@@ -81,5 +89,4 @@
   const firstGesture=()=>{void unlock();};
   document.addEventListener('pointerdown',firstGesture,{once:true,capture:true,passive:true});
   document.addEventListener('keydown',firstGesture,{once:true,capture:true});
-  preload();
 })();
