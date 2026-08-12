@@ -1,4 +1,4 @@
-const APP_VERSION='35.10.0';
+const APP_VERSION='35.10.1';
 const CACHE=`pravilo-shell-v${APP_VERSION}`;
 const CORE=[
   './','./index.html','./app.css','./app-core.js','./app-bootstrap.js','./manifest.webmanifest',
@@ -9,7 +9,8 @@ const CORE=[
   './images/hero.webp','./images/stat_active.webp','./images/stat_debt.webp','./images/stat_done.webp',
   './images/prayer_person_beads.webp','./images/reading_person_book.webp','./images/contemplation_looking_up.webp','./images/samurai_training.webp','./images/selfcare_onsen.webp','./images/calligraphy_ink.webp','./images/walking_path.webp','./images/open_book.webp','./images/books_notes.webp','./images/enso.webp',
   './images/prayer_icons.webp','./images/prayer_prostration.webp','./images/prayer_bow.webp',
-  './images/settings-reminders.webp','./images/settings-data.webp','./images/settings-app.webp'
+  './images/settings-reminders.webp','./images/settings-data.webp','./images/settings-app.webp',
+  './images/week-hero.webp','./images/history-hero.webp'
 ];
 
 self.addEventListener('install',event=>{
