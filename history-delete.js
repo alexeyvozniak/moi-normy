@@ -13,7 +13,7 @@
 
   function makeAction(entry){
     const button=document.createElement('button');
-    button.type='button';button.className='entryMore historyEntryMore';button.textContent='⋯';button.setAttribute('aria-label','Действия с записью');
+    button.type='button';button.className='entryMore historyEntryMore';button.textContent='×';button.setAttribute('aria-label','Удалить запись');button.title='Удалить запись';
     button.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();deleteEntry(entry.id);});
     return button;
   }
