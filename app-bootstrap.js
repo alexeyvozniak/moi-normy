@@ -1,12 +1,13 @@
 (()=>{
   'use strict';
-  const VERSION='35.2.0';
+  const VERSION='35.3.0';
 
   const styles=[
     'designer-fonts.css',
     'ui-controls.css',
     'ui-dialog.css',
     'responsive.css',
+    'dashboard.css',
     'onboarding.css',
     'feature-ui.css',
     'mode-tools.css',
