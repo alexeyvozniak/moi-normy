@@ -15,6 +15,9 @@
     if(typeof navigator.vibrate!=='function')return false;
     try{return navigator.vibrate(pattern)!==false;}catch(e){return false;}
   }
+  function playCue(name){
+    try{void window.PraviloAudio?.play(name);}catch(_){/* vibration + visual cue remain the fallback */}
+  }
   function visualCue(kind){
     const root=$('prayerPractice');if(!root)return;
     root.classList.remove('decadeBowCue','centuryBowCue');void root.offsetWidth;
@@ -26,9 +29,9 @@
     item.prayerBeadCount=Math.max(0,Number(item.prayerBeadCount)||0)+1;
     const n=item.prayerBeadCount;
     if(n%100===0){
-      vibrate(320);visualCue('century');
+      playCue('prayerHundred');vibrate(320);visualCue('century');
     }else if(n%10===0){
-      vibrate(45);visualCue('decade');
+      playCue('prayerTen');vibrate(45);visualCue('decade');
     }
     if(Number(item.debt)<=0)item.prayerBeadCount=0;
     save();
@@ -38,6 +41,7 @@
     const practiceButton=e.target.closest?.('.practiceButton');
     if(practiceButton&&/Режим практики/.test(practiceButton.textContent||'')){
       const item=findPrayerFromButton(practiceButton);if(item)activePrayerId=item.id;
+      void window.PraviloAudio?.unlock?.();
       return;
     }
     const root=e.target.closest?.('#prayerPractice');
@@ -62,7 +66,7 @@
       const cards=$('guideFeatureOverlay')?.querySelector('.guideCards');
       if(!cards||cards.querySelector('[data-haptics-guide]'))return;
       const c=document.createElement('div');c.className='guideCard';c.dataset.hapticsGuide='1';
-      c.innerHTML='<div class="guideNum">十</div><div class="guideTitle">Сигналы на 10 и 100</div><div class="guideText">Каждая десятая молитва отмечается короткой вибрацией и краткой сменой оттенка экрана — поясной поклон. Каждая сотая даёт более длинную вибрацию и более заметную тёплую смену цвета — земной поклон.</div>';
+      c.innerHTML='<div class="guideNum">十</div><div class="guideTitle">Сигналы на 10 и 100</div><div class="guideText">Каждая десятая молитва отмечается мягким звуком, короткой вибрацией и краткой сменой оттенка экрана — поясной поклон. Каждая сотая получает отдельный более глубокий звук, длинную вибрацию и тёплую смену цвета — земной поклон.</div>';
       cards.appendChild(c);
     },80);
   },true);
