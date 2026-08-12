@@ -11,12 +11,11 @@
     save();render();setTimeout(decorate,0);
   }
 
-  function makeMenu(entry){
-    const details=document.createElement('details');details.className='entryMenu historyEntryMenu';
-    details.innerHTML='<summary aria-label="Действия с записью">⋯</summary><div class="entryMenuPopup"><button type="button">Удалить запись</button></div>';
-    details.querySelector('button').addEventListener('click',event=>{event.preventDefault();event.stopPropagation();details.removeAttribute('open');deleteEntry(entry.id);});
-    details.addEventListener('click',event=>event.stopPropagation());
-    return details;
+  function makeAction(entry){
+    const button=document.createElement('button');
+    button.type='button';button.className='entryMore historyEntryMore';button.textContent='⋯';button.setAttribute('aria-label','Действия с записью');
+    button.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();deleteEntry(entry.id);});
+    return button;
   }
 
   function decorate(){
@@ -26,9 +25,9 @@
         const panel=document.getElementById('historyPanel');if(!panel)return;
         const entries=state.history.slice(0,80),rows=[...panel.querySelectorAll('.historyItem')];
         rows.forEach((row,i)=>{
-          row.querySelectorAll('.historyDelete,.entryMenu').forEach(x=>x.remove());
+          row.querySelectorAll('.historyDelete,.entryMenu,.entryMore').forEach(x=>x.remove());
           const entry=entries[i];if(!entry)return;
-          row.appendChild(makeMenu(entry));
+          row.appendChild(makeAction(entry));
         });
       }finally{decorating=false;}
     });
