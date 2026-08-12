@@ -7,18 +7,21 @@
 .settingsHubTitle{display:block;font:500 18px/1.08 var(--serif);letter-spacing:-.01em;white-space:normal}
 .settingsHubSub{display:block;margin-top:5px;font-size:10px;line-height:1.25;color:var(--muted);white-space:normal;overflow-wrap:anywhere}
 .settingsHubArrow{display:block;font-size:20px;line-height:1;color:#aaa094;text-align:right}
+.settingsHubSource{display:none!important}
+#settingsOverlay #remindersPanel,#settingsOverlay #notesExportPanel,#settingsOverlay #offlineStoragePanel,#settingsOverlay #featureSettingsRow{display:none!important}
+.settingsSectionSheet{max-height:88dvh}
 .settingsSectionLead{margin:-2px 1px 13px;color:var(--muted);font-size:10.5px;line-height:1.45}
 .settingsBack{border:0;background:var(--soft);min-width:64px;height:34px;border-radius:999px;padding:0 11px;font-size:10px;color:var(--muted)}
-#remindersPanel.settingsHubSource{display:none!important}
-.settingsDataBody,.settingsAppBody{display:grid;gap:10px}
-.settingsDataBody>.panel,.settingsDataBody>.notesExportPanel,.settingsDataBody>#offlineStoragePanel{margin:0}
-.settingsDataBody>.sheetActions{margin-top:0}
+.settingsSectionBody{display:grid;gap:10px}
+.settingsCard{border:1px solid var(--hair);border-radius:16px;background:var(--paper2);padding:13px}
+.settingsCard strong{font-size:12px;font-weight:650}
+.settingsCardText{margin-top:5px;color:var(--muted);font-size:10px;line-height:1.45}
+.settingsActionGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.settingsActionStack{display:grid;gap:8px}
+.settingsStatus{border:1px solid var(--hair);border-radius:14px;padding:11px 12px;background:rgba(104,116,95,.05);font-size:9.5px;line-height:1.45;color:var(--muted)}
 .settingsDanger{border:1px solid var(--hair);border-radius:15px;background:rgba(189,88,66,.025);overflow:hidden}
 .settingsDanger summary{list-style:none;padding:12px 13px;font-size:10px;color:#8c766f;cursor:pointer}
 .settingsDanger summary::-webkit-details-marker{display:none}
 .settingsDanger summary:after{content:'⌄';float:right;color:#aa9c92}.settingsDanger[open] summary:after{content:'⌃'}
-.settingsDanger .sheetActions{padding:0 10px 10px;margin:0}
-.settingsAppBody #featureSettingsRow{display:grid!important;grid-template-columns:1fr;gap:7px;margin:0}
-.settingsAppBody #showWelcomeBtn,.settingsAppBody #openWelcomePageBtn{display:none!important}
-.settingsAppBody .installSettingsButton{width:100%}.settingsSectionSheet{max-height:88dvh}
-@media(max-width:390px){.settingsHubRow{grid-template-columns:48px minmax(0,1fr) 14px;padding:11px;min-height:72px;gap:10px}.settingsHubIcon{width:48px;height:48px;border-radius:14px}.settingsHubTitle{font-size:17px}.settingsHubSub{font-size:9.5px;margin-top:4px}}
+.settingsDangerBody{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 10px 10px}
+@media(max-width:390px){.settingsHubRow{grid-template-columns:48px minmax(0,1fr) 14px;padding:11px;min-height:72px;gap:10px}.settingsHubIcon{width:48px;height:48px;border-radius:14px}.settingsHubTitle{font-size:17px}.settingsHubSub{font-size:9.5px;margin-top:4px}.settingsActionGrid,.settingsDangerBody{grid-template-columns:1fr}}
