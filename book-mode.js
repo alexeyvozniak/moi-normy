@@ -33,7 +33,7 @@
     const el=$('bookCalc');if(!el)return;
     if(!$('bookModeEnabled')?.checked){el.textContent='';return;}
     const total=Math.max(0,Math.round(Number($('bookTotal')?.value)||0));
-    const current=Math.max(0,Math.min(total,Math.round(Number($('bookCurrent')?.value)||0));
+    const current=Math.max(0,Math.min(total,Math.round(Number($('bookCurrent')?.value)||0)));
     const deadline=$('bookDeadline')?.value||'';
     if(!total||!deadline){el.textContent='Укажи объём книги и срок.';return;}
     const remaining=Math.max(0,total-current),days=daysLeft(deadline);
@@ -101,13 +101,19 @@
     });
   }
 
-  function interceptActions(event){
+  async function interceptActions(event){
     const button=event.target.closest?.('.task [data-action]');if(!button)return;
     const item=state.items.find(x=>x.id===button.dataset.id);if(!item?.readingPlan)return;
     if(button.dataset.action==='quick'){
       event.preventDefault();event.stopImmediatePropagation();const target=targetFor(item);if(target)subtract(item.id,target,'book-today');
     }else if(button.dataset.action==='close'){
-      event.preventDefault();event.stopImmediatePropagation();if(item.debt>0&&confirm(`Отметить книгу «${item.readingPlan.title||item.name}» дочитанной?`))subtract(item.id,item.debt,'book-finished');
+      event.preventDefault();event.stopImmediatePropagation();
+      if(item.debt<=0)return;
+      const title=item.readingPlan.title||item.name;
+      const ok=typeof window.praviloConfirm==='function'
+        ?await window.praviloConfirm({kicker:'Книга',title:'Отметить книгу дочитанной?',message:`«${title}» будет закрыта целиком, весь оставшийся объём будет списан.`,confirmText:'Дочитано',danger:false})
+        :confirm(`Отметить книгу «${title}» дочитанной?`);
+      if(ok)subtract(item.id,item.debt,'book-finished');
     }
   }
 
