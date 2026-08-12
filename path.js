@@ -31,9 +31,21 @@
   function bookEvents(){
     ensureJournal();let changed=false;
     for(const item of state.items||[]){
-      const plan=item.readingPlan;if(!plan)continue;const meta=state.pathMeta.books[item.id]||{},fingerprint=`${plan.title}|${plan.totalPages}|${plan.deadline}`;
-      if(meta.fingerprint!==fingerprint){state.pathJournal.unshift({id:uid(),ts:new Date().toISOString(),type:'book_start',title:`Начата книга «${plan.title}»`,text:`${plan.totalPages} стр. · срок до ${fmtDate(plan.deadline+'T12:00:00')}`,itemId:item.id});state.pathMeta.books[item.id]={fingerprint,completed:false};changed=true;}
-      const current=state.pathMeta.books[item.id];if(Number(item.debt)===0&&!current.completed){state.pathJournal.unshift({id:uid(),ts:new Date().toISOString(),type:'book_done',title:`Дочитана книга «${plan.title}»`,text:`${plan.totalPages} страниц`,itemId:item.id});current.completed=true;changed=true;}
+      const plan=item.readingPlan;if(!plan)continue;
+      const meta=state.pathMeta.books[item.id]||{},fingerprint=`${plan.title}|${plan.totalPages}|${plan.deadline}`;
+      if(meta.fingerprint!==fingerprint){
+        state.pathJournal.unshift({id:uid(),ts:new Date().toISOString(),type:'book_start',title:`Начата книга «${plan.title}»`,text:`${plan.totalPages} стр. · срок до ${fmtDate(plan.deadline+'T12:00:00')}`,itemId:item.id});
+        state.pathMeta.books[item.id]={fingerprint,completed:false};changed=true;
+      }
+      const current=state.pathMeta.books[item.id];
+      if(Number(item.debt)===0&&!current.completed){
+        state.pathJournal.unshift({id:uid(),ts:new Date().toISOString(),type:'book_done',title:`Дочитана книга «${plan.title}»`,text:`${plan.totalPages} страниц`,itemId:item.id});
+        current.completed=true;changed=true;
+      }else if(Number(item.debt)>0&&current.completed){
+        const index=state.pathJournal.findIndex(entry=>entry.type==='book_done'&&entry.itemId===item.id);
+        if(index>=0)state.pathJournal.splice(index,1);
+        current.completed=false;changed=true;
+      }
     }
     if(changed){state.pathJournal=state.pathJournal.slice(0,400);save();}
   }
