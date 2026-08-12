@@ -1,4 +1,4 @@
-const APP_VERSION='35.4.1';
+const APP_VERSION='35.4.2';
 const CACHE=`pravilo-shell-v${APP_VERSION}`;
 const CORE=[
   './','./index.html','./app.css','./app-core.js','./app-bootstrap.js','./manifest.webmanifest',
