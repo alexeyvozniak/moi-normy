@@ -42,8 +42,11 @@
     for(const h of state.history||[]){if(!h.note)continue;const med=h.note.kind==='meditation';out.push({id:`note-${h.id}`,sourceId:h.id,source:'history',ts:h.ts,type:'note',title:h.note.title||(med?'Заметка после медитации':'Заметка о чтении'),text:h.note.body||'',itemId:h.itemId,tag:med?'медитация':'чтение'});}
     return out.sort((a,b)=>new Date(b.ts)-new Date(a.ts));
   }
-  function deleteEntry(source,id){
-    if(!confirm('Удалить эту запись из «Пути»?'))return;
+  async function deleteEntry(source,id){
+    const row=entries().find(x=>x.source===source&&String(x.sourceId)===String(id));
+    const title=row?.title||'эту запись';
+    const ok=await (window.praviloConfirm?.({kicker:'Путь',title:'Удалить запись из «Пути»?',message:`«${title}» будет удалена${source==='history'?' вместе со связанной записью истории':''}.`,confirmText:'Удалить',danger:true})??Promise.resolve(confirm('Удалить эту запись из «Пути»?')));
+    if(!ok)return;
     if(source==='history')state.history=state.history.filter(h=>h.id!==id);else state.pathJournal=state.pathJournal.filter(x=>x.id!==id);
     save();render();renderPath();
   }
