@@ -9,11 +9,11 @@
 <meta name="apple-mobile-web-app-title" content="Правило">
 <meta name="format-detection" content="telephone=no">
 <meta name="author" content="Алексей Возняк">
-<meta name="application-version" content="1.0.0">
+<meta name="application-version" content="1.0.1">
 <meta name="description" content="Правило — личное локальное PWA для молитвы, чтения, медитации и собственного ритма.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
-<link rel="stylesheet" href="app.css?v=1.0.0">
+<link rel="stylesheet" href="app.css?v=1.0.1">
 <title>Правило</title>
 </head>
 <body>
@@ -21,20 +21,12 @@
   <header class="header">
     <div><div class="title">Правило</div><div class="date" id="date"></div></div>
     <div class="headActions">
-      <button class="roundButton headerAction" id="addBtn" type="button" aria-label="Добавить">
-        <svg class="headerActionIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-      </button>
-      <button class="roundButton headerAction" id="settingsBtn" type="button" aria-label="Настройки">
-        <svg class="settingsGearIcon headerActionIcon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.09a2 2 0 0 1 1 1.74v.5a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/></svg>
-      </button>
+      <button class="roundButton headerAction" id="addBtn" type="button" aria-label="Добавить"><svg class="headerActionIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+      <button class="roundButton headerAction" id="settingsBtn" type="button" aria-label="Настройки"><svg class="settingsGearIcon headerActionIcon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.09a2 2 0 0 1 1 1.74v.5a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/></svg></button>
     </div>
   </header>
 
-  <section class="hero">
-    <button class="quoteCard" id="dayQuote" type="button">
-      <div class="quoteLabel">Слово дня</div><div class="quoteText" id="dayQuoteText"></div><div class="quoteAuthor" id="dayQuoteAuthor"></div><div class="quoteTap">нажми, чтобы перелистнуть</div>
-    </button>
-  </section>
+  <section class="hero"><button class="quoteCard" id="dayQuote" type="button"><div class="quoteLabel">Слово дня</div><div class="quoteText" id="dayQuoteText"></div><div class="quoteAuthor" id="dayQuoteAuthor"></div><div class="quoteTap">нажми, чтобы перелистнуть</div></button></section>
 
   <nav class="tabs" aria-label="Разделы">
     <button class="tab active" data-tab="today" type="button">Сегодня</button>
@@ -44,53 +36,18 @@
   </nav>
 
   <section id="todayView"><div class="stats" id="stats"></div><div class="cards" id="cards"></div></section>
-  <section id="weekView" class="hidden">
-    <div class="sectionHero weekHero">
-      <img class="sectionHeroImage" src="images/week-hero.webp?v=1.0.0" alt="" aria-hidden="true">
-      <div class="sectionHeroVeil" aria-hidden="true"></div>
-      <div class="sectionHeroCopy"><div class="sectionHeroKicker">ритм</div><div class="sectionHeroTitle">Неделя</div><div class="sectionHeroText">Семь дней в одном взгляде: что уже сделано и где сохраняется долг.</div></div>
-    </div>
-    <div class="sectionTitle">Последние 7 дней</div><div class="panel" id="weekPanel"></div>
-  </section>
-  <section id="historyView" class="hidden">
-    <div class="sectionHero historyHero">
-      <img class="sectionHeroImage" src="images/history-hero.webp?v=1.0.0" alt="" aria-hidden="true">
-      <div class="sectionHeroVeil" aria-hidden="true"></div>
-      <div class="sectionHeroCopy"><div class="sectionHeroKicker">память</div><div class="sectionHeroTitle">История</div><div class="sectionHeroText">Сделанное, прочитанное и сохранённые заметки — без оценок и серий.</div></div>
-    </div>
-    <div class="sectionTitle">История</div><div class="panel" id="historyPanel"></div>
-  </section>
+  <section id="weekView" class="hidden"><div class="sectionHero weekHero"><img class="sectionHeroImage" src="images/week-hero.webp?v=1.0.1" alt="" aria-hidden="true"><div class="sectionHeroVeil" aria-hidden="true"></div><div class="sectionHeroCopy"><div class="sectionHeroKicker">ритм</div><div class="sectionHeroTitle">Неделя</div><div class="sectionHeroText">Семь дней в одном взгляде: что уже сделано и где сохраняется долг.</div></div></div><div class="sectionTitle">Последние 7 дней</div><div class="panel" id="weekPanel"></div></section>
+  <section id="historyView" class="hidden"><div class="sectionHero historyHero"><img class="sectionHeroImage" src="images/history-hero.webp?v=1.0.1" alt="" aria-hidden="true"><div class="sectionHeroVeil" aria-hidden="true"></div><div class="sectionHeroCopy"><div class="sectionHeroKicker">память</div><div class="sectionHeroTitle">История</div><div class="sectionHeroText">Сделанное, прочитанное и сохранённые заметки — без оценок и серий.</div></div></div><div class="sectionTitle">История</div><div class="panel" id="historyPanel"></div></section>
   <section id="catalogView" class="hidden"><div class="sectionTitle">Образы</div><div class="gallery" id="catalog"></div></section>
 </main>
 
-<div class="overlay" id="amountOverlay">
-  <div class="sheet"><div class="grabber"></div><div class="sheetHeader"><div class="sheetTitle" id="amountTitle">Списать</div><button class="closeBtn" type="button" data-close="amountOverlay">✕</button></div><div class="field"><label>Сколько выполнено?</label><input id="amountInput" type="number" inputmode="decimal" min="0" step="1"></div><div class="smallText" id="amountHint"></div><div class="sheetActions"><button class="button" type="button" data-close="amountOverlay">Отмена</button><button class="button primary" type="button" id="amountSave">Списать</button></div></div>
-</div>
+<div class="overlay" id="amountOverlay"><div class="sheet"><div class="grabber"></div><div class="sheetHeader"><div class="sheetTitle" id="amountTitle">Списать</div><button class="closeBtn" type="button" data-close="amountOverlay">✕</button></div><div class="field"><label>Сколько выполнено?</label><input id="amountInput" type="number" inputmode="decimal" min="0" step="1"></div><div class="smallText" id="amountHint"></div><div class="sheetActions"><button class="button" type="button" data-close="amountOverlay">Отмена</button><button class="button primary" type="button" id="amountSave">Списать</button></div></div></div>
 
-<div class="overlay" id="editorOverlay">
-  <div class="sheet"><div class="grabber"></div><div class="sheetHeader"><div class="sheetTitle" id="editorTitle">Новая норма</div><button class="closeBtn" type="button" data-close="editorOverlay">✕</button></div>
-    <div class="field"><label>Название</label><input id="eName"></div>
-    <div class="two"><div class="field"><label>Начислять</label><input id="eIncrement" type="number" min="0" step="1"></div><div class="field"><label>Единица</label><input id="eUnit"></div></div>
-    <div class="two"><div class="field"><label>Период</label><select id="ePeriod"><option value="daily">Каждый день</option><option value="weekly">Каждую неделю</option><option value="monthly">Каждый месяц</option><option value="interval">Каждые N дней</option></select></div><div class="field"><label>Быстро списать</label><input id="eQuick" type="number" min="0" step="1"></div></div>
-    <div class="field hidden" id="intervalField"><label>Раз в сколько дней</label><input id="eIntervalDays" type="number" min="1" value="2"></div>
-    <div class="field"><label>Текущий долг</label><input id="eDebt" type="number" min="0"></div>
-    <div class="toggleRow"><div>Пауза</div><button class="switch" id="pauseSwitch" type="button" aria-label="Пауза"></button></div>
-    <div class="field"><label>Изображение</label><div class="pickerGrid" id="imagePicker"></div></div>
-    <div class="field"><label>Свой URL изображения</label><input id="eImageUrl"></div>
-    <div class="sheetActions"><button class="button danger" type="button" id="deleteTask">Удалить</button><button class="button" type="button" data-close="editorOverlay">Отмена</button><button class="button primary" type="button" id="saveTask">Сохранить</button></div>
-  </div>
-</div>
+<div class="overlay" id="editorOverlay"><div class="sheet"><div class="grabber"></div><div class="sheetHeader"><div class="sheetTitle" id="editorTitle">Новая норма</div><button class="closeBtn" type="button" data-close="editorOverlay">✕</button></div><div class="field"><label>Название</label><input id="eName"></div><div class="two"><div class="field"><label>Начислять</label><input id="eIncrement" type="number" min="0" step="1"></div><div class="field"><label>Единица</label><input id="eUnit"></div></div><div class="two"><div class="field"><label>Период</label><select id="ePeriod"><option value="daily">Каждый день</option><option value="weekly">Каждую неделю</option><option value="monthly">Каждый месяц</option><option value="interval">Каждые N дней</option></select></div><div class="field"><label>Быстро списать</label><input id="eQuick" type="number" min="0" step="1"></div></div><div class="field hidden" id="intervalField"><label>Раз в сколько дней</label><input id="eIntervalDays" type="number" min="1" value="2"></div><div class="field"><label>Текущий долг</label><input id="eDebt" type="number" min="0"></div><div class="toggleRow"><div>Пауза</div><button class="switch" id="pauseSwitch" type="button" aria-label="Пауза"></button></div><div class="field"><label>Изображение</label><div class="pickerGrid" id="imagePicker"></div></div><div class="field"><label>Свой URL изображения</label><input id="eImageUrl"></div><div class="sheetActions"><button class="button danger" type="button" id="deleteTask">Удалить</button><button class="button" type="button" data-close="editorOverlay">Отмена</button><button class="button primary" type="button" id="saveTask">Сохранить</button></div></div></div>
 
-<div class="overlay" id="settingsOverlay">
-  <div class="sheet"><div class="grabber"></div><div class="sheetHeader"><div class="sheetTitle">Настройки</div><button class="closeBtn" type="button" data-close="settingsOverlay">✕</button></div>
-    <div class="panel"><b>Данные хранятся на этом устройстве</b><div class="smallText">Резервная копия пригодится на случай очистки данных браузера.</div></div>
-    <div class="sheetActions"><button class="button" type="button" id="exportBtn">Экспорт</button><button class="button" type="button" id="importBtn">Импорт</button></div>
-    <input id="importFile" type="file" accept=".json,application/json" class="hidden">
-    <div class="sheetActions"><button class="button danger" type="button" id="clearHistory">Очистить историю</button><button class="button danger" type="button" id="resetAll">Сбросить всё</button></div>
-  </div>
-</div>
+<div class="overlay" id="settingsOverlay"><div class="sheet"><div class="grabber"></div><div class="sheetHeader"><div class="sheetTitle">Настройки</div><button class="closeBtn" type="button" data-close="settingsOverlay">✕</button></div><div class="panel"><b>Данные хранятся на этом устройстве</b><div class="smallText">Резервная копия пригодится на случай очистки данных браузера.</div></div><div class="sheetActions"><button class="button" type="button" id="exportBtn">Экспорт</button><button class="button" type="button" id="importBtn">Импорт</button></div><input id="importFile" type="file" accept=".json,application/json" class="hidden"><div class="sheetActions"><button class="button danger" type="button" id="clearHistory">Очистить историю</button><button class="button danger" type="button" id="resetAll">Сбросить всё</button></div></div></div>
 
-<script src="app-core.js?v=1.0.0"></script>
-<script src="app-bootstrap.js?v=1.0.0" defer></script>
+<script src="app-core.js?v=1.0.1"></script>
+<script src="app-bootstrap.js?v=1.0.1" defer></script>
 </body>
 </html>
