@@ -1,13 +1,13 @@
 (()=>{
   'use strict';
-  const VERSION='32.0.0';
+  const VERSION='32.1.0';
 
   const styles=[
     'designer-fonts.css?v=1',
     'responsive.css?v=1',
     'onboarding.css?v=4',
-    'features.css?v=1',
-    'enhancements.css?v=1',
+    'feature-ui.css?v=1',
+    'mode-tools.css?v=1',
     'practice.css?v=1',
     'prayer-haptics.css?v=2',
     'reminders.css?v=1',
