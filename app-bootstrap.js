@@ -45,6 +45,18 @@
     document.head.appendChild(link);
   }
 
+  function preloadScripts(scripts,version){
+    scripts.forEach(src=>{
+      if(document.querySelector(`link[data-pravilo-preload="${src}"]`))return;
+      const link=document.createElement('link');
+      link.rel='preload';
+      link.as='script';
+      link.href=`${src}?v=${encodeURIComponent(version)}`;
+      link.dataset.praviloPreload=src;
+      document.head.appendChild(link);
+    });
+  }
+
   function loadScript(src,version){
     return new Promise(resolve=>{
       const target='/'+src;
@@ -69,17 +81,20 @@
       diagnostics.finishedAt=new Date().toISOString();
       document.documentElement.dataset.praviloReady='0';
       console.error('[Правило] Не найден центральный manifest приложения');
+      window.PraviloBoot?.finish?.();
       return;
     }
 
     diagnostics.version=manifest.version;
     refreshServiceWorker();
     manifest.styles.forEach(href=>ensureStyle(href,manifest.version));
+    preloadScripts(manifest.scripts,manifest.version);
     for(const src of manifest.scripts)await loadScript(src,manifest.version);
 
     diagnostics.finishedAt=new Date().toISOString();
     document.documentElement.dataset.praviloReady=diagnostics.failed.length?'warning':'1';
     window.dispatchEvent(new CustomEvent('pravilo:ready',{detail:diagnostics}));
+    window.PraviloBoot?.finish?.();
   }
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});
