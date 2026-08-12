@@ -1,6 +1,6 @@
 (()=>{
   'use strict';
-  const VERSION='35.10.1';
+  const VERSION='35.10.2';
 
   const styles=[
     'designer-fonts.css',
@@ -64,7 +64,7 @@
   function ensureStyle(href){
     if([...document.styleSheets].some(sheet=>sheet.href&&new URL(sheet.href).pathname.endsWith('/'+href))||document.querySelector(`link[data-pravilo-style="${href}"]`))return;
     const link=document.createElement('link');
-    link.rel='stylesheet';link.href=href;link.dataset.praviloStyle=href;
+    link.rel='stylesheet';link.href=`${href}?v=${VERSION}`;link.dataset.praviloStyle=href;
     document.head.appendChild(link);
   }
 
@@ -72,7 +72,7 @@
     return new Promise(resolve=>{
       if(document.querySelector(`script[data-pravilo-module="${src}"]`)||[...document.scripts].some(script=>script.src&&new URL(script.src).pathname.endsWith('/'+src))){diagnostics.loaded.push(src);resolve();return;}
       const script=document.createElement('script');
-      script.src=src;script.async=false;script.dataset.praviloModule=src;
+      script.src=`${src}?v=${VERSION}`;script.async=false;script.dataset.praviloModule=src;
       script.onload=()=>{diagnostics.loaded.push(src);resolve();};
       script.onerror=()=>{diagnostics.failed.push(src);console.error('[Правило] Не загрузился модуль:',src);resolve();};
       document.body.appendChild(script);
