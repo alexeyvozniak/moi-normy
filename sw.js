@@ -1,9 +1,9 @@
-const APP_VERSION='35.5.1';
+const APP_VERSION='35.6.0';
 const CACHE=`pravilo-shell-v${APP_VERSION}`;
 const CORE=[
   './','./index.html','./app.css','./app-core.js','./app-bootstrap.js','./manifest.webmanifest',
   './designer-fonts.css','./ui-controls.css','./ui-dialog.css','./responsive.css','./dashboard.css','./editor-layout.css','./onboarding.css','./feature-ui.css','./mode-tools.css','./practice.css','./prayer-haptics.css','./reminders.css','./settings-hub.css','./quiet-ui.css','./install-helper.css',
-  './ui-dialog.js','./ui-notice.js','./domain.js','./day-clock.js','./audio.js','./accrual.js','./onboarding.js','./book-mode.js','./practice-types.js','./counter-mode.js','./catalog-extras.js','./path.js','./prayer-practice.js','./prayer-haptics.js','./meditation-practice.js','./notes.js','./notes-export.js','./history-delete.js','./offline-storage.js','./reminders.js','./interaction-dialogs.js','./app-help.js','./install-helper.js','./settings-hub.js','./editor-layout.js','./app-self-test.js',
+  './ui-dialog.js','./ui-notice.js','./domain.js','./day-clock.js','./audio.js','./history-ledger.js','./accrual.js','./onboarding.js','./book-mode.js','./practice-types.js','./counter-mode.js','./catalog-extras.js','./path.js','./prayer-practice.js','./prayer-haptics.js','./meditation-practice.js','./notes.js','./notes-export.js','./history-delete.js','./offline-storage.js','./reminders.js','./interaction-dialogs.js','./app-help.js','./install-helper.js','./settings-hub.js','./editor-layout.js','./app-self-test.js',
   './sounds/prayer-ten.mp3','./sounds/prayer-hundred.mp3','./sounds/meditation-bell.mp3',
   './icon-180.png','./icon-192.png','./icon-512.png',
   './images/hero.webp','./images/stat_active.webp','./images/stat_debt.webp','./images/stat_done.webp',
