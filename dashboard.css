@@ -3,8 +3,9 @@
 .task.paused .taskImage{filter:saturate(.55);opacity:.7}
 .task.paused .taskName,.task.paused .debtLine{opacity:.72}
 .task.paused .taskRule{color:var(--muted)}
+.quoteCard{cursor:default}
 
-.weekLegend{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;padding:0 0 9px;margin-left:min(44%,190px);color:var(--muted);text-align:center}
+.weekLegend{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;padding:0 0 9px;color:var(--muted);text-align:center}
 .weekLegend span{display:grid;gap:1px;font-size:8px;text-transform:uppercase}
 .weekLegend small{font-size:8px;opacity:.7}
 .weekItem{padding:14px 0}
@@ -23,6 +24,6 @@
 .undoToast button:active{transform:translateY(1px)}
 
 @media(max-width:399px){
-  .weekItemHead b{font-size:17px}.weekGrid{gap:4px}.weekDay{height:31px;font-size:8px}
+  .weekItemHead b{font-size:17px}.weekGrid,.weekLegend{gap:4px}.weekDay{height:31px;font-size:8px}
   .undoToast{bottom:calc(env(safe-area-inset-bottom) + 10px)}
 }
