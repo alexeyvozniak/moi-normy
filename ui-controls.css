@@ -17,7 +17,12 @@ button:disabled{opacity:.48;cursor:default}
 .entryMore{width:30px;height:30px;display:grid;place-items:center;border:0;border-radius:999px;background:transparent;color:#8a8177!important;font-size:20px;line-height:1;padding:0;flex:none}
 .entryMore:active{background:var(--soft)}
 .entryMore:focus-visible{outline:2px solid rgba(104,116,95,.28);outline-offset:1px}
-.historyItem{position:relative;grid-template-columns:minmax(0,1fr) auto auto!important;align-items:start}
+.historyItem{position:relative;grid-template-columns:minmax(0,1fr) auto auto!important;align-items:center;padding:15px 0 15px 17px!important}
+.historyItem::before{content:"";position:absolute;left:1px;top:22px;width:7px;height:7px;border:1.5px solid rgba(104,116,95,.70);border-radius:50%;background:var(--paper);box-shadow:0 0 0 3px rgba(104,116,95,.045)}
+.historyItem b{display:block;font:600 18px/1.08 var(--serif);margin-bottom:4px;letter-spacing:-.01em}
+.historyItem .smallText{font-size:9.5px;line-height:1.35;color:#91877d;font-variant-numeric:tabular-nums}
+.historyAmount{min-width:62px;text-align:right;font:500 24px/.9 var(--serif);letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+.historyEntryMore{margin-left:2px}
 .pathEntry{position:relative;padding-right:38px}
 .pathEntryMore{position:absolute;right:0;top:0}
 
