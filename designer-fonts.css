@@ -1,18 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Infant:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap');
-
 :root{
-  --serif:"Cormorant Infant","Iowan Old Style","Baskerville","Times New Roman",serif;
-  --sans:"Manrope",-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  /* Локальные системные гарнитуры: работают одинаково в PWA и офлайн. */
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,"Times New Roman",serif;
+  --sans:"Avenir Next","SF Pro Text","SF Pro Display",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
 }
 
-body,button,input,select,textarea{font-family:var(--sans)}
-.title,.taskName,.sectionTitle,.sheetTitle,.quoteText,.quoteBig,.featureTitle,.historyNoteTitle,.bookModeTitle{font-family:var(--serif)}
+html,body,button,input,select,textarea{font-family:var(--sans);color:var(--ink)}
+button,input,select,textarea{-webkit-font-smoothing:antialiased}
+button{color:inherit;-webkit-appearance:none;appearance:none}
+
+.title,.taskName,.sectionTitle,.sheetTitle,.quoteText,.featureTitle,.historyNoteTitle,.bookModeTitle,.pathTitle,.pathEntryTitle,.meditationTitle,.meditationPhaseTitle,.meditationDoneTitle,.practiceName,.settingsHubTitle{
+  font-family:var(--serif);
+}
 .title{font-weight:500;letter-spacing:-.035em}
 .taskName{font-weight:500;letter-spacing:-.025em}
-.quoteText,.quoteBig{font-weight:500}
+.quoteText{font-weight:500}
 
-/* Цифры — спокойные, ровные и хорошо читаемые. */
-.debtNumber,.statNum,.weekValue,.historyAmount,.practiceCount,.meditationTime{
+/* Цифры остаются ровными и современными, отдельно от книжных заголовков. */
+.debtNumber,.statNum,.weekValue,.historyAmount,.practiceCount,.meditationTimer{
   font-family:var(--sans)!important;
   font-variant-numeric:tabular-nums lining-nums;
   font-feature-settings:"tnum" 1,"lnum" 1;
@@ -22,17 +26,8 @@ body,button,input,select,textarea{font-family:var(--sans)}
 .debtNumber{letter-spacing:-.055em!important}
 .statNum{letter-spacing:-.035em!important}
 
-/* Название книги — самостоятельный постоянный ориентир. */
-.bookIdentity{
-  display:flex;align-items:baseline;gap:6px;margin-top:7px;max-width:100%;
-  color:#4f5949;font-size:10px;line-height:1.3;min-width:0
-}
+.bookIdentity{display:flex;align-items:baseline;gap:6px;margin-top:7px;max-width:100%;color:#4f5949;font-size:10px;line-height:1.3;min-width:0}
 .bookIdentityLabel{flex:none;text-transform:uppercase;letter-spacing:.11em;font-size:7px;font-weight:700;color:var(--red)}
 .bookIdentityTitle{min-width:0;font-weight:650;overflow-wrap:anywhere}
 
-/* Удаление тестовых записей не должно визуально шуметь. */
-.historyDelete{
-  grid-column:1/-1;justify-self:start;border:0;background:transparent;color:#9a776d;
-  font:600 9px/1 var(--sans);padding:4px 0;margin-top:1px
-}
-.historyDelete:active{opacity:.55}
+.historyDelete,.pathDelete{font-family:var(--sans);color:#9a776d}
