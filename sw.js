@@ -1,4 +1,4 @@
-const CACHE='pravilo-shell-v34.3';
+const CACHE='pravilo-shell-v34.4';
 const CORE=[
   './','./index.html','./app.css','./app-core.js','./app-bootstrap.js','./manifest.webmanifest',
   './designer-fonts.css','./ui-controls.css','./ui-dialog.css','./responsive.css','./onboarding.css','./feature-ui.css','./mode-tools.css','./practice.css','./prayer-haptics.css','./reminders.css','./settings-hub.css','./quiet-ui.css','./install-helper.css',
