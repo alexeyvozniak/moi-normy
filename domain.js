@@ -62,15 +62,14 @@
     return '';
   }
 
-  function acceptedPrayerSessionCount(sessionCount,minimum=100){
+  function prayerCredited(sessionCount){
     const count=Math.max(0,Math.floor(Number(sessionCount)||0));
-    const min=Math.max(1,Math.floor(Number(minimum)||100));
-    return count>=min?count:0;
+    return Math.floor(count/100)*100;
   }
 
   function restoredDebt(currentDebt,amount){
     return Math.max(0,Number(currentDebt)||0)+Math.max(0,Number(amount)||0);
   }
 
-  return {DAY_MS,parseLocalDate,dateKey,daysBetween,daysLeft,readingTarget,accrualCount,prayerCue,acceptedPrayerSessionCount,restoredDebt};
+  return {DAY_MS,parseLocalDate,dateKey,daysBetween,daysLeft,readingTarget,accrualCount,prayerCue,prayerCredited,restoredDebt};
 });
