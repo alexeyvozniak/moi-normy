@@ -4,12 +4,17 @@
   let pending=null;
 
   const $=id=>document.getElementById(id);
-  const parseDate=value=>{const [y,m,d]=String(value||'').split('-').map(Number);return y&&m&&d?new Date(y,m-1,d,12):null};
-  const todayDate=()=>{const d=new Date();d.setHours(12,0,0,0);return d};
-  const daysLeft=deadline=>{const end=parseDate(deadline);return end?Math.floor((end-todayDate())/86400000)+1:0};
-  const targetFor=item=>{const remaining=Math.max(0,Math.round(Number(item?.debt)||0));const days=Math.max(1,daysLeft(item?.readingPlan?.deadline));return remaining?Math.ceil(remaining/days):0};
+  const Domain=window.PraviloDomain;
+  const parseDate=value=>Domain?.parseLocalDate?.(value)||null;
+  const daysLeft=deadline=>Domain?.daysLeft?.(deadline,today())||0;
+  const targetFor=item=>Domain?.readingTarget?.(item?.debt,item?.readingPlan?.deadline,today())||0;
   const pluralDays=n=>{const a=Math.abs(n)%100,b=a%10;return a>10&&a<20?'дней':b===1?'день':b>=2&&b<=4?'дня':'дней'};
   const fmtDate=value=>{const d=parseDate(value);return d?new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'long'}).format(d):''};
+
+  function notice(title,message){
+    if(typeof window.praviloNotice==='function')window.praviloNotice({kicker:'Книга',title,message});
+    else console.warn('[Правило]',title,message);
+  }
 
   function ensureEditor(){
     if($('bookModeBox'))return;
@@ -39,7 +44,8 @@
     const remaining=Math.max(0,total-current),days=daysLeft(deadline);
     if(!remaining){el.textContent='Книга уже дочитана.';return;}
     if(days<1){el.textContent=`Срок прошёл · осталось ${remaining} стр.`;return;}
-    el.textContent=`Сегодня: ${Math.ceil(remaining/days)} стр. · осталось ${remaining} стр. · ${days} ${pluralDays(days)} до срока.`;
+    const target=Domain.readingTarget(remaining,deadline,today());
+    el.textContent=`Сегодня: ${target} стр. · осталось ${remaining} стр. · ${days} ${pluralDays(days)} до срока.`;
   }
 
   function openFor(id){
@@ -70,8 +76,8 @@
     const total=Math.max(0,Math.round(Number($('bookTotal')?.value)||0));
     const current=Math.max(0,Math.min(total,Math.round(Number($('bookCurrent')?.value)||0)));
     const deadline=$('bookDeadline')?.value||'';
-    if(!title||!total||!deadline){event.preventDefault();event.stopImmediatePropagation();alert('Для режима книги укажи название, число страниц и срок.');return;}
-    if(daysLeft(deadline)<1){event.preventDefault();event.stopImmediatePropagation();alert('Срок чтения должен быть сегодня или позже.');return;}
+    if(!title||!total||!deadline){event.preventDefault();event.stopImmediatePropagation();notice('Не хватает данных','Укажи название книги, число страниц и срок чтения.');return;}
+    if(daysLeft(deadline)<1){event.preventDefault();event.stopImmediatePropagation();notice('Проверь срок','Дата окончания чтения должна быть сегодня или позже.');return;}
     const old=existing?.readingPlan;
     const manual=old?.manual||{increment:Number(existing?.increment)||15,period:existing?.period||'daily',intervalDays:Number(existing?.intervalDays)||2,quick:Number(existing?.quick)||5,unit:existing?.unit||'страниц',name:existing?.name||$('eName')?.value||'Чтение'};
     pending={remove:false,id:existing?.id||null,title,totalPages:total,current,deadline,manual};
@@ -110,9 +116,7 @@
       event.preventDefault();event.stopImmediatePropagation();
       if(item.debt<=0)return;
       const title=item.readingPlan.title||item.name;
-      const ok=typeof window.praviloConfirm==='function'
-        ?await window.praviloConfirm({kicker:'Книга',title:'Отметить книгу дочитанной?',message:`«${title}» будет закрыта целиком, весь оставшийся объём будет списан.`,confirmText:'Дочитано',danger:false})
-        :confirm(`Отметить книгу «${title}» дочитанной?`);
+      const ok=typeof window.praviloConfirm==='function'&&await window.praviloConfirm({kicker:'Книга',title:'Отметить книгу дочитанной?',message:`«${title}» будет закрыта целиком, весь оставшийся объём будет списан.`,confirmText:'Дочитано',danger:false});
       if(ok)subtract(item.id,item.debt,'book-finished');
     }
   }
@@ -123,6 +127,7 @@
     window.addEventListener('pravilo:editor-open',e=>openFor(e.detail?.id));
     window.addEventListener('pravilo:editor-saved',finishSave);
     window.addEventListener('pravilo:render',decorate);
+    window.addEventListener('pravilo:day-changed',()=>{harden();render();});
     $('saveTask')?.addEventListener('click',prepareSave,true);
     $('cards')?.addEventListener('click',interceptActions,true);
     document.addEventListener('visibilitychange',()=>{if(!document.hidden){harden();render();}});
