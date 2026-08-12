@@ -5,6 +5,17 @@
 .task.paused .taskRule{color:var(--muted)}
 .quoteCard{cursor:default}
 
+/* Calm summary: state, debt and today's completion. */
+.stats{gap:7px;margin-bottom:13px}
+.stat{position:relative;min-height:70px;padding:9px 10px;gap:9px;border-radius:19px;background:rgba(251,247,240,.86);box-shadow:0 3px 14px rgba(71,48,22,.032);overflow:hidden}
+.stat img{width:36px;height:36px;opacity:.94}
+.statMetric{min-width:0}
+.statNum{font:500 27px/.88 var(--serif);letter-spacing:-.035em;font-variant-numeric:tabular-nums}
+.statLabel{margin-top:4px;font-size:8.5px;line-height:1.12;color:var(--muted);white-space:nowrap}
+.statRatio{display:flex;align-items:baseline;gap:1px;letter-spacing:-.045em}
+.statSlash{font-size:.62em;color:#a69c90;margin:0 1px;letter-spacing:0}
+.statToday::after{content:"";position:absolute;left:10px;right:auto;bottom:0;width:var(--today-progress,0%);max-width:calc(100% - 20px);height:2px;border-radius:999px;background:rgba(104,116,95,.62);transition:width .2s ease}
+
 .weekLegend{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;padding:0 0 9px;color:var(--muted);text-align:center}
 .weekLegend span{display:grid;gap:1px;font-size:8px;text-transform:uppercase}
 .weekLegend small{font-size:8px;opacity:.7}
@@ -24,6 +35,7 @@
 .undoToast button:active{transform:translateY(1px)}
 
 @media(max-width:399px){
+  .stat{min-height:66px;padding:8px 9px;gap:7px}.stat img{width:33px;height:33px}.statNum{font-size:25px}.statLabel{font-size:8px}.statToday::after{left:9px;max-width:calc(100% - 18px)}
   .weekItemHead b{font-size:17px}.weekGrid,.weekLegend{gap:4px}.weekDay{height:31px;font-size:8px}
   .undoToast{bottom:calc(env(safe-area-inset-bottom) + 10px)}
 }
