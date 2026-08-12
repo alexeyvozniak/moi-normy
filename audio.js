@@ -2,7 +2,7 @@
   'use strict';
 
   const DEFINITIONS={
-    prayerTen:{src:'sounds/prayer-ten.mp3',volume:.58},
+    prayerTen:{src:'sounds/prayer-ten.mp3',volume:.36},
     prayerHundred:{src:'sounds/prayer-hundred.mp3',volume:.72},
     meditationBell:{src:'sounds/meditation-bell.mp3',volume:.68}
   };
@@ -43,9 +43,7 @@
     return promise;
   }
 
-  function preload(){
-    Object.keys(DEFINITIONS).forEach(name=>{void decode(name);});
-  }
+  function preload(){Object.keys(DEFINITIONS).forEach(name=>{void decode(name);});}
 
   async function unlock(){
     const ctx=audioContext();
